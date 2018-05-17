@@ -10,7 +10,6 @@ public class BizVehicle implements Serializable {
      */
     @Id
     @Column(name = "v_id")
-    @GeneratedValue(generator = "JDBC")
     private String vId;
 
     /**

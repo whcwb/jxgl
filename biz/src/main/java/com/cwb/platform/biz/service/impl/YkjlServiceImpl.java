@@ -5,6 +5,7 @@ import com.cwb.platform.biz.mapper.BizYkjlMapper;
 import com.cwb.platform.biz.model.BizYkjl;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.biz.service.YkjlService;
+import com.cwb.platform.util.commonUtil.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.common.Mapper;
@@ -25,7 +26,9 @@ public class YkjlServiceImpl extends BaseServiceImpl<BizYkjl,String> implements 
     }
 
     @Override
-    public ApiResponse<String> saveEntity(BizYkjl entity) {
+    public ApiResponse<String> validAndSave(BizYkjl entity) {
+        entity.setYkId(genId());
+        entity.setCreateTime(DateUtils.getNowTime());
         save(entity);
         return ApiResponse.saveSuccess();
     }

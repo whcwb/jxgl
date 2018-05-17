@@ -10,7 +10,6 @@ public class BizFiles implements Serializable {
      */
     @Id
     @Column(name = "vf_id")
-    @GeneratedValue(generator = "JDBC")
     private String vfId;
 
     /**

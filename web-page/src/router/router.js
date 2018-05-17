@@ -154,7 +154,7 @@ export let appRouter = [
                 icon: 'android-clipboard',
                 name: 'vehbaoxian-youka',
                 title: '油卡管理',
-                component: () => import('@/views/whdx/vehicle/vehicle-mgr')
+                component: () => import('@/views/whdx/vehicle/oil-card')
             },
             {
                 path: 'vehbaoxian-youliao',

@@ -11,7 +11,6 @@ public class BizInsurance implements Serializable {
      */
     @Id
     @Column(name = "in_id")
-    @GeneratedValue(generator = "JDBC")
     private String inId;
 
     /**

@@ -11,7 +11,6 @@ public class BizYkjl implements Serializable {
      */
     @Id
     @Column(name = "yk_id")
-    @GeneratedValue(generator = "JDBC")
     private String ykId;
 
     /**

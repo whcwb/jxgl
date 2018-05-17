@@ -357,7 +357,8 @@ public abstract class BaseServiceImpl<T, PK extends Serializable> implements Bas
 
     @Override
     public List<T> findByEntity(T entity) {
-        return getBaseMapper().select(entity);
+        LimitedCondition condition = getQueryCondition();
+        return getBaseMapper().selectByExample(condition);
     }
 
     @Override
@@ -435,7 +436,7 @@ public abstract class BaseServiceImpl<T, PK extends Serializable> implements Bas
         }
         if (StringUtils.isEmpty(condition.getOrderByClause())){
             log.debug("该分页没有设置排序字段，默认按创建时间倒序，如果有其他需求，请在 fillCondition 方法中申明");
-            condition.setOrderByClause("cjsj desc");
+            condition.setOrderByClause("create_time desc");
         }
         PageInfo<T> resultPage = PageHelper.startPage(page.getPageNum(), page.getPageSize()).doSelectPageInfo(new ISelect() {
             @Override

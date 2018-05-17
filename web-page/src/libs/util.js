@@ -7,10 +7,21 @@ util.title = function (title) {
     window.document.title = title;
 };
 
+/**
+ * 初始化列表页面
+ * 自动调整table高度，页面加载完成后获取列表数据
+ */
 util.initTable = (v)=>{
     v.tabHeight = v.getWindowHeight() - 295
     util.getPageData(v)
 }
+/**
+ * 初始化表单（包括新增和修改）页面
+ * 如果是编辑页面，则对父组件传过来的数据进行深复制，方式数据联动
+ * 设置modal标题
+ * 设置是否readonly（如果是编辑页面，有些字段不可修改）
+ * 根据formInputs设置的字段 自动添加字段验证规则
+ */
 util.initFormModal = (v)=>{
     if (v.$parent.choosedItem){
         // 深复制，避免数据联动
@@ -20,6 +31,9 @@ util.initFormModal = (v)=>{
     }
     util.initFormRule(v);
 }
+/**
+ * 根据formInputs设置的字段 自动添加字段验证规则
+ */
 util.initFormRule = (v)=>{
     for (let r of v.formInputs){
         if (r.required){
@@ -28,11 +42,23 @@ util.initFormRule = (v)=>{
         }
     }
 }
+/**
+ * 点击新增按钮事件
+ * 弹出新增modal
+ */
 util.add = (v)=>{
     v.componentName = 'formData'
     v.choosedItem = null;
 }
+/**
+ * 点击保存按钮事件（包括新增保存和编辑保存）
+ * 根据状态自动判断调用新增接口还是修改接口
+ * 如果表单验证通过，则调用保存或新增接口，如果验证不通过则提示消息
+ * 如果执行保存操作之前需要处理数据，则先处理数据（beforeSave方法）
+ * 保存或修改成功之后，提示成功，并且调用父组件刷新table数据方法，并关闭modal窗口，如果保存或修改失败，则提示错误信息
+ */
 util.save = function(v){
+    // 根据状态自动判断调用新增接口还是修改接口
     let url = v.$parent.choosedItem ? v.apiRoot['CHANGE'] : v.apiRoot['ADD'];
     v.$refs.form.validate((valid) => {
         if (valid) {
@@ -55,7 +81,17 @@ util.save = function(v){
             v.$Message.error('请将信息填写完整!');
         }
     })
-},
+}
+
+
+/**
+ * 删除
+ * 删除弹出确认弹窗
+ * 删除成功之后如果有回调函数则执行回调函数，如果没有则调用父组件刷新table数据方法
+  * @param v 组件this
+ * @param ids 需要删除的主键列表
+ * @param callback 删除成功之后的回调函数（可选）
+ */
 util.delete = function(v,ids,callback){//数据删除方法封装
     swal({
         title: "是否删除数据?",
@@ -81,6 +117,13 @@ util.delete = function(v,ids,callback){//数据删除方法封装
         });
 
 }
+/**
+ * 旧的删除方法，将逐渐弃用
+ * @param v
+ * @param url
+ * @param ids
+ * @param callback
+ */
 util.del = function(v,url,ids,callback){//数据删除方法封装
     swal({
         title: "是否删除数据?",
@@ -104,12 +147,19 @@ util.del = function(v,url,ids,callback){//数据删除方法封装
             }
         });
 }
+/**
+ * 关闭弹窗
+ */
 util.closeDialog = function(v){
     v.showModal = false;
     setTimeout((t) => {
         v.$parent.$data.componentName = "";
     }, 200)
-},
+}
+/**
+ * table页面获取数据方法
+ * @param v
+ */
 util.getPageData = function(v) {
     let url = v.apiRoot['QUERY'];
     v.$http.post(url, v.form).then((response) => {
@@ -126,10 +176,16 @@ util.getPageData = function(v) {
     ).then((next) => {
     });
 }
+/**
+ * table分页切换事件
+ */
 util.pageChange = function(v,e) {
     v.form.pageNum = e
     util.getPageData(v)
-},
+}
+/**
+ * get方法并执行回调函数
+ */
 util.getData = function(v, url, onSuccess) {
     v.$http.get(url).then((response) => {
             let code = response.code;
@@ -147,7 +203,10 @@ util.getData = function(v, url, onSuccess) {
         }).then((next) => {
     });
     ;
-},
+}
+/**
+ * 后面的方法都是框架自带的
+ */
 util.inOf = function (arr, targetArr) {
     let res = true;
     arr.forEach(item => {

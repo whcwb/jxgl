@@ -10,7 +10,6 @@ public class BizWfxx implements Serializable {
      */
     @Id
     @Column(name = "wf_id")
-    @GeneratedValue(generator = "JDBC")
     private String wfId;
 
     /**
