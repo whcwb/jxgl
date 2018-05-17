@@ -1,0 +1,129 @@
+<template>
+	<div>
+		<Modal
+				v-model="showModal"
+				height="460"
+				:closable='false'
+				:mask-closable="false"
+				title="证件照片">
+			<div class="demo-upload-list" v-for="item in uploadList">
+				<template v-if="item.status === 'finished'">
+					<img :src="item.url">
+					<div class="demo-upload-list-cover">
+						<!--文件移除-->
+						<Icon type="ios-trash-outline" @click.native="handleRemove(item)"></Icon>
+					</div>
+				</template>
+				<template v-else>
+					<Progress v-if="item.showProgress" :percent="item.percentage" hide-info></Progress>
+				</template>
+			</div>
+			<Upload
+					ref="upload"
+					:show-upload-list="false"
+					:default-file-list="defaultList"
+					:on-success="handleSuccess"
+					:format="['jpg','jpeg','png']"
+					:max-size="1000"
+					:on-format-error="handleFormatError"
+					:on-exceeded-size="handleMaxSize"
+					:before-upload="handleBeforeUpload"
+					multiple
+					type="drag"
+					:action="uploadUrl+'?targetPath=hdFile'"
+					style="display: inline-block;width:58px;">
+				<div style="width: 58px;height:58px;line-height: 58px;">
+					<Icon type="camera" size="20"></Icon>
+				</div>
+			</Upload>
+			<div slot='footer'>
+				<Button type="ghost" @click="colse">取消</Button>
+				<Button type="primary" @click="AddDataListOk('addmess')">确定</Button>
+			</div>
+		</Modal>
+
+	</div>
+</template>
+<script>
+
+    export default {
+    	name:'',
+        data () {
+            return {
+                showModal:true,
+                defaultList: [],
+                imgName: '',
+                visible: false,
+                uploadList: [],
+				uploadUrl:this.apis.UPLOAD
+            }
+        },
+        props:{
+            usermes:{
+                type:Object,
+                default:{}
+            },
+			urlList:{
+				type:String,
+				default:''
+			}
+		},
+        created(){
+        	log(this.usermes)
+        	//this.dataList()
+            this.$http.get(this.apis.FILE.FINDBYPID + "/").then((res) =>{
+
+            })
+        },
+        methods: {
+            colse(){
+                var v = this
+                v.$parent.compName = ''
+            },
+        	dataList(){
+        		let ArrList = this.urlList.split(',')
+	        	for(var i=0;i<ArrList.length-1;i++){
+	        		this.defaultList.push({'url':this.apis.STATIC_PATH+ArrList[i]})
+	        	}
+        	},
+            handleView (name) {
+                this.imgName = name;
+                this.visible = true;
+            },
+            handleRemove (file) {
+                const fileList = this.$refs.upload.fileList;
+                this.$refs.upload.fileList.splice(fileList.indexOf(file), 1);
+//              this.formItem.filePaths.replace(url+',','')
+                this.$emit('removeFile',file.url.replace(this.apis.STATIC_PATH,'')+',')
+            },
+            handleSuccess (res, file,fileList) {
+                this.$emit('addImg',res.message);
+                file.url = this.apis.STATIC_PATH + res.message;
+            },
+            handleFormatError (file) {
+                this.$Notice.warning({
+                    title: '文件格式错误',
+                    desc: '图片仅支持 jpg、jpeg、png'
+                });
+            },
+            handleMaxSize (file) {
+                this.$Notice.warning({
+                    title: '文件太大了',
+                    desc: '文件不能超过18M'
+                });
+            },
+            handleBeforeUpload () {
+                const check = this.uploadList.length < 5;
+                if (!check) {
+                    this.$Notice.warning({
+                        title: 'Up to five pictures can be uploaded.'
+                    });
+                }
+                return check;
+            }
+        },
+        mounted () {
+            this.uploadList = this.$refs.upload.fileList;
+        }
+    }
+</script>
