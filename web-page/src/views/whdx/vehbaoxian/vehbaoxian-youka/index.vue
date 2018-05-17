@@ -44,7 +44,7 @@
 
 <script>
     import mixins from '@/mixins'
-    import formData from './comp/formData.vue'
+    import formData from './formData.vue'
 
     export default {
         name: 'char',
@@ -63,56 +63,10 @@
                 //数据传输
                 chmess: {},
                 tableTiT: [
-                    {title: "序号", width: 60, align: 'center', type: 'index', fixed: 'left'},
-                    {title: '油卡名称', align: 'center', width: 120, key: 'gnmc', fixed: 'left'},
-                    {title: '油卡代码', align: 'center', width: 120, key: 'gndm'},
-                    {title: '服务代码', align: 'center', width: 120, key: 'fwdm'},
-                    {
-                        title: '状态', align: 'center', width: 120, key: 'zt',
-                        render: (h, p) => {
-                            let val = this.dictUtil.getValByCode(this, this.lmdmDictionary, p.row.zt)
-                            return h('div', val)
-                        }
-
-                    },
-                    {title: '排序', align: 'center', width: 120, key: 'px'},
-                    {title: '备注', align: 'center', width: 120, key: 'bz'},
-                    {title: 'URL', align: 'center', width: 120, key: 'url'},
-                    {title: '父节点', align: 'center', width: 120, key: 'fjd'},
-                    {title: '跳转地址', align: 'center', width: 120, key: 'tzdz'},
-                    {
-                        title: '图标',
-                        align: 'center',
-                        width: 60,
-                        key: 'tb',
-                        render: (h, params) => {
-                            return h('div', [
-                                h('Icon', {
-                                    props: {
-                                        type: params.row.tb,
-                                        size: '22'
-                                    },
-                                    on: {
-                                        click: () => {
-                                            //log('数据调试', params)
-                                        }
-                                    }
-                                })
-                            ]);
-                        }
-                    },
-                    {
-                        title: 'API前缀',
-                        align: 'center',
-                        width: 120,
-                        key: 'apiQz'
-                    },
-                    {
-                        title: 'API后缀',
-                        align: 'center',
-                        width: 120,
-                        key: 'apiHz'
-                    },
+                    {title: "序号", width: 60, align: 'center', type: 'index'},
+                    {title: '油卡卡号', align: 'center', key: 'ykId'},
+                    {title: '发卡公司', align: 'center', key: 'ykFkgs'},
+                    {title: '卡余额', align: 'center', key: 'ykYe'},
                     {
                         title: '操作',
                         key: 'action',

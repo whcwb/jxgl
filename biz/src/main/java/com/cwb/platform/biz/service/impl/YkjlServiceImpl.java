@@ -27,7 +27,6 @@ public class YkjlServiceImpl extends BaseServiceImpl<BizYkjl,String> implements 
 
     @Override
     public ApiResponse<String> validAndSave(BizYkjl entity) {
-        entity.setYkId(genId());
         entity.setCreateTime(DateUtils.getNowTime());
         save(entity);
         return ApiResponse.saveSuccess();

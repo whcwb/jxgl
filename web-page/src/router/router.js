@@ -112,6 +112,7 @@ export let appRouter = [
         icon: 'android-car',
         name: 'vehicle',
         title: '车辆管理',
+        component: Main,
         children: [
             {
                 path: 'vehicle-mgr',
@@ -148,13 +149,14 @@ export let appRouter = [
         icon: 'android-car',
         name: 'vehbaoxian',
         title: '维保管理',
+        component: Main,
         children: [
             {
                 path: 'vehbaoxian-youka',
                 icon: 'android-clipboard',
                 name: 'vehbaoxian-youka',
                 title: '油卡管理',
-                component: () => import('@/views/whdx/vehicle/oil-card')
+                component: () => import('@/views/whdx/vehbaoxian/vehbaoxian-youka')
             },
             {
                 path: 'vehbaoxian-youliao',
@@ -191,7 +193,6 @@ export let appRouter = [
         ]
     }
 ];
-
 // 所有上面定义的路由都要写在下面的routers里
 export const routers = [
     loginRouter,

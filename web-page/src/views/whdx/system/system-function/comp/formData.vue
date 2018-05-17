@@ -16,7 +16,7 @@
 						:label-width="100"
 						:styles="{top: '20px'}">
 					<Row>
-						<Col span="12" v-for="i in formInputs">
+						<Col v-for="i in formInputs" :span="i.span ? i.span : 12" >
 							<FormItem :prop='i.prop' :label='i.label'>
 								<Input type="text" v-model="formItem[i.prop]" :placeholder="'请填写'+i.label+'...'"></Input>
 							</FormItem>
@@ -86,9 +86,15 @@
 			}
 		},
 		created(){
+            /**
+			 * 初始化表单页面 *必须
+             */
 		    this.util.initFormModal(this);
 		},
 		methods: {
+            /**
+			 * 执行保存操作之前需要删除formItem.children，以免后台接收数据错误（此方法非必须）
+             */
             beforeSave(){
                 delete this.formItem.children;
 			},

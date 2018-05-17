@@ -20,14 +20,14 @@ public class LimitedCondition extends SimpleCondition {
     /**
      * 有些对象在查询的时候并不需要做机构权限处理
      */
-    private static final List<String> excludeEntityName = Arrays.asList("SysZdlm","SysFw","SysGn","SysYjfk","SysRz","ClZdgl","ClZnzp","ClLsdw","ClLsc","ClDzwlCl","ClSbyxsjjl","SysHsgs");
+    private static final List<String> excludeEntityName = Arrays.asList("SysZdlm","SysFw","SysGn","SysYjfk","SysRz","BizYkjl");
 
     public LimitedCondition(Class<?> entityClass) {
         super(entityClass);
-        if (excludeEntityName.contains(entityClass.getSimpleName()))return;
-        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-        String orgCode = (String) request.getAttribute("orgCode");
-        RuntimeCheck.ifBlank(orgCode,"未找到机构");
-        this.and().andLike("jgdm",orgCode+"%");
+//        if (excludeEntityName.contains(entityClass.getSimpleName()))return;
+//        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+//        String orgCode = (String) request.getAttribute("orgCode");
+//        RuntimeCheck.ifBlank(orgCode,"未找到机构");
+//        this.and().andLike("jgdm",orgCode+"%");
     }
 }

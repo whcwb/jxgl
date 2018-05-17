@@ -79,9 +79,9 @@ module.exports = {
         DELE:'/api/rz/removeIds'
     },
     OIL_CARD:{
-        QUERY:'api/rz/pager',//油卡管理
-        ADD:'/api/rz/save',
-        CHANGE:'/api/rz/update',
-        DELE:'/api/rz/removeIds'
+        QUERY:'api/oilCard/pager',//油卡管理
+        ADD:'/api/oilCard/save',
+        CHANGE:'/api/oilCard/update',
+        DELE:'/api/oilCard/removeIds'
     }
 }

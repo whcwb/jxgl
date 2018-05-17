@@ -19,7 +19,7 @@
 <template>
 	<div class="box" style="height: 100%;background:#fff">
 		<component :is="compName"></component>
-		<div  v-if="showChart" class="homeE" style="padding: 5px 3px;">
+		<div  v-if="false" class="homeE" style="padding: 5px 3px;">
 			<Row :gutter="8" class="margin-bottom-10 indexCarType">
 				<Col :xs="24" :sm="12" :md="6" :style="{marginBottom: '10px'}">
 					<infor-card id-name="user_created_count" :end-val="count.total" iconSrc="/static/icon/device.png" color="#2d8cf0" intro-text="设备总数"></infor-card>
@@ -152,20 +152,9 @@
             this.userType = userInfo.type;
             if (this.userType == 'su' || this.userType == '00'){
                 this.showChart = true;
-                this.getDeviceCount();
             }
 		},
 		methods: {
-            getDeviceCount(){
-                this.$http.get(this.apis.CHART_DATA.zdcx).then((res)=>{
-                    if (res.code == 200 && res.result){
-                        this.count.total = parseInt(res.result['设备总数'])
-                        this.count.online = parseInt(res.result['设备在线数量'])
-                        this.count.stop = parseInt(res.result['设备熄火数量'])
-                        this.count.offline = parseInt(res.result['设备离线数量'])
-                    }
-                })
-            }
 		}
 	};
 </script>
