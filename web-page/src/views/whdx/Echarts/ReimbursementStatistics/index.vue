@@ -72,7 +72,6 @@
             }
         },
         created() {
-            this.$store.commit('setCurrentPath', [{title: '首页',}, {title: '系统管理',}, {title: '功能管理',}])
             this.util.initTable(this)
         },
         methods: {

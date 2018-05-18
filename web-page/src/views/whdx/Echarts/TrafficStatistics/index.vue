@@ -77,7 +77,6 @@
             }
         },
         created() {
-            this.$store.commit('setCurrentPath', [{title: '首页',}, {title: '数据报表',}, {title: '出车统计',}])
             this.tabHeight = this.getWindowHeight() - 295
             this.getData()
         },

@@ -24,6 +24,14 @@ function hasPermission(list,name){
     return false;
 }
 router.beforeEach((to, from, next) => {
+    let matched = to.matched;
+    let breadMenuTitles = [];
+    for (let r of matched){
+        breadMenuTitles.push({title: r.meta.title})
+    }
+    console.log(breadMenuTitles);
+    console.log(to);
+    store.commit('setCurrentPath', breadMenuTitles)
     iView.LoadingBar.start();
     if(to.name=='login'){
     	next()

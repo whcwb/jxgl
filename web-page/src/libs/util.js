@@ -1,4 +1,5 @@
 import swal from 'sweetalert'
+import dictUtil from './dictUtil'
 let util = {
 };
 
@@ -6,6 +7,23 @@ util.title = function (title) {
     title = title || '车辆管理系统';
     window.document.title = title;
 };
+
+/**
+ * 初始化字典
+ */
+util.initDict = (v)=>{
+    if (v.dicts){
+        for (let k in v.dicts){
+            let r = v.dicts[k];
+            let items = dictUtil.getByCode(v,r.code);
+            r.items = items;
+        }
+    }
+}
+util.rd = (h,p,k)=>{
+    let s = p.row[k] ? p.row[k] : '-';
+    return h('div',s);
+}
 
 /**
  * 初始化列表页面
@@ -59,7 +77,7 @@ util.add = (v)=>{
  */
 util.save = function(v){
     // 根据状态自动判断调用新增接口还是修改接口
-    let url = v.$parent.choosedItem ? v.apiRoot['CHANGE'] : v.apiRoot['ADD'];
+    let url = v.saveUrl ? v.saveUrl : (v.$parent.choosedItem ? v.apiRoot['CHANGE'] : v.apiRoot['ADD']);
     v.$refs.form.validate((valid) => {
         if (valid) {
             if (typeof v.beforeSave === 'function'){

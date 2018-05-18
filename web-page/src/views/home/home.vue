@@ -144,9 +144,6 @@
 				}
 		    },
 		created() {
-			this.$store.commit('setCurrentPath', [{
-				title: '首页'
-			}])
             let userInfoJson = sessionStorage.getItem("userInfo");
             let userInfo = JSON.parse(userInfoJson);
             this.userType = userInfo.type;

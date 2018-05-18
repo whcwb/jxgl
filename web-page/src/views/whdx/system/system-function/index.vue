@@ -70,7 +70,7 @@
                     {
                         title: '状态', align: 'center', width: 120, key: 'zt',
                         render: (h, p) => {
-                            let val = this.dictUtil.getValByCode(this, this.lmdmDictionary, p.row.zt)
+                            let val = this.dictUtil.getValByCode(this, this.dicts.zt.code, p.row.zt)
                             return h('div', val)
                         }
 
@@ -180,11 +180,13 @@
                     pageSize: 8,
                 },
                 Dictionary: [],
-                lmdmDictionary: 'ZDCLK0007'
+                lmdmDictionary: 'ZDCLK0007',
+                dicts:{
+                    zt:{code:'ZDCLK0007',items:[]}
+                }
             }
         },
         created() {
-            this.$store.commit('setCurrentPath', [{title: '首页',}, {title: '系统管理',}, {title: '功能管理',}])
             this.util.initTable(this)
             this.getLXDic()//字典数据
         },

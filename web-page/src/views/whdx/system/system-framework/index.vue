@@ -179,13 +179,6 @@
             }
         },
         created(){
-        	this.$store.commit('setCurrentPath', [{
-                title: '首页',
-            },{
-                title: '系统管理',
-            },{
-                title: '组织机构',
-            }]),
         	this.tabHeight.height = (this.getWindowHeight() - 240)+'px'
         },
 		mounted(){

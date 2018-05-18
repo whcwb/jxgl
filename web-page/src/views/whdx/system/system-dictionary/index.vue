@@ -140,13 +140,6 @@
 			}
 		},
 		created() {
-			this.$store.commit('setCurrentPath', [{
-					title: '首页',
-				}, {
-					title: '系统管理',
-				}, {
-					title: '字典管理',
-				}]),
 				this.SpinShow = false;
 			this.getmess()
 		},

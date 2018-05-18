@@ -207,13 +207,6 @@
 //			},
 		},
         created(){
-        	this.$store.commit('setCurrentPath', [{
-                title: '首页',
-            },{
-                title: '系统管理',
-            },{
-                title: '角色管理',
-            }]),
             this.tabHeight = this.getWindowHeight() - 290
             this.getmess()
             this.getLXDic()//字典数据

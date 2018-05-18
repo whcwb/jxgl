@@ -121,7 +121,6 @@
         created() {
             this.form.kssj  = this.getTodayDate() + " 00:00:00";
             this.form.jssj  = this.getTodayDate() + " 23:59:59";
-            this.$store.commit('setCurrentPath', [{title: '首页',}, {title: '数据报表',}, {title: '安全驾驶',}])
             this.tabHeight = this.getWindowHeight() - 295
             // this.getData()
         },

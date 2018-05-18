@@ -250,13 +250,6 @@
 //			},
 		},
 		created() {
-			this.$store.commit('setCurrentPath', [{
-				title: '首页',
-			}, {
-				title: '系统管理',
-			}, {
-				title: '用户管理',
-			}]),
 			this.tabHeight = this.getWindowHeight() - 260
             this.getmess()
             this.getDict()

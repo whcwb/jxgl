@@ -24,7 +24,7 @@
 						<Col span="12">
 							<FormItem label='状态'>
 								<Select filterable clearable  v-model="formItem.zt" placeholder="请填选择状态...">
-									<Option v-for = '(item,index) in Dictionary' :value="item.key">{{item.val}}</Option>
+									<Option v-for = '(item,index) in dicts.zt.items' :value="item.key">{{item.val}}</Option>
 								</Select>
 							</FormItem>
 						</Col>
@@ -76,7 +76,10 @@
                     	{ required: true, message: '请将信息填写完整', trigger: 'blur' },
                     	{ min: 0, message: '请将信息填写完整', trigger: 'blur' }
                     ],
-				}
+				},
+                dicts:{
+                    zt:{code:'ZDCLK0007',items:[]}
+                }
 			}
 		},
 		props:{
@@ -90,6 +93,7 @@
 			 * 初始化表单页面 *必须
              */
 		    this.util.initFormModal(this);
+            this.util.initDict(this)
 		},
 		methods: {
             /**

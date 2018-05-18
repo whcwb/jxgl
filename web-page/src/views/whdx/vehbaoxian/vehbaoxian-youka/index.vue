@@ -45,12 +45,13 @@
 <script>
     import mixins from '@/mixins'
     import formData from './formData.vue'
+    import charge from './charge.vue'
 
     export default {
         name: 'char',
         mixins: [mixins],
         components: {
-            formData
+            formData,charge
         },
         data() {
             return {
@@ -67,6 +68,18 @@
                     {title: '油卡卡号', align: 'center', key: 'ykId'},
                     {title: '发卡公司', align: 'center', key: 'ykFkgs'},
                     {title: '卡余额', align: 'center', key: 'ykYe'},
+                    {title: '最后一次用卡时间', align: 'center', key: 'ykZsyksj',
+						render:(h,p)=>{
+                        	let s  = p.row.ykZsyksj ? p.row.ykZsyksj : '-';
+                        	return h('div',s);
+                        }
+					},
+                    {title: '最后一次用卡车辆牌号', align: 'center', key: 'ykZshphm',
+                        render:(h,p)=>{
+                            let s = p.row.ykZshphm ? p.row.ykZshphm : '-';
+                            return h('div',s);
+                        }
+					},
                     {
                         title: '操作',
                         key: 'action',
@@ -89,6 +102,24 @@
                                     on: {
                                         click: () => {
                                             this.componentName = 'formData'
+                                            this.choosedItem = params.row;
+                                        }
+                                    }
+                                }),
+                                h('Button', {
+                                    props: {
+                                        type: 'success',
+                                        icon: 'add',
+                                        shape: 'circle',
+                                        size: 'small'
+                                    },
+                                    style: {
+                                        cursor: "pointer",
+                                        margin: '0 8px 0 0'
+                                    },
+                                    on: {
+                                        click: () => {
+                                            this.componentName = 'charge'
                                             this.choosedItem = params.row;
                                         }
                                     }
@@ -126,7 +157,6 @@
             }
         },
         created() {
-            this.$store.commit('setCurrentPath', [{title: '首页',}, {title: '系统管理',}, {title: '油卡管理',}])
             this.util.initTable(this)
             this.getLXDic()//字典数据
         },

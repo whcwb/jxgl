@@ -41,9 +41,10 @@ export const otherRouter = {
     path: '/',
     name: 'otherRouter',
     redirect: '/home',
+    meta: { title: '首页' },
     component: Main,
     children: [
-        { path: 'home', title: {i18n: 'home'}, name: 'home_index', component: () => import('@/views/home/home.vue') }
+        {meta: { title: '首页' },path: 'home', title: {i18n: 'home'}, name: 'home_index', component: () => import('@/views/home/home.vue') }
     ]
 };
 
@@ -53,56 +54,56 @@ export let appRouter = [
 		path: '/system',
         icon: 'android-car',
         name: 'system',
-        title: '系统管理',
+        meta: { title: '系统管理' },
         component: Main,
         children: [
 			{
 				path: 'system-user',
 				icon: 'android-clipboard',
 				name: 'system-user',
-				title: '用户管理',
+                meta: { title: '用户管理' },
 				component: () => import('@/views/whdx/system/system-user')
 			},
 			{
 				path: 'system-role',
 				icon: 'android-clipboard',
 				name: 'system-role',
-				title: '角色管理',
+                meta: { title: '角色管理' },
 				component: () => import('@/views/whdx/system/system-role')
 			},
 			{
 				path: 'system-framework',
 				icon: 'android-clipboard',
 				name: 'system-framework',
-				title: '组织机构',
+                meta: { title: '组织机构' },
 				component: () => import('@/views/whdx/system/system-framework')
 			},
 			{
 				path: 'system-dictionary',
 				icon: 'android-clipboard',
 				name: 'system-dictionary',
-				title: '字典管理',
+                meta: { title: '字典管理' },
 				component: () => import('@/views/whdx/system/system-dictionary')
 			},
 			{
 				path: 'system-ITSM',
 				icon: 'android-clipboard',
 				name: 'system-ITSM',
-				title: '服务管理',
+                meta: { title: '服务管理' },
 				component: () => import('@/views/whdx/system/system-ITSM')
 			},
 			{
 				path: 'system-function',
 				icon: 'android-clipboard',
 				name: 'system-function',
-				title: '功能管理',
+                meta: { title: '功能管理' },
 				component: () => import('@/views/whdx/system/system-function')
 			},
 			{
 				path: 'system-daily',
 				icon: 'android-clipboard',
 				name: 'system-daily',
-				title: '日志管理',
+                meta: { title: '日志管理' },
 				component: () => import('@/views/whdx/system/system-daily')
 			}
 		]
@@ -111,35 +112,35 @@ export let appRouter = [
         path: '/vehicle',
         icon: 'android-car',
         name: 'vehicle',
-        title: '车辆管理',
+        meta: { title: '车辆管理' },
         component: Main,
         children: [
             {
                 path: 'vehicle-mgr',
                 icon: 'android-clipboard',
                 name: 'vehicle-mgr',
-                title: '车辆管理',
+                meta: { title: '车辆管理' },
                 component: () => import('@/views/whdx/vehicle/vehicle-mgr')
             },
             {
                 path: 'vehicle-baoxian',
                 icon: 'android-clipboard',
                 name: 'vehicle-baoxian',
-                title: '保险管理',
+                meta: { title: '保险管理' },
                 component: () => import('@/views/whdx/system/system-role')
             },
             {
                 path: 'vehicle-wfxx',
                 icon: 'android-clipboard',
                 name: 'vehicle-wfxx',
-                title: '违法管理',
+                meta: { title: '违法管理' },
                 component: () => import('@/views/whdx/system/system-framework')
             },
             {
                 path: 'system-dictionary',
                 icon: 'android-clipboard',
                 name: 'system-dictionary',
-                title: '出车管理',
+                meta: { title: '出车管理' },
                 component: () => import('@/views/whdx/system/system-dictionary')
             }
         ]
@@ -148,35 +149,35 @@ export let appRouter = [
         path: '/vehbaoxian',
         icon: 'android-car',
         name: 'vehbaoxian',
-        title: '维保管理',
+        meta: { title: '维保管理' },
         component: Main,
         children: [
             {
                 path: 'vehbaoxian-youka',
                 icon: 'android-clipboard',
                 name: 'vehbaoxian-youka',
-                title: '油卡管理',
+                meta: { title: '油卡管理' },
                 component: () => import('@/views/whdx/vehbaoxian/vehbaoxian-youka')
             },
             {
                 path: 'vehbaoxian-youliao',
                 icon: 'android-clipboard',
                 name: 'vehbaoxian-youliao',
-                title: '油料管理',
+                meta: { title: '油料管理' },
                 component: () => import('@/views/whdx/system/system-role')
             },
             {
                 path: 'vehbaoxian-weixiu',
                 icon: 'android-clipboard',
                 name: 'vehbaoxian-weixiu',
-                title: '维修管理',
+                meta: { title: '维修管理' },
                 component: () => import('@/views/whdx/system/system-framework')
             },
             {
                 path: 'vehbaoxian-baoyang',
                 icon: 'android-clipboard',
                 name: 'vehbaoxian-baoyang',
-                title: '保养管理',
+                meta: { title: '保养管理' },
                 component: () => import('@/views/whdx/system/system-dictionary')
             }
         ]
