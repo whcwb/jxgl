@@ -144,12 +144,6 @@
 				}
 		    },
 		created() {
-            let userInfoJson = sessionStorage.getItem("userInfo");
-            let userInfo = JSON.parse(userInfoJson);
-            this.userType = userInfo.type;
-            if (this.userType == 'su' || this.userType == '00'){
-                this.showChart = true;
-            }
 		},
 		methods: {
 		}

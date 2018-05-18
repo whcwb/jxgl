@@ -29,32 +29,7 @@
 <template>
 	<div class="boxbackborder">
 		<component :is="componentName"></component>
-		<Card >
-			<Row class="margin-top-10" style='background-color: #fff;position: relative;'>
-				<span class="tabPageTit">
-    				<Icon type="ios-paper" size='30' color='#fff'></Icon>
-    			</span>
-				<div style="height: 45px;line-height: 45px;">
-					<div class="margin-top-10 box-row">
-						<div class="titmess">
-							<span>组织机构管理</span>
-						</div>
-						<!--<div class="body-r-1 inputSty">-->
-							<!--<Input v-model="jgmc"-->
-								   <!--placeholder="请输入组织机构名称" style="width: 200px"-->
-								   <!--@on-keyup.enter="getTree()"-->
-								   <!--@on-change="getTree()"></Input>-->
-						<!--</div>-->
-						<!--<div class="butevent">-->
-							<!--<Button type="primary" @click="getTree()">-->
-								<!--<Icon type="search"></Icon>-->
-								<!--&lt;!&ndash;查询&ndash;&gt;-->
-							<!--</Button>-->
-						<!--</div>-->
-					</div>
-				</div>
-			</Row>
-			<div class="box-row framework" :style="tabHeight">
+			<div class="box-row framework" style="height: 800px">
 				<div class='frame-tree'>
 					<div class="box">
 						<div class="tit" style="margin: 6px;">
@@ -107,7 +82,6 @@
 					</div>
 				</div>
 			</div>
-		</Card>
 	</div>
 </template>
 <script>
@@ -124,7 +98,7 @@
         data () {
             return {
                 jgmc:'',
-            	tabHeight:{
+            	tableHeight:{
             		height:''
             	},
             	TreeListStyleC:"text-align: center",
@@ -179,7 +153,7 @@
             }
         },
         created(){
-        	this.tabHeight.height = (this.getWindowHeight() - 240)+'px'
+            this.util.initTableHeight(this)
         },
 		mounted(){
             this.getTree();

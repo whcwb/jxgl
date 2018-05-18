@@ -1,7 +1,6 @@
 <style lang="less">
 	@import '../../../../styles/common.less';
 </style>
-<!--角色管理-->
 <template>
 	<div class="boxbackborder">
 		<Row style="padding-bottom: 16px;">
@@ -29,26 +28,29 @@
 
 <script>
     import formData from './formData.vue'
-    import charge from './charge.vue'
 
     export default {
-        name: 'oilCard',
-        components: {formData,charge},
+        name: 'yljlTable',
+        components: {formData},
         data() {
             return {
                 v:this,
                 SpinShow: true,
-                apiRoot:this.apis.OIL_CARD,
+                apiRoot:this.apis.yljl,
                 tableHeight: 220,
                 componentName: '',
                 choosedItem: null,
                 tableColumns: [
-                    {title: "序号", width: 60,  type: 'index'},
-                    {title: '油卡卡号',key: 'ykId',searchKey:'ykId'},
-                    {title: '发卡公司',key: 'ykFkgs'},
-                    {title: '卡余额',  ey: 'ykYe'},
-                    {title: '最后一次用卡时间',  key: 'ykZsyksj',},
-                    {title: '最后一次用卡车辆牌号',  key: 'ykZshphm',},
+                    {title: "序号", width: 60, type: 'index'},
+                    {title: '操作类型。10：充值；20：消费',key:'ylCzlx'},
+                    {title: '油卡卡号',key:'ykId'},
+                    {title: '油料类型。92，95，98',key:'ylYllx'},
+                    {title: '油料容量',key:'ylYlrs'},
+                    {title: '金额',key:'ylJe'},
+                    {title: '车辆id',key:'vId'},
+                    {title: '车牌号',key:'vHphm'},
+                    {title: '操作时间',key:'ylCzsj'},
+                    {title: '备注',key:'ylBz'},
                     {
                         title: '操作',
                         key: 'action',
@@ -57,18 +59,13 @@
                         render: (h, params) => {
                             return h('div', [
                                 this.util.buildEditButton(this,h,params),
-                                this.util.buildButton(this,h,'success','plus',()=>{
-                                    this.componentName = 'charge'
-                                    this.choosedItem = params.row;
-								}),
-                                this.util.buildDeleteButton(this,h,params.row.gndm),
+                                this.util.buildDeleteButton(this,h,params.row.id),
                             ]);
                         }
                     }
                 ],
                 pageData: [],
                 form: {
-                    gnmcLike: '',
                     total: 0,
                     pageNum: 1,
                     pageSize: 8,

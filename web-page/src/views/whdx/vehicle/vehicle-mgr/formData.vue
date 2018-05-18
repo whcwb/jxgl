@@ -7,7 +7,7 @@
 <template>
 	<div>
 		<Modal v-model="showModal" width='900' :closable='false'
-			   :mask-closable="false" :title="operate+''">
+			   :mask-closable="false" :title="operate+'车辆'">
 			<div style="overflow: auto;height: 500px;">
 				<Form
 						ref="form"
@@ -38,36 +38,27 @@
         data() {
             return {
                 v:this,
-                apiRoot :this.apis.CAR,
                 operate:'新建',
                 showModal: true,
                 readonly: false,
                 formItem: {
-                    px:1,
-                    zt:'00'
                 },
                 formInputs:[
-                    {label:'主键ID',prop:'vId',required:true},
                     {label:'车牌号',prop:'vHphm',required:true},
-                    {label:'车辆类型',prop:'vHpzl',required:true},
-                    {label:'车辆品牌',prop:'vClph',required:true},
-                    {label:'车辆型号',prop:'vCllx',required:true},
-                    {label:'注册登记日期',prop:'vCcdjrq',required:true},
-                    {label:'年审时间.通过登记日期自动计算',prop:'vNsrq',required:true},
-                    {label:'所有人',prop:'vSyl',required:true},
-                    {label:'使用性质',prop:'vSyxz',required:true},
-                    {label:'车架号',prop:'vCjh',required:true},
-                    {label:'发动机号',prop:'vFdjh',required:true},
-                    {label:'状态',prop:'vZt',required:true},
-                    {label:'所属公司代码',prop:'vGsdm',required:true},
-                    {label:'所属公司名称',prop:'vGsmc',required:true},
-                    {label:'使用人',prop:'vLxr',required:true},
-                    {label:'使用人联系电话',prop:'vLxdh',required:true},
-                    {label:'保单号码',prop:'vBdhm',required:true},
-                    {label:'创建人',prop:'createUser',required:true},
-                    {label:'创建时间',prop:'createTime',required:true},
-                    {label:'修改人',prop:'updateUser',required:true},
-                    {label:'修改时间',prop:'updateTime',required:true},
+                    {label:'车辆类型',prop:'vHpzl'},
+                    {label:'车辆品牌',prop:'vClph'},
+                    {label:'车辆型号',prop:'vCllx'},
+                    {label:'注册登记日期',prop:'vCcdjrq'},
+                    {label:'所有人',prop:'vSyl'},
+                    {label:'使用性质',prop:'vSyxz'},
+                    {label:'车架号',prop:'vCjh'},
+                    {label:'发动机号',prop:'vFdjh'},
+                    {label:'状态',prop:'vZt'},
+                    {label:'所属公司代码',prop:'vGsdm'},
+                    {label:'所属公司名称',prop:'vGsmc'},
+                    {label:'使用人',prop:'vLxr'},
+                    {label:'使用人联系电话',prop:'vLxdh'},
+                    {label:'保单号码',prop:'vBdhm'},
                 ],
                 ruleInline:{
                 }

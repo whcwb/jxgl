@@ -7,7 +7,51 @@ util.title = function (title) {
     title = title || '车辆管理系统';
     window.document.title = title;
 };
+util.fillTableColumns = (v)=>{
+    if (!v.tableColumns)return;
+    for(let r of v.tableColumns){
+        if (!r.align){
+            r.align = 'center'
+        }
+        if (r.title === '序号')continue;
+        if (!r.render){
+            r.render = (h,p)=>{
+                let s  = p.row[r.key] ? p.row[r.key] : '-';
+                return h('div',s);
+            }
+        }
+        r.ellipsis = true;
 
+    }
+}
+util.buildDeleteButton = (v,h,id)=>{
+    return util.buildButton(v,h,'error','close',()=>{
+        util.delete(v,[id])
+    })
+}
+util.buildEditButton = (v,h,p)=>{
+    return util.buildButton(v,h,'success','edit',()=>{
+        v.componentName = 'formData'
+        v.choosedItem = p.row;
+    })
+}
+util.buildButton = (v,h,type,icon,onClick)=>{
+    return h('Button', {
+        props: {
+            type: type,
+            icon: icon,
+            shape: 'circle',
+            size: 'small'
+        },
+        style: {
+            cursor: "pointer",
+            margin: '0 8px 0 0'
+        },
+        on: {
+            click: onClick
+        }
+    })
+}
 /**
  * 初始化字典
  */
@@ -24,13 +68,16 @@ util.rd = (h,p,k)=>{
     let s = p.row[k] ? p.row[k] : '-';
     return h('div',s);
 }
-
+util.initTableHeight = (v)=>{
+    v.tableHeight = window.innerHeight - 240
+}
 /**
  * 初始化列表页面
  * 自动调整table高度，页面加载完成后获取列表数据
  */
 util.initTable = (v)=>{
-    v.tabHeight = v.getWindowHeight() - 295
+    util.initTableHeight(v);
+    util.fillTableColumns(v)
     util.getPageData(v)
 }
 /**
@@ -41,6 +88,7 @@ util.initTable = (v)=>{
  * 根据formInputs设置的字段 自动添加字段验证规则
  */
 util.initFormModal = (v)=>{
+    v.apiRoot = v.$parent.apiRoot;
     if (v.$parent.choosedItem){
         // 深复制，避免数据联动
         v.formItem = JSON.parse(JSON.stringify(v.$parent.choosedItem));

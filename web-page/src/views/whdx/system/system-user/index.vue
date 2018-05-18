@@ -4,42 +4,22 @@
 <!--用户管理-->
 <template>
 	<div class="boxbackborder">
-		<!--<Card>-->
-			<Row class="margin-top-10" style='background-color: #fff;position: relative;'>
-				<span class="tabPageTit">
-    				<Icon type="ios-paper" size='30' color='#fff'></Icon>
-    			</span>
-				<div style="height: 45px;line-height: 45px;">
-					<div class="margin-top-10 box-row">
-						<div class="titmess">
-							<span>用户管理</span>
-						</div>
-						<div class="body-r-1 inputSty">
-							<Input v-model="findMess.xmLike"
-								placeholder="请输入用户姓名" style="width: 200px"
-								@on-keyup.enter="findMessList()"
-								@on-change="findMessList"></Input>
-							<Input v-model="findMess.sjhLike"
-								placeholder="请输入手机号码" style="width: 200px"
-								@on-keyup.enter="findMessList()"
-								@on-change="findMessList"></Input>
-						</div>
-						<div class="butevent">
-							<Button type="primary" @click="findMessList()">
-								<Icon type="search"></Icon>
-								<!--查询-->
-							</Button>
-							<Button type="primary" @click="AddDataList()">
-								<Icon type="plus-round"></Icon>
-							</Button>
-						</div>
-					</div>
-				</div>
-			</Row>
+		<Row style="padding-bottom: 16px;">
+			<div v-for="s in searchItems" style="display: inline-block">
+				<label class="searchLabel">{{s.label}}:</label>
+				<Input v-model="findMess[s.formKey]" :placeholder="'请输入'+s.label" style="width: 200px"></Input>
+			</div>
+			<Button type="primary" @click="findMessList">
+				<Icon type="search"></Icon>
+			</Button>
+			<Button type="primary" @click="AddDataList">
+				<Icon type="plus-round"></Icon>
+			</Button>
+		</Row>
 			<Row style="position: relative;">
 				<Table
 						size='large'
-						:height="tabHeight"
+						:height="tableHeight"
 						:row-class-name="rowClassName"
 						:columns="tableTiT"
 						:data="tableData"></Table>
@@ -47,7 +27,6 @@
 			<Row class="margin-top-10 pageSty">
 				<Page :total=pageTotal :current=page.pageNum :page-size=page.pageSize show-total show-elevator @on-change='pageChange'></Page>
 			</Row>
-		<!--</Card>-->
 		<component
 			:is="compName"
 			:usermes="usermes"
@@ -71,8 +50,11 @@
 		mixins: [mixins],
 		data() {
 			return {
+                searchItems:[
+                    {label:'用户姓名',formKey:'xmLike'},
+                ],
 				//tab高度
-				tabHeight: 220,
+				tableHeight: 220,
 				//动态组建
 				compName: '',
 				//动态组建数据
@@ -250,7 +232,7 @@
 //			},
 		},
 		created() {
-			this.tabHeight = this.getWindowHeight() - 260
+            this.util.initTableHeight(this)
             this.getmess()
             this.getDict()
 		},

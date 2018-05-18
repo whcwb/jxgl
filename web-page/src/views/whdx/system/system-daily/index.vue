@@ -5,44 +5,22 @@
 <!--日志管理-->
 <template>
     <div class="boxbackborder">
-		<Card>
-			<Row class="margin-top-10" style='background-color: #fff;position: relative;'>
-    			<span class="tabPageTit">
-    				<Icon type="ios-paper" size='30' color='#fff'></Icon>
-    			</span>
-				<div style="height: 45px;line-height: 45px;">
-					<div class="margin-top-10 box-row">
-						<div class="titmess">
-							<span>日志管理</span>
-						</div>
-						<div class="body-r-1 inputSty">
-							<DatePicker v-model="czsjInRange" format="yyyy-MM-dd" type="daterange" placement="bottom-end" placeholder="请输时间" @on-keyup.enter="findMessList()" style="width: 220px"></DatePicker>
-						</div>
-						<div class="butevent">
-							<Button type="primary" @click="findMessList()">
-								<Icon type="search"></Icon>
-								<!--查询-->
-							</Button>
-						</div>
-					</div>
-				</div>
-			</Row>
-			<Row>
-				<Table
-						:height="tabHeight"
-						:row-class-name="rowClassName"
-						:columns="tableTiT"
-						:data="tableData"></Table>
-			</Row>
-			<Row class="margin-top-10 pageSty">
-				<Page :total=pageTotal
-					  :current=page.pageNum
-					  :page-size=page.pageSize
-					  show-total
-					  show-elevator
-					  @on-change='pageChange'></Page>
-			</Row>
-		</Card>
+		<Row style="padding-bottom: 16px;">
+			<div  style="display: inline-block">
+				<label class="searchLabel">操作时间:</label>
+				<DatePicker v-model="czsjInRange" format="yyyy-MM-dd" type="daterange" placement="bottom-end" placeholder="请输时间" @on-keyup.enter="getmess()" style="width: 220px"></DatePicker>
+			</div>
+			<Button type="primary" @click="getmess">
+				<Icon type="search"></Icon>
+			</Button>
+		</Row>
+		<Row style="position: relative;">
+			<Table :height="tableHeight" :columns="tableColumns" :data="pageData"></Table>
+		</Row>
+		<Row class="margin-top-10 pageSty">
+			<Page :total=form.total :current=form.pageNum :page-size=form.pageSize show-total show-elevator
+				  @on-change='pageChange'></Page>
+		</Row>
     </div>
 </template>
 
@@ -56,7 +34,7 @@
         data () {
             return {
             	SpinShow:true,
-				tabHeight: 220,
+				tableHeight: 220,
             	PickerTime:2017,
             	//分页
             	pageTotal:1,
@@ -66,7 +44,7 @@
             	},
             	//弹层
             	showModal:false,
-                tableTiT: [
+                tableColumns: [
                 	{
 	                	title:"序号",
 	                	width:80,
@@ -145,7 +123,7 @@
                         align: 'center',
                     }
                 ],
-                tableData: [
+                pageData: [
                 ],
                 //form表单
                 formTop: {
@@ -156,8 +134,9 @@
                 //收索
                 datetime:[],
                 czsjInRange:[],
-                findMess:{
+                form:{
                 	czsjInRange:[],
+					total:0,
                 	pageNum:1,
             		pageSize:8
                 }
@@ -165,41 +144,29 @@
         },
         watch: {
 			czsjInRange:function(newQuestion, oldQuestion){
-				this.findMess.czsjInRange = this.getdateParaD(newQuestion[0]) + ',' + this.getdateParaD(newQuestion[1])
+				this.form.czsjInRange = this.getdateParaD(newQuestion[0]) + ',' + this.getdateParaD(newQuestion[1])
 			},
 		},
         created(){
-			this.tabHeight = this.getWindowHeight() - 290
+            this.util.initTableHeight(this)
             this.getmess()
         },
         methods: {
         	getmess(){
 				var v = this
 				v.SpinShow = true;
-				this.$http.get(this.apis.DAILY.QUERY,{params:v.findMess}).then((res) =>{
+				this.$http.get(this.apis.DAILY.QUERY,{params:v.form}).then((res) =>{
 					log('数据',res)
-					v.tableData = res.page.list
-					v.pageTotal = res.page.total;
+					v.pageData = res.page.list
+					v.form.total = res.page.total;
 					v.SpinShow = false;
 				})
 			},
             pageChange(event){
         		var v = this
-        		v.findMess.pageNum = event
-        		v.findMessList()
-//      		log(v.page)
+        		v.form.pageNum = event
+        		v.getmess()
         	},
-        	findMessList(){
-        		var v = this
-        		v.SpinShow = true;
-        		this.$http.get(this.apis.DAILY.QUERY,{params:v.findMess}).then((res) =>{
-					log('数据',res)
-					v.tableData = res.page.list
-                    v.pageTotal = res.page.total;
-					v.SpinShow = false;
-				})
-        	},
-
         }
     }
 </script>

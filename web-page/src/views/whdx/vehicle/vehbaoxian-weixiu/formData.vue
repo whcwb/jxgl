@@ -7,7 +7,7 @@
 <template>
 	<div>
 		<Modal v-model="showModal" width='900' :closable='false'
-			:mask-closable="false" :title="operate+'油卡'">
+			:mask-closable="false" :title="operate+''">
 			<div style="overflow: auto;height: 500px;">
 				<Form
 						ref="form"
@@ -34,20 +34,29 @@
 
 <script>
 	export default {
-		name: '',
+		name: 'wfxxForm',
 		data() {
 			return {
 			    v:this,
-			    apiRoot :this.apis.OIL_CARD,
                 operate:'新建',
 				showModal: true,
 				readonly: false,
 				formItem: {
 				},
                 formInputs:[
-                    {label:'油卡卡号',prop:'ykId',required:true},
-                    {label:'发卡公司',prop:'ykFkgs',required:true},
-                    {label:'卡余额',prop:'ykYe',required:true},
+                    {label:'违法编号',prop:'wfId',required:true},
+                    {label:'违法时间',prop:'wfWfsj'},
+                    {label:'违法地点',prop:'wfWfdz'},
+                    {label:'违法行为',prop:'wfWfxw'},
+                    {label:'车辆ID',prop:'vId'},
+                    {label:'车牌号码',prop:'vHphm'},
+                    {label:'违法记分',prop:'wfWfjf'},
+                    {label:'违法金额',prop:'wfWfje'},
+                    {label:'违法状态',prop:'wfWfzt'},
+                    {label:'创建人',prop:'createUser'},
+                    {label:'创建时间',prop:'createTime'},
+                    {label:'修改人',prop:'updateUser'},
+                    {label:'修改时间',prop:'updateTime'},
                 ],
                 ruleInline:{
 				}

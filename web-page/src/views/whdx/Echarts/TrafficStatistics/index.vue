@@ -26,7 +26,7 @@
 				</div>
 			</Row>
 			<Row style="position: relative;">
-				<Table :height="tabHeight" :row-class-name="rowClassName" :columns="tableTiT" :data="pageData"></Table>
+				<Table :height="tableHeight" :row-class-name="rowClassName" :columns="tableTiT" :data="pageData"></Table>
 			</Row>
 		</Card>
 	</div>
@@ -44,7 +44,7 @@
             return {
                 v:this,
                 SpinShow: true,
-                tabHeight: 220,
+                tableHeight: 220,
                 componentName: '',
                 choosedItem: null,
                 //数据传输
@@ -77,7 +77,7 @@
             }
         },
         created() {
-            this.tabHeight = this.getWindowHeight() - 295
+            this.tableHeight = this.getWindowHeight() - 295
             this.getData()
         },
         methods: {

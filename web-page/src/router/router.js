@@ -164,21 +164,21 @@ export let appRouter = [
                 icon: 'android-clipboard',
                 name: 'vehbaoxian-youliao',
                 meta: { title: '油料管理' },
-                component: () => import('@/views/whdx/system/system-role')
+                component: () => import('@/views/whdx/vehbaoxian/vehbaoxian-youliao')
             },
             {
                 path: 'vehbaoxian-weixiu',
                 icon: 'android-clipboard',
                 name: 'vehbaoxian-weixiu',
                 meta: { title: '维修管理' },
-                component: () => import('@/views/whdx/system/system-framework')
+                component: () => import('@/views/whdx/vehbaoxian/vehbaoxian-weixiu')
             },
             {
                 path: 'vehbaoxian-baoyang',
                 icon: 'android-clipboard',
                 name: 'vehbaoxian-baoyang',
                 meta: { title: '保养管理' },
-                component: () => import('@/views/whdx/system/system-dictionary')
+                component: () => import('@/views/whdx/vehbaoxian/vehbaoxian-baoyang')
             }
         ]
     },
