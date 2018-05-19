@@ -2,8 +2,8 @@
 	@import '../../../../styles/common.less';
 </style>
 <template>
-	<Form :label-width="100">
 	<div class="boxbackborder">
+		<Form :label-width="100">
 		<Row  justify="space-between">
 			<Col span="5">
 				<FormItem label="车牌号">
@@ -33,9 +33,9 @@
 			<Page :total=form.total :current=form.pageNum :page-size=form.pageSize show-total show-elevator
 				  @on-change='pageChange'></Page>
 		</Row>
+		</Form>
 		<component :is="componentName"></component>
 	</div>
-	</Form>
 </template>
 
 <script>

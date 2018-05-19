@@ -72,6 +72,28 @@ util.initModalTable = (v)=>{
     util.fillTableColumns(v)
     util.getPageData(v)
 }
+util.initForeignKeys = (v)=>{
+    if (!v.foreignList)return;
+    for (let k in v.foreignList){
+        let r = v.foreignList[k];
+        v.$http.get(r.url+"?pageSize=10000").then((res) =>{
+            if(res.code===200){
+                if (res.result.page){
+                    for (let i of res.result.page.list){
+
+                    }
+
+                }else if (res.result){
+                    r.items = res.result;
+                }
+            }else{
+                v.$Message.error(res.message);
+            }
+        }).catch((error) =>{
+            log(error)
+        })
+    }
+}
 /**
  * 初始化列表页面
  * 自动调整table高度，页面加载完成后获取列表数据
@@ -137,7 +159,7 @@ util.save = function(v){
                 if(res.code===200){
                     v.$Message.success(res.message);
                     util.getPageData(v.$parent)
-                    v.$parent.componentName = '';
+                    v.$parent.componentName = ''
                 }else{
                     v.$Message.error(res.message);
                 }
@@ -228,6 +250,7 @@ util.closeDialog = function(v){
  * @param v
  */
 util.getPageData = function(v) {
+    console.log(v.apiRoot);
     let url = v.pagerUrl ? v.pagerUrl : v.apiRoot['QUERY'];
     v.$http.post(url, v.form).then((response) => {
             let code = response.code;

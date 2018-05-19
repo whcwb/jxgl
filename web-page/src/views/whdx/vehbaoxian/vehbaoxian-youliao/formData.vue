@@ -22,6 +22,9 @@
 								<Select v-if="i.type == 'dict'" filterable clearable  v-model="formItem[i.prop]" :placeholder="'请选择'+i.label+'...'">
 									<Option v-for = '(item,index) in dicts[i.prop].items' :value="item.key">{{item.val}}</Option>
 								</Select>
+								<Select v-if="i.type == 'foreignKey'" filterable clearable  v-model="formItem[i.prop]" :placeholder="'请选择'+i.label+'...'">
+									<Option v-for = '(item,index) in foreignList[i.prop].items' :value="item.key">{{item.val}}</Option>
+								</Select>
 							</FormItem>
 						</Col>
 					</Row>
@@ -45,11 +48,11 @@
 				showModal: true,
 				readonly: false,
 				formItem: {
+                    ylCzlx:'20',// 消费
 				},
                 formInputs:[
-                    {label:'操作类型。10：充值；20：消费',prop:'ylCzlx'},
-                    {label:'油卡卡号',prop:'ykId'},
-                    {label:'油料类型。92，95，98',prop:'ylYllx',type:'dict'},
+                    {label:'油卡卡号',prop:'ykId',type:'foreignKey'},
+                    {label:'油料类型',prop:'ylYllx',type:'dict'},
                     {label:'油料容量',prop:'ylYlrs'},
                     {label:'金额',prop:'ylJe'},
                     {label:'车辆id',prop:'vId'},
@@ -59,13 +62,18 @@
                 ruleInline:{
 				},
 				dicts:{
-                    ylYllx:{code:'yllx',items:[]}
+                    ylYllx:{code:'yllx',items:[]},
+                    ylCzlx:{code:'ylCzlx',items:[]},
+				},
+				foreignList:{
+                    ykId:{url:this.apis.OIL_CARD.QUERY,key:'ykId',val:'ykId',items:[]}
 				}
 			}
 		},
 		created(){
 		    this.util.initFormModal(this);
 		    this.util.initDict(this);
+		    this.util.initForeignKeys(this);
 		},
 		methods: {
 		}
