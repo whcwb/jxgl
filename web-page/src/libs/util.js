@@ -137,7 +137,7 @@ util.save = function(v){
                 if(res.code===200){
                     v.$Message.success(res.message);
                     util.getPageData(v.$parent)
-                    v.$parent.componentName = ''
+                    v.$parent.componentName = '';
                 }else{
                     v.$Message.error(res.message);
                 }

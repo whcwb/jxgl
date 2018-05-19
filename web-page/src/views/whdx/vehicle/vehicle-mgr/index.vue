@@ -2,18 +2,29 @@
 	@import '../../../../styles/common.less';
 </style>
 <template>
+	<Form :label-width="100">
 	<div class="boxbackborder">
-		<Row style="padding-bottom: 16px;">
-			<div v-for="r in tableColumns" v-if="r.searchKey" style="display: inline-block">
-				<label class="searchLabel">{{r.title}}:</label>
-				<Input v-model="form[r.searchKey]" :placeholder="'请输入'+r.title" style="width: 200px"></Input>
-			</div>
-			<Button type="primary" @click="v.util.getPageData(v)">
-				<Icon type="search"></Icon>
-			</Button>
-			<Button type="primary" @click="v.util.add(v)">
-				<Icon type="plus-round"></Icon>
-			</Button>
+		<Row  justify="space-between">
+			<Col span="5">
+				<FormItem label="车牌号">
+					<Input v-model="form.vHphmLike" placeholder="请输入车牌号" ></Input>
+				</FormItem>
+			</Col>
+			<Col span="5">
+				<FormItem label="车辆类型">
+					<Select filterable clearable  v-model="form.vHpzl" placeholder="请选择车辆类型...">
+						<Option v-for = '(item,index) in dicts.hpzl.items' :value="item.key">{{item.val}}</Option>
+					</Select>
+				</FormItem>
+			</Col>
+			<Col span="4" offset="1">
+				<Button type="primary" @click="v.util.getPageData(v)">
+					<Icon type="search"></Icon>
+				</Button>
+				<Button type="primary" @click="v.util.add(v)">
+					<Icon type="plus-round"></Icon>
+				</Button>
+			</Col>
 		</Row>
 		<Row style="position: relative;">
 			<Table :height="tableHeight" :columns="tableColumns" :data="pageData"></Table>
@@ -24,6 +35,7 @@
 		</Row>
 		<component :is="componentName"></component>
 	</div>
+	</Form>
 </template>
 
 <script>
@@ -72,14 +84,20 @@
                 ],
                 pageData: [],
                 form: {
+                    vHphmLike:'',
+					vHpzl:'',
                     total: 0,
                     pageNum: 1,
                     pageSize: 8,
                 },
+                dicts:{
+                	hpzl:{code:'HPZL',items:[]}
+            	}
             }
         },
         created() {
-            this.util.initTable(this)
+            this.util.initTable(this);
+            this.util.initDict(this);
         },
         methods: {
             pageChange(event) {

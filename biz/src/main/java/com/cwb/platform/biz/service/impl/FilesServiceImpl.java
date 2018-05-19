@@ -9,7 +9,6 @@ import com.cwb.platform.biz.mapper.BizFilesMapper;
 import com.cwb.platform.biz.model.BizFiles;
 import com.cwb.platform.biz.service.FilesService;
 import com.cwb.platform.sys.base.BaseServiceImpl;
-import com.cwb.platform.sys.model.SysYh;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.exception.RuntimeCheck;
 
@@ -35,9 +34,8 @@ public class FilesServiceImpl extends BaseServiceImpl<BizFiles,String> implement
     	RuntimeCheck.ifBlank(entity.getpId(), "必须指定文件主体");
     	RuntimeCheck.ifBlank(entity.getVfLocPath(), "文件路径必须存在");
     	
-    	SysYh user = getCurrentUser();
     	entity.setVfId(genId());
-    	entity.setCreateUser(user.getYhid()+"-"+user.getXm());
+    	entity.setCreateUser(getOperateUser());
     	entity.setCreateTime(DateTime.now().toString("yyyy-MM-dd HH:mm:ss"));
     	//查看一下一个文件主体是否已经有相同的文件类型，如果有的话，直接替换当前新的图片内容
     	BizFiles tEntity = new BizFiles();

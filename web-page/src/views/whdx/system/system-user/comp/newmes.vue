@@ -7,9 +7,9 @@
 		    :mask-closable="false"
 		    :title="operate+'用户'">
     		<Form
-    			ref="addmess"
-    			:model="addmess"
-    			:rules="ruleInline"
+				ref="addmess"
+				:model="addmess"
+				:rules="ruleInline"
     			:label-width="120"
     			:styles="{top: '20px'}">
 	    		<div style="overflow: auto;height: 520px;">
