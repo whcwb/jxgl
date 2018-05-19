@@ -36,7 +36,7 @@
             return {
                 v:this,
                 SpinShow: true,
-                apiRoot:this.apis.byxx,
+                apiRoot:this.apis.maintain,
                 tableHeight: 220,
                 componentName: '',
                 choosedItem: null,

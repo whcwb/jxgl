@@ -44,7 +44,7 @@
                 choosedItem: null,
                 tableColumns: [
                     {title: "序号", width: 60,  type: 'index'},
-                    {title: '油卡卡号',key: 'ykId',searchKey:'ykId'},
+                    {title: '油卡卡号',key: 'ykId',searchKey:'ykIdLike'},
                     {title: '发卡公司',key: 'ykFkgs'},
                     {title: '卡余额',  ey: 'ykYe'},
                     {title: '最后一次用卡时间',  key: 'ykZsyksj',},

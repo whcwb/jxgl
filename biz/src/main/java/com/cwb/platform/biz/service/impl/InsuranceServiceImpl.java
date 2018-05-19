@@ -25,7 +25,8 @@ public class InsuranceServiceImpl extends BaseServiceImpl<BizInsurance,String> i
     }
 
     @Override
-    public ApiResponse<String> saveEntity(BizInsurance entity) {
+    public ApiResponse<String> validAndSave(BizInsurance entity) {
+        entity.setInId(genId());
         save(entity);
         return ApiResponse.saveSuccess();
     }

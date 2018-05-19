@@ -36,7 +36,7 @@
             return {
                 v:this,
                 SpinShow: true,
-                apiRoot:this.apis.yljl,
+                apiRoot:this.apis.oilRecord,
                 tableHeight: 220,
                 componentName: '',
                 choosedItem: null,

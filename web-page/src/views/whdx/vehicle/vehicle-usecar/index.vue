@@ -30,31 +30,28 @@
     import formData from './formData.vue'
 
     export default {
-        name: 'wfxxTable',
+        name: 'usecar',
         components: {formData},
         data() {
             return {
                 v:this,
                 SpinShow: true,
-                apiRoot:this.apis.wfxx,
+                apiRoot:this.apis.userCar,
                 tableHeight: 220,
                 componentName: '',
                 choosedItem: null,
                 tableColumns: [
                     {title: "序号", width: 60, type: 'index'},
-                    {title: '违法编号',key:'wfId'},
-                    {title: '违法时间',key:'wfWfsj'},
-                    {title: '违法地点',key:'wfWfdz'},
-                    {title: '违法行为',key:'wfWfxw'},
-                    {title: '车辆ID',key:'vId'},
-                    {title: '车牌号码',key:'vHphm'},
-                    {title: '违法记分',key:'wfWfjf'},
-                    {title: '违法金额',key:'wfWfje'},
-                    {title: '违法状态',key:'wfWfzt'},
-                    {title: '创建人',key:'createUser'},
-                    {title: '创建时间',key:'createTime'},
-                    {title: '修改人',key:'updateUser'},
-                    {title: '修改时间',key:'updateTime'},
+                    {title:'车牌id',key:'vId'},
+                    {title:'车牌号码',key:'vHphm'},
+                    {title:'出车时间',key:'ucCcsj'},
+                    {title:'出车事由',key:'ucCcsy'},
+                    {title:'借用人id',key:'ucJyrid'},
+                    {title:'借用人',key:'ucJyr'},
+                    {title:'预计还车时间',key:'ucYjhcsj'},
+                    {title:'出车前里程数',key:'ucCclcs'},
+                    {title:'还车里程数',key:'unHclcs'},
+                    {title:'备注',key:'ucBz'},
                     {
                         title: '操作',
                         key: 'action',

@@ -44,8 +44,9 @@
 				formItem: {
 				},
                 formInputs:[
-                    {label:'违法编号',prop:'wfId',required:true},
+                    {label:'违法编号',prop:'wfId'},
                     {label:'违法时间',prop:'wfWfsj'},
+                    {label:'违法编号',prop:'wfId',required:true},
                     {label:'违法地点',prop:'wfWfdz'},
                     {label:'违法行为',prop:'wfWfxw'},
                     {label:'车辆ID',prop:'vId'},
@@ -53,10 +54,6 @@
                     {label:'违法记分',prop:'wfWfjf'},
                     {label:'违法金额',prop:'wfWfje'},
                     {label:'违法状态',prop:'wfWfzt'},
-                    {label:'创建人',prop:'createUser'},
-                    {label:'创建时间',prop:'createTime'},
-                    {label:'修改人',prop:'updateUser'},
-                    {label:'修改时间',prop:'updateTime'},
                 ],
                 ruleInline:{
 				}

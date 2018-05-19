@@ -26,7 +26,7 @@ public class WfxxServiceImpl extends BaseServiceImpl<BizWfxx,String> implements 
     }
 
     @Override
-    public ApiResponse<String> saveEntity(BizWfxx entity) {
+    public ApiResponse<String> validAndSave(BizWfxx entity) {
         entity.setvId(genId());
         entity.setCreateTime(DateUtils.getNowTime());
         entity.setCreateUser(getOperateUser());

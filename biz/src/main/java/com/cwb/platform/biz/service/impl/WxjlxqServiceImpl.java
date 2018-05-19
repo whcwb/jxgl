@@ -25,7 +25,7 @@ public class WxjlxqServiceImpl extends BaseServiceImpl<BizWxjlxq,String> impleme
     }
 
     @Override
-    public ApiResponse<String> saveEntity(BizWxjlxq entity) {
+    public ApiResponse<String> validAndSave(BizWxjlxq entity) {
         save(entity);
         return ApiResponse.saveSuccess();
     }

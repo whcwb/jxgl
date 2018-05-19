@@ -5,5 +5,4 @@ import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.biz.model.BizInsurance;
 
 public interface InsuranceService extends BaseService<BizInsurance,String>{
-    ApiResponse<String> saveEntity(BizInsurance entity);
 }

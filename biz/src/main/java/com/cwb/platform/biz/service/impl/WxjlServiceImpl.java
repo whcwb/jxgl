@@ -25,7 +25,7 @@ public class WxjlServiceImpl extends BaseServiceImpl<BizWxjl,String> implements 
     }
 
     @Override
-    public ApiResponse<String> saveEntity(BizWxjl entity) {
+    public ApiResponse<String> validAndSave(BizWxjl entity) {
         save(entity);
         return ApiResponse.saveSuccess();
     }

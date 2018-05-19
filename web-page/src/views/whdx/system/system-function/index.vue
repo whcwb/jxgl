@@ -4,38 +4,25 @@
 <!--角色管理-->
 <template>
     <div class="boxbackborder">
-        <Card>
-            <Row class="margin-top-10" style='background-color: #fff;position: relative;'>
-				<span class="tabPageTit">
-    				<Icon type="ios-paper" size='30' color='#fff'></Icon>
-    			</span>
-                <div style="height: 45px;line-height: 45px;">
-                    <div class="margin-top-10 box-row">
-                        <div class="titmess">
-                            <span>功能管理</span>
-                        </div>
-                        <div class="body-r-1 inputSty">
-                            <Input v-model="form.gnmcLike" placeholder="请输入功能名称" style="width: 200px"></Input>
-                        </div>
-                        <div class="butevent">
-                            <Button type="primary" @click="v.util.getPageData(v)">
-                                <Icon type="search"></Icon>
-                            </Button>
-                            <Button type="primary" @click="v.util.add(v)">
-                                <Icon type="plus-round"></Icon>
-                            </Button>
-                        </div>
-                    </div>
-                </div>
-            </Row>
+        <Row style="padding-bottom: 16px;">
+            <div v-for="r in tableColumns" v-if="r.searchKey" style="display: inline-block">
+                <label class="searchLabel">{{r.title}}:</label>
+                <Input v-model="form[r.searchKey]" :placeholder="'请输入'+r.title" style="width: 200px"></Input>
+            </div>
+            <Button type="primary" @click="v.util.getPageData(v)">
+                <Icon type="search"></Icon>
+            </Button>
+            <Button type="primary" @click="v.util.add(v)">
+                <Icon type="plus-round"></Icon>
+            </Button>
+        </Row>
             <Row style="position: relative;">
-                <Table :height="tableHeight" :row-class-name="rowClassName" :columns="tableTiT" :data="pageData"></Table>
+                <Table :height="tableHeight" :row-class-name="rowClassName" :columns="tableColumns" :data="pageData"></Table>
             </Row>
             <Row class="margin-top-10 pageSty">
                 <Page :total=form.total :current=form.pageNum :page-size=form.pageSize show-total show-elevator
                       @on-change='pageChange'></Page>
             </Row>
-        </Card>
         <component
                 :is="componentName"
                 :Dictionary="Dictionary"></component>
@@ -62,9 +49,9 @@
                 choosedItem: null,
                 //数据传输
                 chmess: {},
-                tableTiT: [
+                tableColumns: [
                     {title: "序号", width: 60, align: 'center', type: 'index', fixed: 'left'},
-                    {title: '功能名称', align: 'center', width: 120, key: 'gnmc', fixed: 'left'},
+                    {title: '功能名称', align: 'center', width: 120, key: 'gnmc', fixed: 'left',searchKey:'gnmcLike'},
                     {title: '功能代码', align: 'center', width: 120, key: 'gndm'},
                     {title: '服务代码', align: 'center', width: 120, key: 'fwdm'},
                     {

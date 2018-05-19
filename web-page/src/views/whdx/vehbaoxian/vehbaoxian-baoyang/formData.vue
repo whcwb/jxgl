@@ -44,12 +44,9 @@
 				formItem: {
 				},
                 formInputs:[
-                    {label:'车辆id',prop:'vId',required:true},
                     {label:'车牌号码',prop:'vHphm'},
                     {label:'最后一次保养时间',prop:'byBysj'},
                     {label:'最后一次保养金额',prop:'byByje'},
-                    {label:'修改人',prop:'updateUser'},
-                    {label:'修改时间',prop:'updateTime'},
                 ],
                 ruleInline:{
 				}

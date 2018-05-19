@@ -1,5 +1,5 @@
 //网络请求地址前缀
-let BASE_URL = 'http://127.0.0.1';
+let BASE_URL = 'http://127.0.0.1:80';
 module.exports = {
     url: BASE_URL,
     //图片上传地址
@@ -95,5 +95,41 @@ module.exports = {
         ADD:'/api/car/save',
         CHANGE:'/api/car/update',
         DELE:'/api/car/removeIds',
-    }
+    },
+    illegal:{
+        QUERY:'api/illegal/pager',//违法管理
+        ADD:'/api/illegal/save',
+        CHANGE:'/api/illegal/update',
+        DELE:'/api/illegal/removeIds',
+    },
+    maintain:{
+        QUERY:'api/maintain/pager',//保养管理
+        ADD:'/api/maintain/save',
+        CHANGE:'/api/maintain/update',
+        DELE:'/api/maintain/removeIds',
+    },
+    insurance:{
+        QUERY:'api/insurance/pager',//保险管理
+        ADD:'/api/insurance/save',
+        CHANGE:'/api/insurance/update',
+        DELE:'/api/insurance/removeIds',
+    },
+    userCar:{
+        QUERY:'api/userCar/pager',//出车管理
+        ADD:'/api/userCar/save',
+        CHANGE:'/api/userCar/update',
+        DELE:'/api/userCar/removeIds',
+    },
+    repair:{
+        QUERY:'api/repair/pager',//维修管理
+        ADD:'/api/repair/save',
+        CHANGE:'/api/repair/update',
+        DELE:'/api/repair/removeIds',
+    },
+    oilRecord:{
+        QUERY:'api/oilRecord/pager',//油料管理
+        ADD:'/api/oilRecord/save',
+        CHANGE:'/api/oilRecord/update',
+        DELE:'/api/oilRecord/removeIds',
+    },
 }

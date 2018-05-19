@@ -30,26 +30,33 @@
     import formData from './formData.vue'
 
     export default {
-        name: 'wxjlTable',
+        name: 'insuranceTable',
         components: {formData},
         data() {
             return {
                 v:this,
                 SpinShow: true,
-                apiRoot:this.apis.repair,
+                apiRoot:this.apis.insurance,
                 tableHeight: 220,
                 componentName: '',
                 choosedItem: null,
                 tableColumns: [
                     {title: "序号", width: 60, type: 'index'},
-                    {title: '车辆id',key:'vId'},
-                    {title: '车牌号码',key:'vHphm'},
-                    {title: '最后一次维修时间',key:'wxWxsj'},
-                    {title: '最后一次维修项目',key:'wxWxxm'},
-                    {title: '最后一次应付维护费用',key:'wxZsyfje'},
-                    {title: '最后一次保险抵扣费用',key:'wxZsbxje'},
-                    {title: '最后一次实付维护费用',key:'wxZssfje'},
-                    {title: '累计维修金额',key:'wxWxzje'},
+                    {title: '保单编号',key:'inBdh'},
+                    {title: '车辆ID',key:'vId'},
+                    {title: '车牌号码',key:'vHphm',searchKey:'vHphmLike'},
+                    {title: '商业险保险公司',key:'inBxgs'},
+                    {title: '商业险保险电话',key:'inBxdh'},
+                    {title: '商业险起保时间',key:'inQbrq'},
+                    {title: '商业险终保时间。根据起保时间自动推算一年',key:'inZbrq'},
+                    {title: '商业险保险金额',key:'inBxje'},
+                    {title: '商业险险种。多个险种使用,分隔',key:'inXz'},
+                    {title: '交强险保单号',key:'inJqbdh'},
+                    {title: '交强险保险公司',key:'inJqbxgs'},
+                    {title: '交强险保险电话',key:'inJqbxdh'},
+                    {title: '交强险起保时间',key:'inJqqbrq'},
+                    {title: '交强险终保时间。根据起保时间自动推算一年',key:'inJqzbrq'},
+                    {title: '交强险保险金额',key:'inJqbxje'},
                     {
                         title: '操作',
                         key: 'action',
@@ -58,7 +65,7 @@
                         render: (h, params) => {
                             return h('div', [
                                 this.util.buildEditButton(this,h,params),
-                                this.util.buildDeleteButton(this,h,params.row.id),
+                                this.util.buildDeleteButton(this,h,params.row.inId),
                             ]);
                         }
                     }

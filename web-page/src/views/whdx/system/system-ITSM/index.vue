@@ -4,38 +4,22 @@
 <!--服务管理-->
 <template>
 	<div class="boxbackborder box">
-		<Card>
-			<Row class="margin-top-10" style='background-color: #fff;position: relative;'>
-				<span class="tabPageTit">
-    				<Icon type="ios-paper" size='30' color='#fff'></Icon>
-    			</span>
-				<div style="height: 45px;line-height: 45px;">
-					<div class="margin-top-10 box-row">
-						<div class="titmess">
-							<span>服务管理</span>
-						</div>
-						<div class="body-r-1 inputSty">
-							<Input v-model="findMess.fwmcLike" placeholder="请输服务名称" style="width: 200px" @on-keyup.enter="findMessList()"></Input>
-						</div>
-						<div class="butevent">
-							<Button type="primary" @click="findMessList()">
-								<Icon type="search"></Icon>
-								<!--查询-->
-							</Button>
-							<!--<Button type="primary" @click="AddDataList()">-->
-								<!--<Icon type="plus-round"></Icon>-->
-							<!--</Button>-->
-						</div>
-					</div>
-				</div>
-			</Row>
+		<Row style="padding-bottom: 16px;">
+			<div  style="display: inline-block">
+				<label class="searchLabel">服务名称:</label>
+				<Input v-model="findMess.fwmcLike" placeholder="请输服务名称" style="width: 200px" @on-keyup.enter="findMessList()"></Input>
+			</div>
+			<Button type="primary" @click="findMessList()">
+				<Icon type="search"></Icon>
+				<!--查询-->
+			</Button>
+		</Row>
 			<Row style="position: relative;">
 				<Table :height="tableHeight" :row-class-name="rowClassName" :columns="tableTiT" :data="tableData"></Table>
 			</Row>
 			<Row class="margin-top-10 pageSty">
 				<Page :total=pageTotal :current=page.pageNum :page-size=page.pageSize show-total show-elevator @on-change='pageChange'></Page>
 			</Row>
-		</Card>
 		<component
 			:is="compName"
 			:chmess="chmess"

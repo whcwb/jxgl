@@ -25,7 +25,7 @@ public class UsecarServiceImpl extends BaseServiceImpl<BizUsecar,String> impleme
     }
 
     @Override
-    public ApiResponse<String> saveEntity(BizUsecar entity) {
+    public ApiResponse<String> validAndSave(BizUsecar entity) {
         save(entity);
         return ApiResponse.saveSuccess();
     }

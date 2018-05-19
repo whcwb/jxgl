@@ -127,21 +127,21 @@ export let appRouter = [
                 icon: 'android-clipboard',
                 name: 'vehicle-baoxian',
                 meta: { title: '保险管理' },
-                component: () => import('@/views/whdx/system/system-role')
+                component: () => import('@/views/whdx/vehicle/vehicle-baoxian')
             },
             {
                 path: 'vehicle-wfxx',
                 icon: 'android-clipboard',
                 name: 'vehicle-wfxx',
                 meta: { title: '违法管理' },
-                component: () => import('@/views/whdx/system/system-framework')
+                component: () => import('@/views/whdx/vehicle/vehicle-wfxx')
             },
             {
-                path: 'system-dictionary',
+                path: 'vehicle-usecar',
                 icon: 'android-clipboard',
-                name: 'system-dictionary',
+                name: 'vehicle-usecar',
                 meta: { title: '出车管理' },
-                component: () => import('@/views/whdx/system/system-dictionary')
+                component: () => import('@/views/whdx/vehicle/vehicle-usecar')
             }
         ]
     },
