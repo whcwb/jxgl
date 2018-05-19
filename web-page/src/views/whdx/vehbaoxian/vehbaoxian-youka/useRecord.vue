@@ -11,9 +11,6 @@
 			<Button type="primary" @click="v.util.getPageData(v)">
 				<Icon type="search"></Icon>
 			</Button>
-			<Button type="primary" @click="v.util.add(v)">
-				<Icon type="plus-round"></Icon>
-			</Button>
 		</Row>
 		<Row style="position: relative;">
 			<Table :height="tableHeight" :columns="tableColumns" :data="pageData"></Table>
@@ -30,45 +27,39 @@
     import formData from './formData.vue'
 
     export default {
-        name: 'vehicleTable',
+        name: 'yljlTable',
         components: {formData},
         data() {
             return {
                 v:this,
                 SpinShow: true,
-				pagerUrl:this.apis.oilRecord.list,
-                tableHeight: 220,
+                apiRoot:this.apis.oilRecord,
+                tableHeight: 320,
                 componentName: '',
                 choosedItem: null,
                 tableColumns: [
                     {title: "序号", width: 60, type: 'index'},
-                    {title: '车牌号',key:'vHphm',searchKey:'vHphm'},
-                    {title: '最后一次加油时间',key:'vLxdh'},
-                    {title: '最后一次加油金额',key:'vLxdh'},
-                    {title: '最后一次加油容量',key:'vBdhm'},
-                    {
-                        title: '操作',
-                        key: 'action',
-                        width: 120,
-                        fixed: 'right',
-                        render: (h, params) => {
-                            return h('div', [
-                                this.util.buildEditButton(this,h,params),
-                                this.util.buildDeleteButton(this,h,params.row.vId),
-                            ]);
-                        }
-                    }
+                    {title: '操作类型',key:'ylCzlx'},
+                    {title: '油卡卡号',key:'ykId',searchKey:'ykIdLike'},
+                    {title: '油料类型',key:'ylYllx'},
+                    {title: '油料容量',key:'ylYlrs'},
+                    {title: '金额',key:'ylJe'},
+                    {title: '车辆id',key:'vId'},
+                    {title: '车牌号',key:'vHphm'},
+                    {title: '操作时间',key:'ylCzsj'},
+                    {title: '备注',key:'ylBz'},
                 ],
                 pageData: [],
                 form: {
+                    ylCzlx:'20',
                     total: 0,
                     pageNum: 1,
-                    pageSize: 8,
+                    pageSize: 5,
                 },
             }
         },
         created() {
-            this.util.initTable(this)
+            this.util.initModalTable(this)
         },
         methods: {
             pageChange(event) {

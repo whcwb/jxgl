@@ -26,32 +26,27 @@ util.fillTableColumns = (v)=>{
     }
 }
 util.buildDeleteButton = (v,h,id)=>{
-    return util.buildButton(v,h,'error','close',()=>{
+    return util.buildButton(v,h,'error','close','删除',()=>{
         util.delete(v,[id])
     })
 }
 util.buildEditButton = (v,h,p)=>{
-    return util.buildButton(v,h,'success','edit',()=>{
+    return util.buildButton(v,h,'success','edit','编辑',()=>{
         v.choosedItem = p.row;
         v.componentName = 'formData'
     })
 }
-util.buildButton = (v,h,type,icon,onClick)=>{
-    return h('Button', {
-        props: {
-            type: type,
-            icon: icon,
-            shape: 'circle',
-            size: 'small'
-        },
-        style: {
-            cursor: "pointer",
-            margin: '0 8px 0 0'
-        },
-        on: {
-            click: onClick
-        }
-    })
+util.buildButton = (v,h,type,icon,tip,onClick)=>{
+    return h('Tooltip',
+        {props: {placement: 'top',content: tip,}},
+        [
+            h('Button', {
+                props: {type: type,icon: icon,shape: 'circle',size: 'small'},
+                style: {margin: '0 8px 0 0'},
+                on: {click: onClick}
+            }),
+        ]
+    )
 }
 /**
  * 初始化字典
@@ -71,6 +66,11 @@ util.rd = (h,p,k)=>{
 }
 util.initTableHeight = (v)=>{
     v.tableHeight = window.innerHeight - 240
+}
+util.initModalTable = (v)=>{
+    // util.initTableHeight(v);
+    util.fillTableColumns(v)
+    util.getPageData(v)
 }
 /**
  * 初始化列表页面
@@ -228,7 +228,7 @@ util.closeDialog = function(v){
  * @param v
  */
 util.getPageData = function(v) {
-    let url = v.apiRoot['QUERY'];
+    let url = v.pagerUrl ? v.pagerUrl : v.apiRoot['QUERY'];
     v.$http.post(url, v.form).then((response) => {
             let code = response.code;
             let msg = response.message;

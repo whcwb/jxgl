@@ -17,8 +17,11 @@
 						:styles="{top: '20px'}">
 					<Row>
 						<Col v-for="i in formInputs" :span="i.span ? i.span : 12">
-						<FormItem :prop='i.prop' :label='i.label'>
-								<Input type="text" v-model="formItem[i.prop]" :placeholder="'请填写'+i.label+'...'"></Input>
+							<FormItem :prop='i.prop' :label='i.label'>
+								<Input v-if="!i.type || i.type =='text'" type="text" v-model="formItem[i.prop]" :placeholder="'请填写'+i.label+'...'"></Input>
+								<Select v-if="i.type == 'dict'" filterable clearable  v-model="formItem[i.prop]" :placeholder="'请选择'+i.label+'...'">
+									<Option v-for = '(item,index) in dicts[i.prop].items' :value="item.key">{{item.val}}</Option>
+								</Select>
 							</FormItem>
 						</Col>
 					</Row>
@@ -46,7 +49,7 @@
                 formInputs:[
                     {label:'操作类型。10：充值；20：消费',prop:'ylCzlx'},
                     {label:'油卡卡号',prop:'ykId'},
-                    {label:'油料类型。92，95，98',prop:'ylYllx'},
+                    {label:'油料类型。92，95，98',prop:'ylYllx',type:'dict'},
                     {label:'油料容量',prop:'ylYlrs'},
                     {label:'金额',prop:'ylJe'},
                     {label:'车辆id',prop:'vId'},
@@ -54,11 +57,15 @@
                     {label:'备注',prop:'ylBz'},
                 ],
                 ruleInline:{
+				},
+				dicts:{
+                    ylYllx:{code:'yllx',items:[]}
 				}
 			}
 		},
 		created(){
 		    this.util.initFormModal(this);
+		    this.util.initDict(this);
 		},
 		methods: {
 		}

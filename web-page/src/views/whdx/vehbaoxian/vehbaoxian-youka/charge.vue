@@ -18,7 +18,7 @@
 					<Row>
 						<Col v-for="i in formInputs" :span="i.span ? i.span : 12">
 						<FormItem :prop='i.prop' :label='i.label'>
-								<Input type="text" v-model="formItem[i.prop]" :placeholder="'请填写'+i.label+'...'" :readonly="i.readonly"></Input>
+								<Input type="text" v-model="formItem[i.prop]" :placeholder="'请填写'+i.label+'...'" :disabled="i.readonly"></Input>
 							</FormItem>
 						</Col>
 					</Row>
@@ -48,6 +48,8 @@
 					amount:''
 				},
                 formInputs:[
+                    {label:'卡号',prop:'ykId',readonly:true},
+                    {label:'发卡公司',prop:'ykId',readonly:true},
                     {label:'卡余额',prop:'ykYe',readonly:true},
                     {label:'充值余额',prop:'amount',required:true},
                 ],

@@ -30,10 +30,11 @@
 <script>
     import formData from './formData.vue'
     import charge from './charge.vue'
+    import record from './record.vue'
 
     export default {
         name: 'oilCard',
-        components: {formData,charge},
+        components: {formData,charge,record},
         data() {
             return {
                 v:this,
@@ -47,17 +48,20 @@
                     {title: '油卡卡号',key: 'ykId',searchKey:'ykIdLike'},
                     {title: '发卡公司',key: 'ykFkgs'},
                     {title: '卡余额',  key: 'ykYe',unit:'元'},
-                    {title: '最后一次用卡时间',  key: 'ykZsyksj',},
-                    {title: '最后一次用卡车辆牌号',  key: 'ykZshphm',},
+                    {title: '最后一次用卡时间',  key: 'ykZsyksj'},
+                    {title: '最后一次用卡车辆牌号',  key: 'ykZshphm'},
                     {
                         title: '操作',
                         key: 'action',
-                        width: 120,
-                        fixed: 'right',
+                        width: 150,
                         render: (h, params) => {
                             return h('div', [
                                 this.util.buildEditButton(this,h,params),
-                                this.util.buildButton(this,h,'success','social-yen',()=>{
+                                this.util.buildButton(this,h,'success','compose','历史记录',()=>{
+                                    this.choosedItem = params.row;
+                                    this.componentName = 'record'
+								}),
+                                this.util.buildButton(this,h,'success','social-yen','充值',()=>{
                                     this.choosedItem = params.row;
                                     this.componentName = 'charge'
 								}),
