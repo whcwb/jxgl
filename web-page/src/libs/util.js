@@ -78,13 +78,15 @@ util.initForeignKeys = (v)=>{
         let r = v.foreignList[k];
         v.$http.get(r.url+"?pageSize=10000").then((res) =>{
             if(res.code===200){
-                if (res.result.page){
-                    for (let i of res.result.page.list){
-
-                    }
-
+                let list = [];
+                r.items = [];
+                if (res.page){
+                    list = res.page.list;
                 }else if (res.result){
-                    r.items = res.result;
+                    list = res.result;
+                }
+                for (let i of list){
+                    r.items.push({key:i[r.key],val:i[r.val]})
                 }
             }else{
                 v.$Message.error(res.message);
