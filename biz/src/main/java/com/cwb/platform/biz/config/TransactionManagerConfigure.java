@@ -31,10 +31,12 @@ public class TransactionManagerConfigure {
         //更新数据事物配置
         transactionAttributes.setProperty("add*", "PROPAGATION_REQUIRED,-Exception");
         transactionAttributes.setProperty("save*", "PROPAGATION_REQUIRED,-Exception");
+        transactionAttributes.setProperty("*Save", "PROPAGATION_REQUIRED,-Exception");
         transactionAttributes.setProperty("insert*", "PROPAGATION_REQUIRED,-Exception");
         transactionAttributes.setProperty("delete*", "PROPAGATION_REQUIRED,-Exception");
         transactionAttributes.setProperty("remove*", "PROPAGATION_REQUIRED,-Exception");
         transactionAttributes.setProperty("update*", "PROPAGATION_REQUIRED,-Exception");
+        transactionAttributes.setProperty("*Update", "PROPAGATION_REQUIRED,-Exception");
         transactionAttributes.setProperty("batch*", "PROPAGATION_REQUIRED,-Exception");
 
         transactionInterceptor.setTransactionAttributes(transactionAttributes);

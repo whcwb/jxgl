@@ -55,12 +55,24 @@
                 tableColumns: [
                     {title: "序号", width: 60, type: 'index'},
                     {title: '车牌号',key:'vHphm',searchKey:'vHphm'},
-                    {title: '车辆类型',key:'vHpzl',searchKey:'vHpzl'},
-                    {title: '车辆品牌',key:'vClph',searchKey:'vClph'},
-                    {title: '车辆型号',key:'vCllx',searchKey:'vCllx'},
+                    {title: '车辆类型',key:'vHpzl',render:(h, params)=>{
+                        let val = $.map(this.dicts.hpzl.items, item => {
+                            if(item.key == params.row.vHpzl) {
+                                return item.val;
+                            }
+                        });
+                        return val;
+                    }},
                     {title: '注册登记日期',key:'vCcdjrq'},
                     {title: '所有人',key:'vSyl'},
-                    {title: '使用性质',key:'vSyxz'},
+                    {title: '使用性质',key:'vSyxz',render:(h, params)=>{
+                        let val = $.map(this.dicts.syxz.items, item => {
+                            if(item.key == params.row.vSyxz) {
+                                return item.val;
+                            }
+                        });
+                        return val;
+                    }},
                     {title: '车架号',key:'vCjh'},
                     {title: '发动机号',key:'vFdjh'},
                     {title: '使用人',key:'vLxr'},
@@ -73,6 +85,7 @@
                         render: (h, params) => {
                             return h('div', [
                                 this.util.buildEditButton(this,h,params),
+                                this.util.buildButton(this, h, 'info', 'person', '车辆分配', ()=>{this.toPerson(params)}),
                                 this.util.buildDeleteButton(this,h,params.row.vId),
                             ]);
                         }
@@ -87,7 +100,8 @@
                     pageSize: 8,
                 },
                 dicts:{
-                	hpzl:{code:'HPZL',items:[]}
+                	hpzl:{code:'HPZL',items:[]},
+                    syxz:{code:'SYXZ',items:[]}
             	}
             }
         },
@@ -99,6 +113,10 @@
             pageChange(event) {
                 this.util.pageChange(this, event);
             },
+			//车辆分配
+			toPerson(param){
+                console.log(param);
+			}
         }
     }
 </script>

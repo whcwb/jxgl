@@ -153,10 +153,10 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
         entity.setCreateUser(getOperateUser());
         entity.setvId(genId());
         save(entity);
-        BizVehicleExtra extra = new BizVehicleExtra();
+        /*BizVehicleExtra extra = new BizVehicleExtra();
         extra.setvId(entity.getvId());
         extra.setvHphm(entity.getvHphm());
-        extraMapper.insertSelective(extra);
+        extraMapper.insertSelective(extra);*/
         return ApiResponse.saveSuccess();
     }
 
