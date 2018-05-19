@@ -27,7 +27,7 @@
 				</div>
 			</Row>
 			<Row style="position: relative;">
-				<Table :height="tabHeight" :row-class-name="rowClassName" :columns="tableTitle" :data="pageData"></Table>
+				<Table :height="tableHeight" :row-class-name="rowClassName" :columns="tableTitle" :data="pageData"></Table>
 			</Row>
 			<Row class="margin-top-10 pageSty">
 				<Page :total=form.total :current=form.pageNum :page-size=form.pageSize show-total show-elevator
@@ -51,7 +51,7 @@
                 v:this,
                 SpinShow: true,
                 apiRoot : this.apis.BXJZ,
-                tabHeight: 220,
+                tableHeight: 220,
                 componentName: '',
                 choosedItem: null,
                 tableTitle: [
@@ -72,7 +72,6 @@
             }
         },
         created() {
-            this.$store.commit('setCurrentPath', [{title: '首页',}, {title: '系统管理',}, {title: '功能管理',}])
             this.util.initTable(this)
         },
         methods: {

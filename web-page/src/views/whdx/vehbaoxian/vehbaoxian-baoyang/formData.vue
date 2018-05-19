@@ -7,7 +7,7 @@
 <template>
 	<div>
 		<Modal v-model="showModal" width='900' :closable='false'
-			:mask-closable="false" :title="operate+'油卡'">
+			:mask-closable="false" :title="operate+''">
 			<div style="overflow: auto;height: 500px;">
 				<Form
 						ref="form"
@@ -34,20 +34,22 @@
 
 <script>
 	export default {
-		name: '',
+		name: 'byxxForm',
 		data() {
 			return {
 			    v:this,
-			    apiRoot :this.apis.OIL_CARD,
                 operate:'新建',
 				showModal: true,
 				readonly: false,
 				formItem: {
 				},
                 formInputs:[
-                    {label:'油卡卡号',prop:'ykId',required:true},
-                    {label:'发卡公司',prop:'ykFkgs',required:true},
-                    {label:'卡余额',prop:'ykYe',required:true},
+                    {label:'车辆id',prop:'vId',required:true},
+                    {label:'车牌号码',prop:'vHphm'},
+                    {label:'最后一次保养时间',prop:'byBysj'},
+                    {label:'最后一次保养金额',prop:'byByje'},
+                    {label:'修改人',prop:'updateUser'},
+                    {label:'修改时间',prop:'updateTime'},
                 ],
                 ruleInline:{
 				}

@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 import javax.persistence.*;
 
 @Table(name = "biz_yljl")
-public class BizYljl implements Serializable {
+public class BizOilRecord implements Serializable {
     /**
      * 主键id
      */

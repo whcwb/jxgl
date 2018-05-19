@@ -31,7 +31,7 @@
 				</div>
 			</Row>
 			<Row style="position: relative;">
-				<Table :height="tabHeight" :row-class-name="rowClassName" :columns="tableColumns" :data="pageData"></Table>
+				<Table :height="tableHeight" :row-class-name="rowClassName" :columns="tableColumns" :data="pageData"></Table>
 			</Row>
 		</Card>
 	</div>
@@ -49,7 +49,7 @@
             return {
                 v:this,
                 SpinShow: true,
-                tabHeight: 220,
+                tableHeight: 220,
                 tableColumns: [
                     {title: "序号",  align: 'center', type: 'index'},
                     {title: '司机姓名', align: 'center',  key: 'sjxm'},
@@ -64,8 +64,7 @@
             }
         },
         created() {
-            this.$store.commit('setCurrentPath', [{title: '首页',}, {title: '数据报表',}, {title: '年审提醒',}])
-            this.tabHeight = this.getWindowHeight() - 295
+            this.tableHeight = this.getWindowHeight() - 295
             this.getData()
         },
         methods: {

@@ -7,7 +7,7 @@
 <template>
 	<div>
 		<Modal v-model="showModal" width='900' :closable='false'
-			:mask-closable="false" :title="operate+'油卡'">
+			:mask-closable="false" title="充值">
 			<div style="overflow: auto;height: 500px;">
 				<Form
 						ref="form"
@@ -18,7 +18,7 @@
 					<Row>
 						<Col v-for="i in formInputs" :span="i.span ? i.span : 12">
 						<FormItem :prop='i.prop' :label='i.label'>
-								<Input type="text" v-model="formItem[i.prop]" :placeholder="'请填写'+i.label+'...'"></Input>
+								<Input type="text" v-model="formItem[i.prop]" :placeholder="'请填写'+i.label+'...'" :readonly="i.readonly"></Input>
 							</FormItem>
 						</Col>
 					</Row>
@@ -38,23 +38,27 @@
 		data() {
 			return {
 			    v:this,
-			    apiRoot :this.apis.OIL_CARD,
+				saveUrl:this.apis.OIL_CARD.CHARGE,
                 operate:'新建',
 				showModal: true,
 				readonly: false,
 				formItem: {
+					ykId:0,
+                    ykYe:'',
+					amount:''
 				},
                 formInputs:[
-                    {label:'油卡卡号',prop:'ykId',required:true},
-                    {label:'发卡公司',prop:'ykFkgs',required:true},
-                    {label:'卡余额',prop:'ykYe',required:true},
+                    {label:'卡余额',prop:'ykYe',readonly:true},
+                    {label:'充值余额',prop:'amount',required:true},
                 ],
                 ruleInline:{
 				}
 			}
 		},
 		created(){
-		    this.util.initFormModal(this);
+		},
+		mounted(){
+            this.util.initFormModal(this);
 		},
 		methods: {
 		}

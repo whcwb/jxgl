@@ -87,6 +87,13 @@ module.exports = {
         QUERY:'api/oilCard/pager',//油卡管理
         ADD:'/api/oilCard/save',
         CHANGE:'/api/oilCard/update',
-        DELE:'/api/oilCard/removeIds'
+        CHARGE:'/api/oilCard/charge',
+        DELE:'/api/oilCard/removeIds',
+    },
+    CAR:{
+        QUERY:'api/car/pager',//车辆管理
+        ADD:'/api/car/save',
+        CHANGE:'/api/car/update',
+        DELE:'/api/car/removeIds',
     }
 }

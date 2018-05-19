@@ -5,6 +5,7 @@ import com.cwb.platform.biz.mapper.BizVehicleMapper;
 import com.cwb.platform.biz.model.BizVehicle;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.biz.service.VehicleService;
+import com.cwb.platform.util.commonUtil.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.common.Mapper;
@@ -25,8 +26,19 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
     }
 
     @Override
-    public ApiResponse<String> saveEntity(BizVehicle entity) {
+    public ApiResponse<String> validAndSave(BizVehicle entity) {
+        entity.setCreateTime(DateUtils.getNowTime());
+        entity.setCreateUser(getOperateUser());
+        entity.setvId(genId());
         save(entity);
+        return ApiResponse.saveSuccess();
+    }
+
+    @Override
+    public ApiResponse<String> validAndUpdate(BizVehicle entity){
+        entity.setUpdateTime(DateUtils.getNowTime());
+        entity.setUpdateUser(getOperateUser());
+        update(entity);
         return ApiResponse.saveSuccess();
     }
 }

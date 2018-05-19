@@ -28,7 +28,7 @@
 				</div>
 			</Row>
 			<Row style="position: relative;">
-				<Table :height="tabHeight" :row-class-name="rowClassName" :columns="tableColumns" :data="pageData"></Table>
+				<Table :height="tableHeight" :row-class-name="rowClassName" :columns="tableColumns" :data="pageData"></Table>
 			</Row>
 		</Card>
 	</div>
@@ -91,7 +91,7 @@
                     ]
                 },
                 SpinShow: true,
-                tabHeight: 220,
+                tableHeight: 220,
                 tableColumns: [{
                     title: "序号",
                     width: 80,
@@ -118,8 +118,7 @@
         created() {
             this.form.kssj  = this.getTodayDate() + " 00:00:00";
             this.form.jssj  = this.getTodayDate() + " 23:59:59";
-            this.$store.commit('setCurrentPath', [{title: '首页',}, {title: '数据报表',}, {title: '收款统计',}])
-            this.tabHeight = this.getWindowHeight() - 295
+            this.tableHeight = this.getWindowHeight() - 295
             this.getData()
         },
         methods: {

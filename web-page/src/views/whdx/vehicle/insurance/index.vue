@@ -1,7 +1,6 @@
 <style lang="less">
 	@import '../../../../styles/common.less';
 </style>
-<!--角色管理-->
 <template>
 	<div class="boxbackborder">
 		<Row style="padding-bottom: 16px;">
@@ -29,26 +28,38 @@
 
 <script>
     import formData from './formData.vue'
-    import charge from './charge.vue'
 
     export default {
-        name: 'oilCard',
-        components: {formData,charge},
+        name: 'insuranceTable',
+        components: {formData},
         data() {
             return {
                 v:this,
                 SpinShow: true,
-                apiRoot:this.apis.OIL_CARD,
+                apiRoot:this.apis.insurance,
                 tableHeight: 220,
                 componentName: '',
                 choosedItem: null,
                 tableColumns: [
-                    {title: "序号", width: 60,  type: 'index'},
-                    {title: '油卡卡号',key: 'ykId',searchKey:'ykId'},
-                    {title: '发卡公司',key: 'ykFkgs'},
-                    {title: '卡余额',  ey: 'ykYe'},
-                    {title: '最后一次用卡时间',  key: 'ykZsyksj',},
-                    {title: '最后一次用卡车辆牌号',  key: 'ykZshphm',},
+                    {title: "序号", width: 60, type: 'index'},
+                    {title: '主键ID',key:'inId'},
+                    {title: '保单编号',key:'inBdh'},
+                    {title: '车辆ID',key:'vId'},
+                    {title: '车牌号码',key:'vHphm'},
+                    {title: '商业险保险公司',key:'inBxgs'},
+                    {title: '商业险保险电话',key:'inBxdh'},
+                    {title: '商业险起保时间',key:'inQbrq'},
+                    {title: '商业险终保时间。根据起保时间自动推算一年',key:'inZbrq'},
+                    {title: '商业险保险金额',key:'inBxje'},
+                    {title: '商业险险种。多个险种使用','分隔',key:'inXz'},
+                    {title: '创建人',key:'createUser'},
+                    {title: '创建时间',key:'createTime'},
+                    {title: '交强险保单号',key:'inJqbdh'},
+                    {title: '交强险保险公司',key:'inJqbxgs'},
+                    {title: '交强险保险电话',key:'inJqbxdh'},
+                    {title: '交强险起保时间',key:'inJqqbrq'},
+                    {title: '交强险终保时间。根据起保时间自动推算一年',key:'inJqzbrq'},
+                    {title: '交强险保险金额',key:'inJqbxje'},
                     {
                         title: '操作',
                         key: 'action',
@@ -57,18 +68,13 @@
                         render: (h, params) => {
                             return h('div', [
                                 this.util.buildEditButton(this,h,params),
-                                this.util.buildButton(this,h,'success','plus',()=>{
-                                    this.componentName = 'charge'
-                                    this.choosedItem = params.row;
-								}),
-                                this.util.buildDeleteButton(this,h,params.row.gndm),
+                                this.util.buildDeleteButton(this,h,params.row.id),
                             ]);
                         }
                     }
                 ],
                 pageData: [],
                 form: {
-                    gnmcLike: '',
                     total: 0,
                     pageNum: 1,
                     pageSize: 8,

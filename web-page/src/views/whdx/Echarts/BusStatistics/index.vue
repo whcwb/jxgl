@@ -28,7 +28,7 @@
 				</div>
 			</Row>
 			<Row style="position: relative;">
-				<Table :height="tabHeight" :row-class-name="rowClassName" :columns="tableTiT" :data="pageData"></Table>
+				<Table :height="tableHeight" :row-class-name="rowClassName" :columns="tableTiT" :data="pageData"></Table>
 			</Row>
 		</Card>
 	</div>
@@ -92,7 +92,7 @@
                 v:this,
                 SpinShow: true,
                 apiRoot:this.apis.AQJS,
-                tabHeight: 220,
+                tableHeight: 220,
                 componentName: '',
                 choosedItem: null,
                 //数据传输
@@ -121,8 +121,7 @@
         created() {
             this.form.kssj  = this.getTodayDate() + " 00:00:00";
             this.form.jssj  = this.getTodayDate() + " 23:59:59";
-            this.$store.commit('setCurrentPath', [{title: '首页',}, {title: '数据报表',}, {title: '安全驾驶',}])
-            this.tabHeight = this.getWindowHeight() - 295
+            this.tableHeight = this.getWindowHeight() - 295
             // this.getData()
         },
         methods: {

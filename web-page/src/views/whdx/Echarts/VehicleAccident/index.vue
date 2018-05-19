@@ -74,7 +74,7 @@
 			</Row>
 			<Row>
 				<Table
-						:height="tabHeight"
+						:height="tableHeight"
 						:row-class-name="rowClassName"
 						:columns="columns10"
 						:data="data9"></Table>
@@ -112,7 +112,7 @@
             return {
             	Carousel:3,
             	SpinShow:true,
-				tabHeight: 220,
+				tableHeight: 220,
             	compName: '',
             	//收索
                 datetime:[],
@@ -267,14 +267,7 @@
         	}
         },
         created(){
-        	this.$store.commit('setCurrentPath', [{
-                title: '首页',
-            },{
-                title: '系统管理',
-            },{
-                title: '事故管理',
-            }]),
-			this.tabHeight = this.getWindowHeight() - 290
+			this.tableHeight = this.getWindowHeight() - 290
 			this.SpinShow = false;
      		this.getmess()
         },

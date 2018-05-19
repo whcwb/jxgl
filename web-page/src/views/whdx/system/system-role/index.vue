@@ -5,40 +5,26 @@
 <!--角色管理-->
 <template>
     <div class="boxbackborder">
-		<Card>
-			<Row class="margin-top-10" style='background-color: #fff;position: relative;'>
-				<span class="tabPageTit">
-    				<Icon type="ios-paper" size='30' color='#fff'></Icon>
-    			</span>
-				<div style="height: 45px;line-height: 45px;">
-					<div class="margin-top-10 box-row">
-						<div class="titmess">
-							<span>角色管理</span>
-						</div>
-						<div class="body-r-1 inputSty">
-							<!--<DatePicker v-model="cjsjInRange" format="yyyy-MM-dd" type="daterange" placement="bottom-end" placeholder="请输时间" @on-keyup.enter="findMessList()" style="width: 220px"></DatePicker>-->
-							<Input v-model="findMess.jsmcLike"
-								placeholder="请输入角色"
-								style="width: 200px"
-								@on-keyup.enter="findMessList()"
-								@on-change="findMessList"></Input>
-						</div>
-						<div class="butevent">
-							<Button type="primary" @click="findMessList()">
-								<Icon type="search"></Icon>
-								<!--查询-->
-							</Button>
-							<Button type="primary" @click="AddDataList()">
-								<Icon type="plus-round"></Icon>
-							</Button>
-						</div>
-					</div>
-				</div>
-			</Row>
+		<Row style="padding-bottom: 16px;">
+			<div  style="display: inline-block">
+				<label class="searchLabel">角色名称:</label>
+				<Input v-model="findMess.jsmcLike"
+					   placeholder="请输入角色"
+					   style="width: 200px"
+					   @on-keyup.enter="findMessList()"
+					   @on-change="findMessList"></Input>
+			</div>
+			<Button type="primary" @click="v.util.getPageData(v)">
+				<Icon type="search"></Icon>
+			</Button>
+			<Button type="primary" @click="v.util.add(v)">
+				<Icon type="plus-round"></Icon>
+			</Button>
+		</Row>
 			<Row style="position: relative;">
 				<Table
 						:row-class-name="rowClassName"
-						:height="tabHeight"
+						:height="tableHeight"
 						:columns="tableTiT"
 						:data="tableData"></Table>
 			</Row>
@@ -50,7 +36,6 @@
 					  show-elevator
 					  @on-change='pageChange'></Page>
 			</Row>
-		</Card>
     	<component
     		:is="compName"
     		:messdata="messdata"
@@ -78,7 +63,7 @@
             	SpinShow:true,
             	messdata:'',
             	userMesType:true,
-            	tabHeight: 220,
+            	tableHeight: 220,
             	compName:'',
             	PickerTime:2017,
             	//分页
@@ -207,14 +192,7 @@
 //			},
 		},
         created(){
-        	this.$store.commit('setCurrentPath', [{
-                title: '首页',
-            },{
-                title: '系统管理',
-            },{
-                title: '角色管理',
-            }]),
-            this.tabHeight = this.getWindowHeight() - 290
+            this.util.initTableHeight(this)
             this.getmess()
             this.getLXDic()//字典数据
         },
