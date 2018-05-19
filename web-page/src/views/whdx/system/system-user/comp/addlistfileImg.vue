@@ -3,13 +3,30 @@
 		<Modal
 				v-model="showModal"
 				height="460"
+				width="900"
 				:closable='false'
 				:mask-closable="false"
 				title="证件照片">
+			<Form :model="usermes" :label-width="120">
+			<Row>
+				<Col>
+					<FormItem prop="xm" label='姓名：'>
+						<Input type="text" v-model="usermes.xm"  disabled ></Input>
+					</FormItem>
+				</Col>
+			</Row>
+			<Row>
+				<Col>
+					<FormItem prop="xm" label='身份证号：'>
+						<Input type="text" v-model="usermes.sfzmhm" disabled></Input>
+					</FormItem>
+				</Col>
+			</Row>
+			</Form>
 			<Row style="padding-bottom: 15px">
 				<Card dis-hover>
 					<Row>
-						<Col span="12">
+						<Col span="8">
 							<div style="text-align:center">
 								<div class="demo-upload-list" v-if="sfzzmFile != null">
 									<template v-if="sfzzmFile.status === 'finished'">
@@ -17,7 +34,7 @@
 										<div class="demo-upload-list-cover">
 											<Icon type="ios-eye-outline" size="32" @click.native="handleView(sfzzmFile.url)"></Icon>
 											&nbsp;&nbsp;&nbsp;&nbsp;
-											<Icon type="ios-trash-outline" size="32" @click.native="handleRemove(sfzzmFile)"></Icon>
+											<Icon type="refresh" size="32" @click.native="handleRemove(sfzzmFile)"></Icon>
 										</div>
 									</template>
 									<template v-else>
@@ -45,7 +62,7 @@
 								<h3>身份证正面</h3>
 							</div>
 						</Col>
-						<Col span="12">
+						<Col span="8">
 							<div style="text-align:center">
 								<div class="demo-upload-list" v-if="sfzfmFile != null">
 									<template v-if="sfzfmFile.status === 'finished'">
@@ -53,7 +70,7 @@
 										<div class="demo-upload-list-cover">
 											<Icon type="ios-eye-outline" size="32" @click.native="handleView(sfzfmFile.url)"></Icon>
 											&nbsp;&nbsp;&nbsp;&nbsp;
-											<Icon type="ios-trash-outline" size="32" @click.native="handleRemove(sfzfmFile)"></Icon>
+											<Icon type="refresh" size="32" @click.native="handleRemove(sfzfmFile)"></Icon>
 										</div>
 									</template>
 									<template v-else>
@@ -64,6 +81,7 @@
 								<Upload
 										v-show="sfzfmFile == null"
 										ref="upload"
+										:headers="{'userid':curUser.userId, 'token':curUser.token}"
 										:show-upload-list="false"
 										:on-success="(res, file,fileList)=>{successCallback(res, file,'sfzfmFile')}"
 										:format="['jpg','jpeg','png']"
@@ -71,13 +89,49 @@
 										:on-format-error="handleFormatError"
 										:on-exceeded-size="handleMaxSize"
 										type="drag"
-										:action="uploadUrl+'?targetPath=sfzFile'"
+										:action="uploadUrl+'/'+usermes.yhid+'/10/sfzfmFile?targetPath=sfzFile'"
 										style="display: inline-block;width:180px;height:180px">
 									<div style="width: 180px;height:180px;line-height: 200px;">
 										<Icon type="ios-cloud-upload" size="80" style="color: #3399ff"></Icon>
 									</div>
 								</Upload>
 								<h3>身份证反面</h3>
+							</div>
+						</Col>
+						<Col span="8">
+							<div style="text-align:center">
+								<div class="demo-upload-list" v-if="jlzzmFile != null">
+									<template v-if="jlzzmFile.status === 'finished'">
+										<img :src="jlzzmFile.url">
+										<div class="demo-upload-list-cover">
+											<Icon type="ios-eye-outline" size="32" @click.native="handleView(jlzzmFile.url)"></Icon>
+											&nbsp;&nbsp;&nbsp;&nbsp;
+											<Icon type="refresh" size="32" @click.native="handleRemove(jlzzmFile)"></Icon>
+										</div>
+									</template>
+									<template v-else>
+										<Progress v-if="jlzzmFile.showProgress" :percent="jlzzmFile.percentage" hide-info></Progress>
+									</template>
+								</div>
+
+								<Upload
+										v-show="jlzzmFile == null"
+										ref="upload"
+										:show-upload-list="false"
+										:headers="{'userid':curUser.userId, 'token':curUser.token}"
+										:on-success="(res, file,fileList)=>{successCallback(res, file,'jlzzmFile')}"
+										:format="['jpg','jpeg','png']"
+										:max-size="2048"
+										:on-format-error="handleFormatError"
+										:on-exceeded-size="handleMaxSize"
+										type="drag"
+										:action="uploadUrl+'/'+usermes.yhid+'/10/jlzzmFile?targetPath=jlzFile'"
+										style="display: inline-block;width:180px;height:180px">
+									<div style="width: 180px;height:180px;line-height: 200px;">
+										<Icon type="ios-cloud-upload" size="80" style="color: #3399ff"></Icon>
+									</div>
+								</Upload>
+								<h3>教练证</h3>
 							</div>
 						</Col>
 					</Row>
@@ -94,7 +148,7 @@
 										<div class="demo-upload-list-cover">
 											<Icon type="ios-eye-outline" size="32" @click.native="handleView(jszzmFile.url)"></Icon>
 											&nbsp;&nbsp;&nbsp;&nbsp;
-											<Icon type="ios-trash-outline" size="32" @click.native="handleRemove(jszzmFile)"></Icon>
+											<Icon type="refresh" size="32" @click.native="handleRemove(jszzmFile)"></Icon>
 										</div>
 									</template>
 									<template v-else>
@@ -106,13 +160,14 @@
 										v-show="jszzmFile == null"
 										ref="upload"
 										:show-upload-list="false"
+										:headers="{'userid':curUser.userId, 'token':curUser.token}"
 										:on-success="(res, file,fileList)=>{successCallback(res, file,'jszzmFile')}"
 										:format="['jpg','jpeg','png']"
 										:max-size="2048"
 										:on-format-error="handleFormatError"
 										:on-exceeded-size="handleMaxSize"
 										type="drag"
-										:action="uploadUrl+'?targetPath=jszFile'"
+										:action="uploadUrl+'/'+usermes.yhid+'/10/jszzmFile?targetPath=jszFile'"
 										style="display: inline-block;width:180px;height:180px">
 									<div style="width: 180px;height:180px;line-height: 200px;">
 										<Icon type="ios-cloud-upload" size="80" style="color: #3399ff"></Icon>
@@ -129,7 +184,7 @@
 										<div class="demo-upload-list-cover">
 											<Icon type="ios-eye-outline" size="32" @click.native="handleView(jszfmFile.url)"></Icon>
 											&nbsp;&nbsp;&nbsp;&nbsp;
-											<Icon type="ios-trash-outline" size="32" @click.native="handleRemove(jszfmFile)"></Icon>
+											<Icon type="refresh" size="32" @click.native="handleRemove(jszfmFile)"></Icon>
 										</div>
 									</template>
 									<template v-else>
@@ -141,13 +196,14 @@
 										v-show="jszfmFile == null"
 										ref="upload"
 										:show-upload-list="false"
+										:headers="{'userid':curUser.userId, 'token':curUser.token}"
 										:on-success="(res, file,fileList)=>{successCallback(res, file,'jszfmFile')}"
 										:format="['jpg','jpeg','png']"
 										:max-size="2048"
 										:on-format-error="handleFormatError"
 										:on-exceeded-size="handleMaxSize"
 										type="drag"
-										:action="uploadUrl+'?targetPath=jszFile'"
+										:action="uploadUrl+'/'+usermes.yhid+'/10/jszfmFile?targetPath=jszFile'"
 										style="display: inline-block;width:180px;height:180px">
 									<div style="width: 180px;height:180px;line-height: 200px;">
 										<Icon type="ios-cloud-upload" size="80" style="color: #3399ff"></Icon>
@@ -279,7 +335,7 @@
 <style scoped>
 	.demo-upload-list{
 		display: inline-block;
-		width: 180px;
+		width: 260px;
 		height: 180px;
 		text-align: center;
 		line-height: 60px;
