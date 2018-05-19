@@ -1,37 +1,38 @@
 package com.cwb.platform.biz.service.impl;
 
+import com.cwb.platform.biz.service.RepairInfoService;
 import com.cwb.platform.biz.service.VehicleService;
 import com.cwb.platform.sys.base.BaseServiceImpl;
-import com.cwb.platform.biz.mapper.BizWxjlxqMapper;
-import com.cwb.platform.biz.model.BizWxjlxq;
+import com.cwb.platform.biz.mapper.BizRepairMapper;
+import com.cwb.platform.biz.model.BizRepair;
 import com.cwb.platform.util.bean.ApiResponse;
-import com.cwb.platform.biz.service.WxjlxqService;
+import com.cwb.platform.biz.service.RepairService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.common.Mapper;
 
 @Service
-public class WxjlxqServiceImpl extends BaseServiceImpl<BizWxjlxq,String> implements WxjlxqService{
+public class RepairServiceImpl extends BaseServiceImpl<BizRepair,String> implements RepairService {
     @Autowired
-    private BizWxjlxqMapper entityMapper;
+    private BizRepairMapper entityMapper;
     @Autowired
-    private VehicleService vehicleService;
+    private RepairInfoService repairInfoService;
 
     @Override
-    protected Mapper<BizWxjlxq> getBaseMapper() {
+    protected Mapper<BizRepair> getBaseMapper() {
         return entityMapper;
     }
 
     @Override
     protected Class<?> getEntityCls(){
-        return BizWxjlxq.class;
+        return BizRepair.class;
     }
 
     @Override
-    public ApiResponse<String> validAndSave(BizWxjlxq entity) {
+    public ApiResponse<String> validAndSave(BizRepair entity) {
         entity.setWxxId(genId());
         save(entity);
-        vehicleService.repair(entity.getvId(),entity);
+        repairInfoService.repair(entity);
         return ApiResponse.saveSuccess();
     }
 }

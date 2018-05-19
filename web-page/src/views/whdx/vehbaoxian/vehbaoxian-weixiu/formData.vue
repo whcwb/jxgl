@@ -17,8 +17,10 @@
 						:styles="{top: '20px'}">
 					<Row>
 						<Col v-for="i in formInputs" :span="i.span ? i.span : 12">
-						<FormItem :prop='i.prop' :label='i.label'>
-								<Input type="text" v-model="formItem[i.prop]" :placeholder="'请填写'+i.label+'...'"></Input>
+							<FormItem :prop='i.prop' :label='i.label'>
+								<Input type="text" v-model="formItem[i.prop]" :placeholder="'请填写'+i.label+'...'"
+									   @on-change="i.onChange ? i.onChange : null"
+									   :disabled="readonly && i.readonly"></Input>
 							</FormItem>
 						</Col>
 					</Row>
@@ -39,21 +41,37 @@
 			return {
 			    v:this,
                 operate:'新建',
+				saveUrl:this.apis.repair.ADD,
 				showModal: true,
 				readonly: false,
 				formItem: {
+			        vId:'',
+                    vHphm:'',
+                    money:0,
+                    insuranceMoney:0,
+                    realMoney:this.realMoney
 				},
                 formInputs:[
-                    {label:'车牌号码',prop:'vHphm'},
+                    {label:'车牌号码',prop:'vHphm',readonly:true},
+                    {label:'维修项目',prop:'project'},
+                    {label:'应付维修金额',prop:'money',onChange:this.moneyChange},
+                    {label:'保险抵扣金额',prop:'insuranceMoney',onChange:this.moneyChange},
+                    {label:'维修实付金额',prop:'realMoney'},
                 ],
                 ruleInline:{
 				}
 			}
 		},
 		created(){
-		    this.util.initFormModal(this);
+		    this.formItem.vId = this.$parent.choosedItem.vId;
+		    this.formItem.vHphm = this.$parent.choosedItem.vHphm;
+            this.util.initFormModal(this);
 		},
 		methods: {
+		    moneyChange(){
+                console.log('moneyChange');
+                this.formItem.realMoney = this.formItem.money - this.formItem.insuranceMoney;
+			}
 		}
 	}
 </script>

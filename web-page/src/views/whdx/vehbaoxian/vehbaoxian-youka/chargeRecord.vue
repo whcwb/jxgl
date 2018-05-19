@@ -43,11 +43,7 @@
                 dateRange:'',
                 tableColumns: [
                     {title: "序号", width: 70, type: 'index'},
-                    {title: '油料类型',key:'ylYllx'},
-                    {title: '油料容量',key:'ylYlrs'},
                     {title: '金额',key:'ylJe',unit:'元'},
-                    {title: '车辆id',key:'vId'},
-                    {title: '车牌号',key:'vHphm'},
                     {title: '操作时间',key:'ylCzsj'},
                     {title: '备注',key:'ylBz'},
                 ],

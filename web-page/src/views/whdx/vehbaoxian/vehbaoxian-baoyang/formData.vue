@@ -39,14 +39,17 @@
 			return {
 			    v:this,
                 operate:'新建',
+				saveUrl:this.apis.repair.ADD,
 				showModal: true,
 				readonly: false,
 				formItem: {
 				},
                 formInputs:[
                     {label:'车牌号码',prop:'vHphm'},
-                    {label:'最后一次保养时间',prop:'byBysj'},
-                    {label:'最后一次保养金额',prop:'byByje'},
+                    {label:'维修项目',prop:'project'},
+                    {label:'应付维修金额',prop:'money'},
+                    {label:'保险抵扣金额',prop:'insuranceMoney'},
+                    {label:'维修实付金额',prop:'realMoney'},
                 ],
                 ruleInline:{
 				}

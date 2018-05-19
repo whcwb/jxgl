@@ -1,10 +1,12 @@
 package com.cwb.platform.biz.service.impl;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.cwb.platform.biz.mapper.BizVehicleExtraMapper;
+import com.cwb.platform.biz.mapper.BizMaintainInfoMapper;
+import com.cwb.platform.biz.mapper.BizRepairInfoMapper;
 import com.cwb.platform.biz.model.*;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -25,7 +27,9 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
     @Autowired
     private BizVehicleMapper entityMapper;
     @Autowired
-    private BizVehicleExtraMapper extraMapper;
+    private BizMaintainInfoMapper maintainInfoMapper;
+    @Autowired
+    private BizRepairInfoMapper repairInfoMapper;
 
     @Override
     protected Mapper<BizVehicle> getBaseMapper() {
@@ -36,7 +40,7 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
     protected Class<?> getEntityCls(){
         return BizVehicle.class;
     }
-    
+
     /**
      * 检验VIN格式
      * @param vin
@@ -148,15 +152,26 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
     	if (StringUtils.isNotBlank(entity.getvCjh())){
     		RuntimeCheck.ifFalse(checkVIN(entity.getvCjh()), "车架号格式不正确");
     	}
-    	
+
         entity.setCreateTime(DateUtils.getNowTime());
         entity.setCreateUser(getOperateUser());
         entity.setvId(genId());
         save(entity);
-        /*BizVehicleExtra extra = new BizVehicleExtra();
-        extra.setvId(entity.getvId());
-        extra.setvHphm(entity.getvHphm());
-        extraMapper.insertSelective(extra);*/
+
+        // 初始化保养信息
+        BizMaintainInfo maintainInfo = new BizMaintainInfo();
+        maintainInfo.setById(genId());
+        maintainInfo.setvId(entity.getvId());
+        maintainInfo.setvHphm(entity.getvHphm());
+        maintainInfoMapper.insertSelective(maintainInfo);
+
+        // 初始化维修信息
+        BizRepairInfo repairInfo = new BizRepairInfo();
+        repairInfo.setvHphm(entity.getvHphm());
+        repairInfo.setvId(entity.getvId());
+        repairInfo.setWxId(genId());
+        repairInfo.setTotalMoney(new BigDecimal(0));
+        repairInfoMapper.insertSelective(repairInfo);
         return ApiResponse.saveSuccess();
     }
 
@@ -170,38 +185,16 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
 
     /**
      * 加油，更新最后一次加油信息
+     * @param carId
      * @param record
      */
     @Override
-    public void fuel(String carId,BizOilRecord record) {
-        RuntimeCheck.ifNull(carId,"请选择车辆");
-        BizVehicleExtra extra = extraMapper.selectByPrimaryKey(carId);
-        if (extra == null)return;
-        extra.setLastFuelCapacity(record.getYlYlrs());
-        extra.setLastFuelMoney(record.getYlJe());
-        extra.setLastFuelTime(DateUtils.getNowTime());
-        extraMapper.updateByPrimaryKeySelective(extra);
-    }
-
-    @Override
-    public void repair(String carId, BizWxjlxq record) {
-        RuntimeCheck.ifNull(carId,"请选择车辆");
-        BizVehicleExtra extra = extraMapper.selectByPrimaryKey(carId);
-        if (extra == null)return;
-        extra.setLastRepairMoney(record.getWxxYfje());
-        extra.setLastRepairProject(record.getWxxWxxm());
-        extra.setLastRepairRealMoney(record.getWxxSfje());
-        extra.setLastRepairTime(DateUtils.getNowTime());
-        extraMapper.updateByPrimaryKeySelective(extra);
-    }
-
-    @Override
-    public void maintain(String carId, BizByxqxx record) {
-        RuntimeCheck.ifNull(carId,"请选择车辆");
-        BizVehicleExtra extra = extraMapper.selectByPrimaryKey(carId);
-        if (extra == null)return;
-        extra.setLastMaintainMoney(record.getBydByje());
-        extra.setLastMaintainTime(DateUtils.getNowTime());
-        extraMapper.updateByPrimaryKeySelective(extra);
+    public void fuel(BizOilRecord record) {
+        BizVehicle car = new BizVehicle();
+        car.setvId(record.getvId());
+        car.setLastFuelCapacity(record.getYlYlrs());
+        car.setLastFuelMoney(record.getYlJe());
+        car.setLastFuelTime(DateUtils.getNowTime());
+        entityMapper.updateByPrimaryKeySelective(car);
     }
 }

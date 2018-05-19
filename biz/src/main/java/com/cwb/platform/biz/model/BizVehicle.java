@@ -133,15 +133,44 @@ public class BizVehicle implements Serializable {
     @Column(name = "update_time")
     private String updateTime;
 
-    @Transient
-    private BizVehicleExtra extra;
+    /**
+     * 最后一次加油时间
+     */
+    @Column(name = "last_fuel_time")
+    private String lastFuelTime;
+    /**
+     * 最后一次加油金额
+     */
+    @Column(name = "last_fuel_money")
+    private BigDecimal lastFuelMoney;
+    /**
+     * 最后一次加油容量
+     */
+    @Column(name = "last_fuel_capacity")
+    private Integer lastFuelCapacity;
 
-    public BizVehicleExtra getExtra() {
-        return extra;
+    public String getLastFuelTime() {
+        return lastFuelTime;
     }
 
-    public void setExtra(BizVehicleExtra extra) {
-        this.extra = extra;
+    public void setLastFuelTime(String lastFuelTime) {
+        this.lastFuelTime = lastFuelTime;
+    }
+
+    public BigDecimal getLastFuelMoney() {
+        return lastFuelMoney;
+    }
+
+    public void setLastFuelMoney(BigDecimal lastFuelMoney) {
+        this.lastFuelMoney = lastFuelMoney;
+    }
+
+    public Integer getLastFuelCapacity() {
+        return lastFuelCapacity;
+    }
+
+    public void setLastFuelCapacity(Integer lastFuelCapacity) {
+        this.lastFuelCapacity = lastFuelCapacity;
     }
 
     private static final long serialVersionUID = 1L;

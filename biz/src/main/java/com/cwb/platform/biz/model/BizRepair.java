@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 import javax.persistence.*;
 
 @Table(name = "biz_wxjlxq")
-public class BizWxjlxq implements Serializable {
+public class BizRepair implements Serializable {
     /**
      * 主键id
      */
@@ -29,55 +29,55 @@ public class BizWxjlxq implements Serializable {
      * 维修项目
      */
     @Column(name = "wxx_wxxm")
-    private String wxxWxxm;
+    private String project;
 
     /**
      * 维修详情
      */
     @Column(name = "wxx_wxxq")
-    private String wxxWxxq;
+    private String detail;
 
     /**
      * 维修时间
      */
     @Column(name = "wxx_wxsj")
-    private String wxxWxsj;
+    private String repairTime;
 
     /**
      * 维修工厂名
      */
     @Column(name = "wxx_gcmc")
-    private String wxxGcmc;
+    private String factoryName;
 
     /**
      * 维修地点
      */
     @Column(name = "wxx_wxdd")
-    private String wxxWxdd;
+    private String address;
 
     /**
      * 维修应付金额
      */
     @Column(name = "wxx_yfje")
-    private BigDecimal wxxYfje;
+    private BigDecimal money;
 
     /**
      * 保险报销金额
      */
     @Column(name = "wxx_bxje")
-    private BigDecimal wxxBxje;
+    private BigDecimal insuranceMoney;
 
     /**
      * 维修实付金额
      */
     @Column(name = "wxx_sfje")
-    private BigDecimal wxxSfje;
+    private BigDecimal realMoney;
 
     /**
      * 维修状态
      */
     @Column(name = "wxx_wxzt")
-    private String wxxWxzt;
+    private String status;
 
     /**
      * 创建人
@@ -147,166 +147,76 @@ public class BizWxjlxq implements Serializable {
         this.vHphm = vHphm;
     }
 
-    /**
-     * 获取维修项目
-     *
-     * @return wxx_wxxm - 维修项目
-     */
-    public String getWxxWxxm() {
-        return wxxWxxm;
+    public String getProject() {
+        return project;
     }
 
-    /**
-     * 设置维修项目
-     *
-     * @param wxxWxxm 维修项目
-     */
-    public void setWxxWxxm(String wxxWxxm) {
-        this.wxxWxxm = wxxWxxm;
+    public void setProject(String project) {
+        this.project = project;
     }
 
-    /**
-     * 获取维修详情
-     *
-     * @return wxx_wxxq - 维修详情
-     */
-    public String getWxxWxxq() {
-        return wxxWxxq;
+    public String getDetail() {
+        return detail;
     }
 
-    /**
-     * 设置维修详情
-     *
-     * @param wxxWxxq 维修详情
-     */
-    public void setWxxWxxq(String wxxWxxq) {
-        this.wxxWxxq = wxxWxxq;
+    public void setDetail(String detail) {
+        this.detail = detail;
     }
 
-    /**
-     * 获取维修时间
-     *
-     * @return wxx_wxsj - 维修时间
-     */
-    public String getWxxWxsj() {
-        return wxxWxsj;
+    public String getRepairTime() {
+        return repairTime;
     }
 
-    /**
-     * 设置维修时间
-     *
-     * @param wxxWxsj 维修时间
-     */
-    public void setWxxWxsj(String wxxWxsj) {
-        this.wxxWxsj = wxxWxsj;
+    public void setRepairTime(String repairTime) {
+        this.repairTime = repairTime;
     }
 
-    /**
-     * 获取维修工厂名
-     *
-     * @return wxx_gcmc - 维修工厂名
-     */
-    public String getWxxGcmc() {
-        return wxxGcmc;
+    public String getFactoryName() {
+        return factoryName;
     }
 
-    /**
-     * 设置维修工厂名
-     *
-     * @param wxxGcmc 维修工厂名
-     */
-    public void setWxxGcmc(String wxxGcmc) {
-        this.wxxGcmc = wxxGcmc;
+    public void setFactoryName(String factoryName) {
+        this.factoryName = factoryName;
     }
 
-    /**
-     * 获取维修地点
-     *
-     * @return wxx_wxdd - 维修地点
-     */
-    public String getWxxWxdd() {
-        return wxxWxdd;
+    public String getAddress() {
+        return address;
     }
 
-    /**
-     * 设置维修地点
-     *
-     * @param wxxWxdd 维修地点
-     */
-    public void setWxxWxdd(String wxxWxdd) {
-        this.wxxWxdd = wxxWxdd;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    /**
-     * 获取维修应付金额
-     *
-     * @return wxx_yfje - 维修应付金额
-     */
-    public BigDecimal getWxxYfje() {
-        return wxxYfje;
+    public BigDecimal getMoney() {
+        return money;
     }
 
-    /**
-     * 设置维修应付金额
-     *
-     * @param wxxYfje 维修应付金额
-     */
-    public void setWxxYfje(BigDecimal wxxYfje) {
-        this.wxxYfje = wxxYfje;
+    public void setMoney(BigDecimal money) {
+        this.money = money;
     }
 
-    /**
-     * 获取保险报销金额
-     *
-     * @return wxx_bxje - 保险报销金额
-     */
-    public BigDecimal getWxxBxje() {
-        return wxxBxje;
+    public BigDecimal getInsuranceMoney() {
+        return insuranceMoney;
     }
 
-    /**
-     * 设置保险报销金额
-     *
-     * @param wxxBxje 保险报销金额
-     */
-    public void setWxxBxje(BigDecimal wxxBxje) {
-        this.wxxBxje = wxxBxje;
+    public void setInsuranceMoney(BigDecimal insuranceMoney) {
+        this.insuranceMoney = insuranceMoney;
     }
 
-    /**
-     * 获取维修实付金额
-     *
-     * @return wxx_sfje - 维修实付金额
-     */
-    public BigDecimal getWxxSfje() {
-        return wxxSfje;
+    public BigDecimal getRealMoney() {
+        return realMoney;
     }
 
-    /**
-     * 设置维修实付金额
-     *
-     * @param wxxSfje 维修实付金额
-     */
-    public void setWxxSfje(BigDecimal wxxSfje) {
-        this.wxxSfje = wxxSfje;
+    public void setRealMoney(BigDecimal realMoney) {
+        this.realMoney = realMoney;
     }
 
-    /**
-     * 获取维修状态
-     *
-     * @return wxx_wxzt - 维修状态
-     */
-    public String getWxxWxzt() {
-        return wxxWxzt;
+    public String getStatus() {
+        return status;
     }
 
-    /**
-     * 设置维修状态
-     *
-     * @param wxxWxzt 维修状态
-     */
-    public void setWxxWxzt(String wxxWxzt) {
-        this.wxxWxzt = wxxWxzt;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     /**

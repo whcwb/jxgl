@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 import javax.persistence.*;
 
 @Table(name = "biz_wxjl")
-public class BizWxjl implements Serializable {
+public class BizRepairInfo implements Serializable {
     /**
      * 主键id
      */
@@ -29,37 +29,37 @@ public class BizWxjl implements Serializable {
      * 最后一次维修时间
      */
     @Column(name = "wx_wxsj")
-    private String wxWxsj;
+    private String lastRepairTime;
 
     /**
      * 最后一次维修项目
      */
     @Column(name = "wx_wxxm")
-    private String wxWxxm;
+    private String lastRepairProject;
 
     /**
      * 最后一次应付维护费用
      */
     @Column(name = "wx_zsyfje")
-    private BigDecimal wxZsyfje;
+    private BigDecimal lastRepairMoney;
 
     /**
      * 最后一次保险抵扣费用
      */
     @Column(name = "wx_zsbxje")
-    private BigDecimal wxZsbxje;
+    private BigDecimal lastRepairInsuranceMoney;
 
     /**
      * 最后一次实付维护费用
      */
     @Column(name = "wx_zssfje")
-    private BigDecimal wxZssfje;
+    private BigDecimal lastRepairRealMoney;
 
     /**
      * 累计维修金额
      */
     @Column(name = "wx_wxzje")
-    private BigDecimal wxWxzje;
+    private BigDecimal totalMoney;
 
     /**
      * 修改人
@@ -129,112 +129,52 @@ public class BizWxjl implements Serializable {
         this.vHphm = vHphm;
     }
 
-    /**
-     * 获取最后一次维修时间
-     *
-     * @return wx_wxsj - 最后一次维修时间
-     */
-    public String getWxWxsj() {
-        return wxWxsj;
+    public String getLastRepairTime() {
+        return lastRepairTime;
     }
 
-    /**
-     * 设置最后一次维修时间
-     *
-     * @param wxWxsj 最后一次维修时间
-     */
-    public void setWxWxsj(String wxWxsj) {
-        this.wxWxsj = wxWxsj;
+    public void setLastRepairTime(String lastRepairTime) {
+        this.lastRepairTime = lastRepairTime;
     }
 
-    /**
-     * 获取最后一次维修项目
-     *
-     * @return wx_wxxm - 最后一次维修项目
-     */
-    public String getWxWxxm() {
-        return wxWxxm;
+    public String getLastRepairProject() {
+        return lastRepairProject;
     }
 
-    /**
-     * 设置最后一次维修项目
-     *
-     * @param wxWxxm 最后一次维修项目
-     */
-    public void setWxWxxm(String wxWxxm) {
-        this.wxWxxm = wxWxxm;
+    public void setLastRepairProject(String lastRepairProject) {
+        this.lastRepairProject = lastRepairProject;
     }
 
-    /**
-     * 获取最后一次应付维护费用
-     *
-     * @return wx_zsyfje - 最后一次应付维护费用
-     */
-    public BigDecimal getWxZsyfje() {
-        return wxZsyfje;
+    public BigDecimal getLastRepairMoney() {
+        return lastRepairMoney;
     }
 
-    /**
-     * 设置最后一次应付维护费用
-     *
-     * @param wxZsyfje 最后一次应付维护费用
-     */
-    public void setWxZsyfje(BigDecimal wxZsyfje) {
-        this.wxZsyfje = wxZsyfje;
+    public void setLastRepairMoney(BigDecimal lastRepairMoney) {
+        this.lastRepairMoney = lastRepairMoney;
     }
 
-    /**
-     * 获取最后一次保险抵扣费用
-     *
-     * @return wx_zsbxje - 最后一次保险抵扣费用
-     */
-    public BigDecimal getWxZsbxje() {
-        return wxZsbxje;
+    public BigDecimal getLastRepairInsuranceMoney() {
+        return lastRepairInsuranceMoney;
     }
 
-    /**
-     * 设置最后一次保险抵扣费用
-     *
-     * @param wxZsbxje 最后一次保险抵扣费用
-     */
-    public void setWxZsbxje(BigDecimal wxZsbxje) {
-        this.wxZsbxje = wxZsbxje;
+    public void setLastRepairInsuranceMoney(BigDecimal lastRepairInsuranceMoney) {
+        this.lastRepairInsuranceMoney = lastRepairInsuranceMoney;
     }
 
-    /**
-     * 获取最后一次实付维护费用
-     *
-     * @return wx_zssfje - 最后一次实付维护费用
-     */
-    public BigDecimal getWxZssfje() {
-        return wxZssfje;
+    public BigDecimal getLastRepairRealMoney() {
+        return lastRepairRealMoney;
     }
 
-    /**
-     * 设置最后一次实付维护费用
-     *
-     * @param wxZssfje 最后一次实付维护费用
-     */
-    public void setWxZssfje(BigDecimal wxZssfje) {
-        this.wxZssfje = wxZssfje;
+    public void setLastRepairRealMoney(BigDecimal lastRepairRealMoney) {
+        this.lastRepairRealMoney = lastRepairRealMoney;
     }
 
-    /**
-     * 获取累计维修金额
-     *
-     * @return wx_wxzje - 累计维修金额
-     */
-    public BigDecimal getWxWxzje() {
-        return wxWxzje;
+    public BigDecimal getTotalMoney() {
+        return totalMoney;
     }
 
-    /**
-     * 设置累计维修金额
-     *
-     * @param wxWxzje 累计维修金额
-     */
-    public void setWxWxzje(BigDecimal wxWxzje) {
-        this.wxWxzje = wxWxzje;
+    public void setTotalMoney(BigDecimal totalMoney) {
+        this.totalMoney = totalMoney;
     }
 
     /**

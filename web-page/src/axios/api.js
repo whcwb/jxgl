@@ -108,6 +108,12 @@ module.exports = {
         CHANGE:'/api/maintain/update',
         DELE:'/api/maintain/removeIds',
     },
+    maintainInfo:{
+        QUERY:'api/maintainInfo/pager',//保养管理
+        ADD:'/api/maintainInfo/save',
+        CHANGE:'/api/maintainInfo/update',
+        DELE:'/api/maintainInfo/removeIds',
+    },
     insurance:{
         QUERY:'api/insurance/pager',//保险管理
         ADD:'/api/insurance/save',
@@ -126,8 +132,15 @@ module.exports = {
         CHANGE:'/api/repair/update',
         DELE:'/api/repair/removeIds',
     },
+    repairInfo:{
+        QUERY:'api/repairInfo/pager',//维修管理
+        ADD:'/api/repairInfo/save',
+        CHANGE:'/api/repairInfo/update',
+        DELE:'/api/repairInfo/removeIds',
+    },
     oilRecord:{
         QUERY:'api/oilRecord/pager',//油料管理
+        list:'/api/oilRecord/list',
         ADD:'/api/oilRecord/save',
         CHANGE:'/api/oilRecord/update',
         DELE:'/api/oilRecord/removeIds',

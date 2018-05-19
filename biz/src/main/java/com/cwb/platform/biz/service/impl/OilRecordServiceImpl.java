@@ -1,9 +1,7 @@
 package com.cwb.platform.biz.service.impl;
 
-import com.cwb.platform.biz.mapper.BizVehicleExtraMapper;
 import com.cwb.platform.biz.model.BizOilCard;
 import com.cwb.platform.biz.model.BizVehicle;
-import com.cwb.platform.biz.model.BizVehicleExtra;
 import com.cwb.platform.biz.service.VehicleService;
 import com.cwb.platform.sys.base.BaseServiceImpl;
 import com.cwb.platform.biz.mapper.BizOilRecordMapper;
@@ -30,8 +28,6 @@ public class OilRecordServiceImpl extends BaseServiceImpl<BizOilRecord,String> i
     @Autowired
     private BizOilRecordMapper entityMapper;
     @Autowired
-    private BizVehicleExtraMapper extraMapper;
-    @Autowired
     private VehicleService vehicleService;
 
     @Override
@@ -55,7 +51,7 @@ public class OilRecordServiceImpl extends BaseServiceImpl<BizOilRecord,String> i
         RuntimeCheck.ifNull(car,"未找到车辆");
         entity.setvHphm(car.getvHphm());
         save(entity);
-        vehicleService.fuel(car.getvId(),entity);
+        vehicleService.fuel(entity);
         return ApiResponse.saveSuccess();
     }
 
@@ -68,6 +64,7 @@ public class OilRecordServiceImpl extends BaseServiceImpl<BizOilRecord,String> i
         record.setYlCzlx("10");
         record.setYkId(card.getYkId());
         record.setYlJe(amount);
+        record.setYlCzsj(DateUtils.getNowTime());
         entityMapper.insertSelective(record);
     }
 
@@ -75,18 +72,6 @@ public class OilRecordServiceImpl extends BaseServiceImpl<BizOilRecord,String> i
     public ApiResponse<List<BizVehicle>> list(BizVehicle entity, String jysj, Page<BizVehicle> pager) {
         LimitedCondition condition = vehicleService.getQueryCondition();
         PageInfo<BizVehicle> resultPage = vehicleService.findPage(pager, condition);
-        List<String> carIds = resultPage.getList().stream().map(BizVehicle::getvId).collect(Collectors.toList());
-        condition = new LimitedCondition(BizVehicleExtra.class);
-        condition.in(BizVehicleExtra.InnerColumn.vId,carIds);
-        List<BizVehicleExtra> extras = extraMapper.selectByExample(condition);
-        if (extras.size() != 0){
-            Map<String,BizVehicleExtra> extraMap = extras.stream().collect(Collectors.toMap(BizVehicleExtra::getvId,p->p));
-            for (BizVehicle vehicle : resultPage.getList()) {
-                BizVehicleExtra extra = extraMap.get(vehicle.getvId());
-                if (extra == null)continue;
-                vehicle.setExtra(extra);
-            }
-        }
         ApiResponse<List<BizVehicle>> result = new ApiResponse<>();
         result.setPage(resultPage);
         return result;
