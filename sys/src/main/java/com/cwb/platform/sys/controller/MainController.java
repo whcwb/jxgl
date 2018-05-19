@@ -1,38 +1,48 @@
 package com.cwb.platform.sys.controller;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.code.kaptcha.impl.DefaultKaptcha;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
+
+import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.StringUtils;
+import org.joda.time.DateTime;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.cwb.platform.sys.bean.AccessToken;
 import com.cwb.platform.sys.bean.UserPassCredential;
 import com.cwb.platform.sys.bean.userInfoModel;
-import com.cwb.platform.util.exception.RuntimeCheck;
 import com.cwb.platform.sys.model.SysJg;
 import com.cwb.platform.sys.model.SysYh;
 import com.cwb.platform.sys.service.JgService;
 import com.cwb.platform.sys.service.YhService;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.commonUtil.Des;
-import com.cwb.platform.util.commonUtil.FileUtil;
 import com.cwb.platform.util.commonUtil.JwtUtil;
-import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import tk.mybatis.mapper.entity.Example;
+import com.cwb.platform.util.exception.RuntimeCheck;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.code.kaptcha.impl.DefaultKaptcha;
 
-import javax.imageio.ImageIO;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.awt.image.BufferedImage;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
+import tk.mybatis.mapper.entity.Example;
 
 /**
  * 处理用户登陆、登出、查询字典信息等相关访问接口
@@ -175,20 +185,24 @@ public class MainController {
 	@ResponseBody
 	public ApiResponse<String> uploadImg(@RequestParam("file") MultipartFile file, String targetPath) {
     	if (StringUtils.isEmpty(targetPath)) targetPath = "temp";
-		targetPath = targetPath + "/";
+		targetPath = targetPath + File.separator + DateTime.now().toString("yyyy-MM-dd") + File.separator;
 		String fileName = file.getOriginalFilename();
 		String suffix = fileName.substring(fileName.lastIndexOf("."));
 		UUID uuid = UUID.randomUUID();
 		fileName = uuid.toString().replaceAll("-","") + suffix;
-		String filePath = staticPath + targetPath;
+		//本地实际路径
+		String filePath = staticPath + File.separator + targetPath;
+		//相对路径
 		String path = targetPath + fileName;
 		try {
-			FileUtil.uploadFile(file.getBytes(), filePath, fileName);
+			FileUtils.writeByteArrayToFile(new File(filePath + fileName), file.getBytes());
 		} catch (Exception e) {
-			e.printStackTrace();
+			
 		}
+		
 		return ApiResponse.success(path);
 	}
+	
 	@RequestMapping(value = "/403",method = {RequestMethod.GET,RequestMethod.POST})
 	public ApiResponse<String> forbidden(){
 		return ApiResponse.forbidden();
