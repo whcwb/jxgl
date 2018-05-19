@@ -142,17 +142,31 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
         return reultFlag;
     }
 
-    @Override
-    public ApiResponse<String> validAndSave(BizVehicle entity) {
+    public void valid(BizVehicle entity, boolean update){
     	RuntimeCheck.ifBlank(entity.getvHphm(), "车牌号码不能为空");
     	RuntimeCheck.ifBlank(entity.getvCcdjrq(), "注册登记日期不能为空");
     	//判断车牌号是否已存在
-    	List<BizVehicle> vehicleList = this.findEq(BizVehicle.InnerColumn.vHphm.name(), entity.getvHphm());
+    	List<BizVehicle> vehicleList = null;
+    	if (update){
+    		Example eTmp = new Example(BizVehicle.class);
+    		eTmp.and().andEqualTo(BizVehicle.InnerColumn.vHphm.name(), entity.getvHphm());
+    		eTmp.and().andNotEqualTo(BizVehicle.InnerColumn.vId.name(), entity.getvId());
+    		vehicleList = this.entityMapper.selectByExample(eTmp);
+    	}else{
+    		vehicleList = this.findEq(BizVehicle.InnerColumn.vHphm.name(), entity.getvHphm());
+    	}
+
     	RuntimeCheck.ifFalse(CollectionUtils.isEmpty(vehicleList), "车牌号已存在");
     	if (StringUtils.isNotBlank(entity.getvCjh())){
     		RuntimeCheck.ifFalse(checkVIN(entity.getvCjh()), "车架号格式不正确");
     	}
+    }
 
+    @Override
+    public ApiResponse<String> validAndSave(BizVehicle entity) {
+    	valid(entity, false);
+
+    	entity.setvHphm(entity.getvHphm().toUpperCase());
         entity.setCreateTime(DateUtils.getNowTime());
         entity.setCreateUser(getOperateUser());
         entity.setvId(genId());
@@ -177,6 +191,9 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
 
     @Override
     public ApiResponse<String> validAndUpdate(BizVehicle entity){
+    	valid(entity, true);
+
+    	entity.setvHphm(entity.getvHphm().toUpperCase());
         entity.setUpdateTime(DateUtils.getNowTime());
         entity.setUpdateUser(getOperateUser());
         update(entity);
@@ -185,7 +202,6 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
 
     /**
      * 加油，更新最后一次加油信息
-     * @param carId
      * @param record
      */
     @Override

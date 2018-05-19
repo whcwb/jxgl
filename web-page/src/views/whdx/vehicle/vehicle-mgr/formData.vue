@@ -8,7 +8,7 @@
 	<div>
 		<Modal v-model="showModal" width='900' :closable='false'
 			   :mask-closable="false" :title="operate+'车辆'">
-			<div style="overflow: auto;height: 300px;">
+			<div style="overflow: auto;height: 360px;">
 				<Form
 						ref="form"
 						:model="formItem"
@@ -67,7 +67,6 @@
         data() {
             return {
                 v:this,
-                saveUrl:this.apis.CAR.ADD,
                 operate:'新建',
                 showModal: true,
                 readonly: false,
@@ -75,6 +74,7 @@
                 hphmPrefix:'鄂',
 				formItem: {
                     hphm:'',
+                    vId:'',
                     vHphm:'',
                     vHpzl:'20',
                     vCcdjrq:'',
@@ -105,6 +105,11 @@
         created(){
             this.util.initFormModal(this);
             this.util.initDict(this);
+            //拆分车牌号码
+			if (this.formItem.vHphm){
+                this.hphmPrefix = this.formItem.vHphm.substring(0, 1);
+                this.formItem.hphm = this.formItem.vHphm.substr(1);
+			}
         },
         methods: {
             changeHpzl(val){
