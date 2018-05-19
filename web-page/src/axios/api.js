@@ -1,6 +1,10 @@
+//网络请求地址前缀
+let BASE_URL = 'http://127.0.0.1';
 module.exports = {
-    UPLOAD:'',
-    STATIC_PATH:'',
+    url: BASE_URL,
+    //图片上传地址
+    UPLOAD: BASE_URL + '/upload',
+    STATIC_PATH: BASE_URL + ':8765/server/',
     VIDEO_PATH:'',
     USERROOT:{
         GET_MENU_LIST:'/api/gn/getUserFunctions',
@@ -13,7 +17,8 @@ module.exports = {
     },
     //文件控制
     FILE:{
-        FINDBYPID:'/api/files/findByPId',//用户管理
+        FINDBYPID:'/api/files/findByPId',//根据主ID查询文件信息
+        UPLOAD:BASE_URL + '/api/files/upload',//根据主ID查询文件信息
     },
     USER:{
         QUERY:'/api/yh/pager',//用户管理

@@ -35,7 +35,7 @@ public class AccessInterceptor extends HandlerInterceptorAdapter {
 	private StringRedisTemplate redisDao;
 
 	// 只要登录的用户都能访问
-	private List<String> whiteList = Arrays.asList("/api/gn/getMenuTree","/api/jg/pager","/api/jg/getTree","/api/gn/getMenuTree","/api/jg/pager","/api/jg/getOrgTree","/api/jg/getOrgTree","/api/clsbyxsjjl/history","/api/clsbyxsjjl/history");
+	private List<String> whiteList = Arrays.asList("/api/gn/getMenuTree","/api/jg/pager","/api/jg/getTree","/api/gn/getMenuTree","/api/jg/pager","/api/jg/getOrgTree","/api/jg/getOrgTree","/api/clsbyxsjjl/history","/api/clsbyxsjjl/history","/api/files/");
 
 	public AccessInterceptor() {
 	}
@@ -83,23 +83,17 @@ public class AccessInterceptor extends HandlerInterceptorAdapter {
 		try {
 			// 验证访问者是否合法
 			String userId = JwtUtil.getClaimAsString(token, "userId");
-			log.debug("userId=" + userId);
 			if (!userid.equals(userId)) {
 				return false;
 			}
 			String value = redisDao.boundValueOps(userid).get();
-			log.debug("value=" + value);
-			log.debug("token=" + token);
 			if (StringUtils.isEmpty(value) || !value.equals(token)) {
 				return false;
 			}
 			request.setAttribute("userInfo", user);
 			request.setAttribute("orgCode", user.getJgdm());
-			log.debug("boundValueOps");
 			String userInfoJson = redisDao.boundValueOps(userid + "-userInfo").get();
-			log.debug("boundValueOps");
 			ObjectMapper mapper = new ObjectMapper();
-			log.debug("userInfoJson:" + userInfoJson);
 			SysYh userInfo = mapper.readValue(userInfoJson, SysYh.class);
 			if (!whiteList.contains(request.getRequestURI()) && !"su".equals(userInfo.getLx())) { // su 用户可访问所有权限
 				if (!checkPermission(userInfo, request)) {

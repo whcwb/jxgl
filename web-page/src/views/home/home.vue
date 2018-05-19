@@ -94,7 +94,7 @@
 					欢迎登录
 				</h1>
 				<h1>
-					武汉大学车辆管理信息平台
+					{{title}}
 				</h1>
 			</span>
 		</div>
@@ -133,16 +133,19 @@
 				},
 			};
 		},
-		    computed:{
-			echData(){
-			    return this.$store.state.app.ech
+        computed:{
+            title(){
+                return this.$store.state.app.title;
+            },
+            echData(){
+                return this.$store.state.app.ech
+            }
+        },
+		watch:{
+			echData:function (n,o) {
+				this.compName = 'csMessbar'
 			}
-		    },
-		    watch:{
-				echData:function (n,o) {
-					this.compName = 'csMessbar'
-				}
-		    },
+		},
 		created() {
 			this.$store.commit('setCurrentPath', [{
 				title: '首页'
