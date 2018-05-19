@@ -17,7 +17,7 @@ util.fillTableColumns = (v)=>{
         if (!r.render){
             r.render = (h,p)=>{
                 let s  = p.row[r.key] ? p.row[r.key] : '-';
-                if (r.unit)s += r.unit;
+                if (r.unit && p.row[r.key])s += r.unit;
                 return h('div',s);
             }
         }
@@ -52,6 +52,7 @@ util.buildButton = (v,h,type,icon,tip,onClick)=>{
  * 初始化字典
  */
 util.initDict = (v)=>{
+    if (!v.dicts)return;
     if (v.dicts){
         for (let k in v.dicts){
             let r = v.dicts[k];
@@ -60,9 +61,39 @@ util.initDict = (v)=>{
         }
     }
 }
+function getdateParaD(val){//时间转换
+    if(val==null||val==""){
+        return ''
+    }
+    var newDate = new Date();
+    newDate.setTime(val)
+    console.log(typeof newDate);
+    let Year = val.getFullYear()
+    let Month = val.getMonth()+1
+    let Day = val.getDate()
+    if(Month<10){
+        Month = '0'+Month
+    }
+    if(Day<10){
+        Day = '0'+Day
+    }
+    let time = Year+'-'+Month+'-'+Day
+    return time
+}
+util.getdateStrD = ()=>{
+    var NowDate = new Date
+    let Year = NowDate.getFullYear()
+    let Month = NowDate.getMonth()+1
+    let Day = NowDate.getDate()
+    let time = Year+'-'+Month+'-'+Day
+    return time
+},
 util.rd = (h,p,k)=>{
     let s = p.row[k] ? p.row[k] : '-';
     return h('div',s);
+}
+util.dateRangeChange = (s)=>{
+    return s[0].format("yyyy-MM-dd")+','+s[1].format("yyyy-MM-dd");
 }
 util.initTableHeight = (v)=>{
     v.tableHeight = window.innerHeight - 240
@@ -121,11 +152,14 @@ util.initFormModal = (v)=>{
         v.readonly = true
     }
     util.initFormRule(v);
+    util.initForeignKeys(v);
+    util.initDict(v);
 }
 /**
  * 根据formInputs设置的字段 自动添加字段验证规则
  */
 util.initFormRule = (v)=>{
+    if (!v.formInputs)return;
     for (let r of v.formInputs){
         if (r.required){
             let rule = [{required: true, message: '请填写'+r.label, trigger: 'blur' }]

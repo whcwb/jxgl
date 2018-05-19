@@ -34,6 +34,7 @@
 		data() {
 			return {
 			    v:this,
+				ykId:0,
 			    apiRoot :this.apis.OIL_CARD,
                 operate:'新建',
 				showModal: true,
@@ -50,6 +51,7 @@
 			}
 		},
 		created(){
+		    this.ykId = this.$parent.choosedItem.ykId;
 		    this.util.initFormModal(this);
 		},
 		methods: {
