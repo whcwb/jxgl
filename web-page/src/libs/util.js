@@ -250,7 +250,6 @@ util.closeDialog = function(v){
  * @param v
  */
 util.getPageData = function(v) {
-    console.log(v.apiRoot);
     let url = v.pagerUrl ? v.pagerUrl : v.apiRoot['QUERY'];
     v.$http.post(url, v.form).then((response) => {
             let code = response.code;

@@ -63,12 +63,8 @@
                     {title: '使用性质',key:'vSyxz'},
                     {title: '车架号',key:'vCjh'},
                     {title: '发动机号',key:'vFdjh'},
-                    {title: '状态',key:'vZt'},
-                    {title: '所属公司代码',key:'vGsdm'},
-                    {title: '所属公司名称',key:'vGsmc'},
                     {title: '使用人',key:'vLxr'},
                     {title: '使用人联系电话',key:'vLxdh'},
-                    {title: '保单号码',key:'vBdhm'},
                     {
                         title: '操作',
                         key: 'action',
