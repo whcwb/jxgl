@@ -6,17 +6,16 @@
 </style>
 <template>
 	<div>
-		<Modal v-model="showModal" width='900' :closable='false' :mask-closable="false" :title="operate+'油卡'">
+		<Modal v-model="showModal" width='900' :closable='false' :mask-closable="false">
 			<div style="overflow: auto;height: 500px;">
-				<Form ref="form" :model="formItem" :rules="ruleInline" :label-width="100" :styles="{top: '20px'}">
-					<Row>
-						<Col v-for="i in formInputs" :span="i.span ? i.span : 12">
-							<FormItem :prop='i.prop' :label='i.label'>
-								<Input type="text" v-model="formItem[i.prop]" :placeholder="'请填写'+i.label+'...'" :readonly="readonly && i.readonly"></Input>
-							</FormItem>
-						</Col>
-					</Row>
-				</Form>
+				<Tabs>
+					<Tab-pane label="充值记录" icon="ios-download-outline">
+						<charge-record></charge-record>
+					</Tab-pane>
+					<Tab-pane label="消费记录" icon="ios-upload-outline">
+						<use-record></use-record>
+					</Tab-pane>
+				</Tabs>
 			</div>
 			<div slot='footer'>
 				<Button type="ghost" @click="v.util.closeDialog(v)">取消</Button>
@@ -27,8 +26,11 @@
 </template>
 
 <script>
+	import chargeRecord from './chargeRecord'
+	import useRecord from './useRecord'
 	export default {
 		name: '',
+		components:{chargeRecord,useRecord},
 		data() {
 			return {
 			    v:this,
