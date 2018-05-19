@@ -1,9 +1,7 @@
 package com.cwb.platform.biz.service.impl;
 
-import com.cwb.platform.biz.mapper.BizVehicleExtraMapper;
 import com.cwb.platform.biz.model.BizOilCard;
 import com.cwb.platform.biz.model.BizVehicle;
-import com.cwb.platform.biz.model.BizVehicleExtra;
 import com.cwb.platform.biz.service.VehicleService;
 import com.cwb.platform.sys.base.BaseServiceImpl;
 import com.cwb.platform.biz.mapper.BizOilRecordMapper;
