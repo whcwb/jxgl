@@ -1,5 +1,6 @@
 package com.cwb.platform.biz.service.impl;
 
+import com.cwb.platform.biz.service.VehicleService;
 import com.cwb.platform.sys.base.BaseServiceImpl;
 import com.cwb.platform.biz.mapper.BizWxjlxqMapper;
 import com.cwb.platform.biz.model.BizWxjlxq;
@@ -13,6 +14,8 @@ import tk.mybatis.mapper.common.Mapper;
 public class WxjlxqServiceImpl extends BaseServiceImpl<BizWxjlxq,String> implements WxjlxqService{
     @Autowired
     private BizWxjlxqMapper entityMapper;
+    @Autowired
+    private VehicleService vehicleService;
 
     @Override
     protected Mapper<BizWxjlxq> getBaseMapper() {
@@ -26,7 +29,9 @@ public class WxjlxqServiceImpl extends BaseServiceImpl<BizWxjlxq,String> impleme
 
     @Override
     public ApiResponse<String> validAndSave(BizWxjlxq entity) {
+        entity.setWxxId(genId());
         save(entity);
+        vehicleService.repair(entity.getvId(),entity);
         return ApiResponse.saveSuccess();
     }
 }

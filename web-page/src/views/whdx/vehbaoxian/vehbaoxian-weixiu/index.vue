@@ -41,7 +41,7 @@
                 componentName: '',
                 choosedItem: null,
                 tableColumns: [
-                    {title: "序号", width: 60, type: 'index'},
+                    {title: "序号", width: 70, type: 'index'},
                     {title: '车辆id',key:'vId'},
                     {title: '车牌号码',key:'vHphm'},
                     {title: '最后一次维修时间',key:'wxWxsj'},

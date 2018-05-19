@@ -46,17 +46,17 @@
 			    v:this,
                 operate:'新建',
 				showModal: true,
+				saveUrl:this.apis.oilRecord.ADD,
 				readonly: false,
 				formItem: {
-                    ylCzlx:'20',// 消费
+                    vId:''
 				},
                 formInputs:[
                     {label:'油卡卡号',prop:'ykId',type:'foreignKey'},
                     {label:'油料类型',prop:'ylYllx',type:'dict'},
                     {label:'油料容量',prop:'ylYlrs'},
                     {label:'金额',prop:'ylJe'},
-                    {label:'车辆id',prop:'vId'},
-                    {label:'车牌号',prop:'vHphm'},
+                    {label:'车辆',prop:'vId',type:'foreignKey'},
                     {label:'备注',prop:'ylBz'},
                 ],
                 ruleInline:{
@@ -66,16 +66,18 @@
                     ylCzlx:{code:'ylCzlx',items:[]},
 				},
 				foreignList:{
-                    ykId:{url:this.apis.OIL_CARD.QUERY,key:'ykId',val:'ykId',items:[]}
+                    ykId:{url:this.apis.OIL_CARD.QUERY,key:'ykId',val:'ykId',items:[]},
+                    vId:{url:this.apis.CAR.QUERY,key:'vId',val:'vHphm',items:[]},
 				}
 			}
 		},
 		created(){
 		    this.util.initFormModal(this);
-		    this.util.initDict(this);
-		    this.util.initForeignKeys(this);
 		},
 		methods: {
+		    beforeSave(){
+		        this.formItem.ylCzlx = '20'
+			}
 		}
 	}
 </script>

@@ -11,9 +11,9 @@
 			<Button type="primary" @click="v.util.getPageData(v)">
 				<Icon type="search"></Icon>
 			</Button>
-			<Button type="primary" @click="v.util.add(v)">
-				<Icon type="plus-round"></Icon>
-			</Button>
+			<!--<Button type="primary" @click="v.util.add(v)">-->
+				<!--<Icon type="plus-round"></Icon>-->
+			<!--</Button>-->
 		</Row>
 		<Row style="position: relative;">
 			<Table :height="tableHeight" :columns="tableColumns" :data="pageData"></Table>
@@ -41,11 +41,11 @@
                 componentName: '',
                 choosedItem: null,
                 tableColumns: [
-                    {title: "序号", width: 60, type: 'index'},
-                    {title: '车牌号',key:'vHphm',searchKey:'vHphm'},
-                    {title: '最后一次加油时间',key:'vLxdh'},
-                    {title: '最后一次加油金额',key:'vLxdh'},
-                    {title: '最后一次加油容量',key:'vBdhm'},
+                    {title: "序号", width: 70, type: 'index'},
+                    {title: '车牌号',key:'vHphm',searchKey:'vHphmLike'},
+                    {title: '最后一次加油时间',key:'lastFuelTime'},
+                    {title: '最后一次加油金额',key:'lastFuelMoney',unit:'元'},
+                    {title: '最后一次加油容量',key:'lastFuelCapacity',unit:'L'},
                     {
                         title: '操作',
                         key: 'action',
@@ -53,8 +53,12 @@
                         fixed: 'right',
                         render: (h, params) => {
                             return h('div', [
-                                this.util.buildEditButton(this,h,params),
-                                this.util.buildDeleteButton(this,h,params.row.vId),
+                                this.util.buildButton(this,h,'success','plus','加油',()=>{
+									this.choosedItem = params.row;
+									this.componentName = 'formData';
+								}),
+                                // this.util.buildEditButton(this,h,params),
+                                // this.util.buildDeleteButton(this,h,params.row.vId),
                             ]);
                         }
                     }
