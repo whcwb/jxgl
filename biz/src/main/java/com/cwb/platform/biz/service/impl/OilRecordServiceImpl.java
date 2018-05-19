@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.common.Mapper;
 
+import java.math.BigDecimal;
+
 @Service
 public class OilRecordServiceImpl extends BaseServiceImpl<BizOilRecord,String> implements OilRecordService {
     @Autowired
@@ -33,14 +35,14 @@ public class OilRecordServiceImpl extends BaseServiceImpl<BizOilRecord,String> i
     }
 
     @Override
-    public void chargeLog(BizOilCard card) {
+    public void chargeLog(BizOilCard card, BigDecimal amount) {
         BizOilRecord record = new BizOilRecord();
         record.setCreateTime(DateUtils.getNowTime());
         record.setCreateUser(getOperateUser());
         record.setYlId(genId());
         record.setYlCzlx("10");
         record.setYkId(card.getYkId());
-
+        record.setYlJe(amount);
         entityMapper.insertSelective(record);
     }
 }

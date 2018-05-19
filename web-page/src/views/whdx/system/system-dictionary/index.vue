@@ -27,8 +27,25 @@
 			<div class="box-row-list">
 				<div class="bodyWidth" v-for="(item,index) in dictionary" :key='index'>
 					<Card style="width:100%">
+						<p slot="title">
+							<Icon type="ios-film-outline"></Icon>
+							{{item.lmmc}} [{{item.lmdm}}]
+						</p>
+						<span slot="extra">
+					        <a href="#" @click.prevent="AddDcList(item,index)">
+					            <Icon type="plus-circled" size="24"></Icon>
+								<!--新增-->
+					        </a>
+					        <a href="#" @click.prevent="removeDc(item,index)" style="color: red;">
+					            <Icon type="close-circled" size="24"></Icon>
+								<!--删除-->
+					        </a>
+				        </span>
 						<div style="height: 240px;">
 							<div>
+								<Row class="margin-bottom-10">
+									<Input v-model="dictionaryMess[index]" clearable placeholder="请输入字典信息..." @on-change="findDicList(item,index,dictionaryMess[index])"></Input>
+								</Row>
 								<div class="padding-2px-5px box-row-nh" style='background-color: #f8f8f9;text-align: center;'>
 									<div class="body-2" style="min-width: 30px;">
 										序

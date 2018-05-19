@@ -17,6 +17,7 @@ util.fillTableColumns = (v)=>{
         if (!r.render){
             r.render = (h,p)=>{
                 let s  = p.row[r.key] ? p.row[r.key] : '-';
+                if (r.unit)s += r.unit;
                 return h('div',s);
             }
         }
@@ -31,8 +32,8 @@ util.buildDeleteButton = (v,h,id)=>{
 }
 util.buildEditButton = (v,h,p)=>{
     return util.buildButton(v,h,'success','edit',()=>{
-        v.componentName = 'formData'
         v.choosedItem = p.row;
+        v.componentName = 'formData'
     })
 }
 util.buildButton = (v,h,type,icon,onClick)=>{

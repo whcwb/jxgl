@@ -14,6 +14,7 @@ import com.cwb.platform.util.commonUtil.SnowflakeIdWorker;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import tk.mybatis.mapper.common.Mapper;
@@ -357,13 +358,13 @@ public abstract class BaseServiceImpl<T, PK extends Serializable> implements Bas
 
     @Override
     public List<T> findByEntity(T entity) {
-        LimitedCondition condition = getQueryCondition();
-        return getBaseMapper().selectByExample(condition);
+        return getBaseMapper().selectByExample(entity);
     }
 
     @Override
     public List<T> findByCondition(Example condition) {
-        return getBaseMapper().selectByExample(condition);
+        LimitedCondition condition1 = getQueryCondition();
+        return getBaseMapper().selectByExample(condition1);
     }
 
     @Override
@@ -386,26 +387,38 @@ public abstract class BaseServiceImpl<T, PK extends Serializable> implements Bas
         return getBaseMapper().selectAll();
     }
 
-    @Override
-    public ApiResponse<String> validAndSave(T entity) {
-        ApiResponse<String> response = beforeSave(entity);
-        if (!response.isSuccess())return response;
-        getBaseMapper().insertSelective(entity);
-        return ApiResponse.success();
-    }
-
-    @Override
-    public ApiResponse<String> validAndUpdate(T entity) {
-        ApiResponse<String> response = beforeUpdate(entity);
-        if (!response.isSuccess())return response;
-        getBaseMapper().updateByPrimaryKeySelective(entity);
-        return ApiResponse.success();
-    }
-
     public ApiResponse<String> beforeSave(T entity){
         return ApiResponse.success();
     }
+    @Transactional
+    public ApiResponse<String> validAndSave(T entity) {
+        ApiResponse<String> beforeSaveResponse = beforeSave(entity);
+        if (!beforeSaveResponse.isSuccess())return beforeSaveResponse;
+        getBaseMapper().insertSelective(entity);
+        ApiResponse<String> aftterSaveResponse = afterSave(entity);
+        if (!aftterSaveResponse.isSuccess())return aftterSaveResponse;
+        return ApiResponse.success();
+    }
+
+    public ApiResponse<String> afterSave(T entity){
+        return ApiResponse.success();
+    }
+
+
     public ApiResponse<String> beforeUpdate(T entity){
+        return ApiResponse.success();
+    }
+    @Override
+    @Transactional
+    public ApiResponse<String> validAndUpdate(T entity) {
+        ApiResponse<String> beforeSaveResponse = beforeUpdate(entity);
+        if (!beforeSaveResponse.isSuccess())return beforeSaveResponse;
+        getBaseMapper().updateByPrimaryKeySelective(entity);
+        ApiResponse<String> aftterSaveResponse = afterUpdate(entity);
+        if (!aftterSaveResponse.isSuccess())return aftterSaveResponse;
+        return ApiResponse.success();
+    }
+    public ApiResponse<String> afterUpdate(T entity){
         return ApiResponse.success();
     }
 

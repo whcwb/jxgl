@@ -6,19 +6,13 @@
 </style>
 <template>
 	<div>
-		<Modal v-model="showModal" width='900' :closable='false'
-			:mask-closable="false" :title="operate+'油卡'">
+		<Modal v-model="showModal" width='900' :closable='false' :mask-closable="false" :title="operate+'油卡'">
 			<div style="overflow: auto;height: 500px;">
-				<Form
-						ref="form"
-						:model="formItem"
-						:rules="ruleInline"
-						:label-width="100"
-						:styles="{top: '20px'}">
+				<Form ref="form" :model="formItem" :rules="ruleInline" :label-width="100" :styles="{top: '20px'}">
 					<Row>
 						<Col v-for="i in formInputs" :span="i.span ? i.span : 12">
-						<FormItem :prop='i.prop' :label='i.label'>
-								<Input type="text" v-model="formItem[i.prop]" :placeholder="'请填写'+i.label+'...'"></Input>
+							<FormItem :prop='i.prop' :label='i.label'>
+								<Input type="text" v-model="formItem[i.prop]" :placeholder="'请填写'+i.label+'...'" :readonly="i.readonly"></Input>
 							</FormItem>
 						</Col>
 					</Row>
@@ -45,9 +39,9 @@
 				formItem: {
 				},
                 formInputs:[
-                    {label:'油卡卡号',prop:'ykId',required:true},
+                    {label:'油卡卡号',prop:'ykId',required:true,readonly:true},
                     {label:'发卡公司',prop:'ykFkgs',required:true},
-                    {label:'卡余额',prop:'ykYe',required:true},
+                    {label:'卡余额',prop:'ykYe',required:true,readonly:true},
                 ],
                 ruleInline:{
 				}

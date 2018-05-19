@@ -61,6 +61,12 @@
             this.util.initFormModal(this);
 		},
 		methods: {
+		    beforeSave(){
+		        this.formItem = {
+					cardId:this.formItem.ykId,
+					amount:this.formItem.amount,
+				}
+			}
 		}
 	}
 </script>

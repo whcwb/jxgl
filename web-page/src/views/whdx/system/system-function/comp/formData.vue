@@ -82,12 +82,6 @@
                 }
 			}
 		},
-		props:{
-			Dictionary:{
-				type:Array,
-				default:[]
-			}
-		},
 		created(){
             /**
 			 * 初始化表单页面 *必须

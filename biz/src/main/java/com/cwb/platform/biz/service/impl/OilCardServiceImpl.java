@@ -32,9 +32,8 @@ public class OilCardServiceImpl extends BaseServiceImpl<BizOilCard,String> imple
     }
 
     @Override
-    public ApiResponse<String> validAndSave(BizOilCard entity) {
+    public ApiResponse<String> beforeSave(BizOilCard entity) {
         entity.setCreateTime(DateUtils.getNowTime());
-        save(entity);
         return ApiResponse.saveSuccess();
     }
 
@@ -47,7 +46,7 @@ public class OilCardServiceImpl extends BaseServiceImpl<BizOilCard,String> imple
         BigDecimal result = card.getYkYe().add(new BigDecimal(amount));
         card.setYkYe(result);
         entityMapper.updateByPrimaryKeySelective(card);
-        cardRecordService.chargeLog(card);
+        cardRecordService.chargeLog(card,new BigDecimal(amount));
         return ApiResponse.success();
     }
 }

@@ -43,10 +43,10 @@
                 componentName: '',
                 choosedItem: null,
                 tableColumns: [
-                    {title: "序号", width: 60,  type: 'index'},
+                    {title: "序号", width: 70,  type: 'index'},
                     {title: '油卡卡号',key: 'ykId',searchKey:'ykIdLike'},
                     {title: '发卡公司',key: 'ykFkgs'},
-                    {title: '卡余额',  ey: 'ykYe'},
+                    {title: '卡余额',  key: 'ykYe',unit:'元'},
                     {title: '最后一次用卡时间',  key: 'ykZsyksj',},
                     {title: '最后一次用卡车辆牌号',  key: 'ykZshphm',},
                     {
@@ -57,9 +57,9 @@
                         render: (h, params) => {
                             return h('div', [
                                 this.util.buildEditButton(this,h,params),
-                                this.util.buildButton(this,h,'success','plus',()=>{
-                                    this.componentName = 'charge'
+                                this.util.buildButton(this,h,'success','social-yen',()=>{
                                     this.choosedItem = params.row;
+                                    this.componentName = 'charge'
 								}),
                                 this.util.buildDeleteButton(this,h,params.row.gndm),
                             ]);
