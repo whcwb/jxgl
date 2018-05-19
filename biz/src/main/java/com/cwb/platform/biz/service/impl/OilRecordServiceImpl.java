@@ -84,7 +84,7 @@ public class OilRecordServiceImpl extends BaseServiceImpl<BizOilRecord,String> i
             for (BizVehicle vehicle : resultPage.getList()) {
                 BizVehicleExtra extra = extraMap.get(vehicle.getvId());
                 if (extra == null)continue;
-                vehicle.setExtra(extra);
+                //vehicle.setExtra(extra);
             }
         }
         ApiResponse<List<BizVehicle>> result = new ApiResponse<>();

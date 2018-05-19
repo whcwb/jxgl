@@ -133,17 +133,6 @@ public class BizVehicle implements Serializable {
     @Column(name = "update_time")
     private String updateTime;
 
-    @Transient
-    private BizVehicleExtra extra;
-
-    public BizVehicleExtra getExtra() {
-        return extra;
-    }
-
-    public void setExtra(BizVehicleExtra extra) {
-        this.extra = extra;
-    }
-
     private static final long serialVersionUID = 1L;
 
 

@@ -40,10 +40,12 @@
 
 <script>
     import formData from './formData.vue'
+	//分配人员
+    import allocPerson from './allocPerson.vue'
 
     export default {
         name: 'vehicleTable',
-        components: {formData},
+        components: {formData, allocPerson},
         data() {
             return {
                 v:this,
@@ -115,7 +117,8 @@
             },
 			//车辆分配
 			toPerson(param){
-                console.log(param);
+                this.choosedItem = param.row;
+                this.componentName = 'allocPerson';
 			}
         }
     }
