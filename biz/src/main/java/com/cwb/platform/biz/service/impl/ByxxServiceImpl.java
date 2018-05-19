@@ -26,6 +26,7 @@ public class ByxxServiceImpl extends BaseServiceImpl<BizByxx,String> implements 
 
     @Override
     public ApiResponse<String> saveEntity(BizByxx entity) {
+        entity.setvId(genId());
         save(entity);
         return ApiResponse.saveSuccess();
     }
