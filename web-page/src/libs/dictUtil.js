@@ -2,8 +2,8 @@
 import session from '@/libs/session.js'
 let dictUtil = {
     getValByCode(v,zdlmCode,zdxmCode){
-		let dic	= session.getItem('dictMap')
-		let zdlm = new Map(dic).get(zdlmCode)
+        let dic	= session.getItem('dictMap')
+        let zdlm = new Map(dic).get(zdlmCode)
         if (!zdlm)return '';
         for (let r of zdlm){
             if (r.key === zdxmCode){

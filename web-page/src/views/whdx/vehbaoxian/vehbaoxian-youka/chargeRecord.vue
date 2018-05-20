@@ -22,16 +22,12 @@
 			<Page :total=form.total :current=form.pageNum :page-size=form.pageSize show-total show-elevator
 				  @on-change='pageChange'></Page>
 		</Row>
-		<component :is="componentName"></component>
 	</div>
 </template>
 
 <script>
-    import formData from './formData.vue'
-
     export default {
         name: 'yljlTable',
-        components: {formData},
         data() {
             return {
                 v:this,

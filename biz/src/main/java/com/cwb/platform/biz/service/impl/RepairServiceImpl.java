@@ -7,6 +7,7 @@ import com.cwb.platform.biz.mapper.BizRepairMapper;
 import com.cwb.platform.biz.model.BizRepair;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.biz.service.RepairService;
+import com.cwb.platform.util.commonUtil.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.common.Mapper;
@@ -31,6 +32,7 @@ public class RepairServiceImpl extends BaseServiceImpl<BizRepair,String> impleme
     @Override
     public ApiResponse<String> validAndSave(BizRepair entity) {
         entity.setWxxId(genId());
+        entity.setCreateTime(DateUtils.getNowTime());
         save(entity);
         repairInfoService.repair(entity);
         return ApiResponse.saveSuccess();

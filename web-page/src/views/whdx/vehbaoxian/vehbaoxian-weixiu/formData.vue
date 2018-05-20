@@ -19,8 +19,25 @@
 						<Col v-for="i in formInputs" :span="i.span ? i.span : 12">
 							<FormItem :prop='i.prop' :label='i.label'>
 								<Input type="text" v-model="formItem[i.prop]" :placeholder="'请填写'+i.label+'...'"
-									   @on-change="i.onChange ? i.onChange : null"
 									   :disabled="readonly && i.readonly"></Input>
+							</FormItem>
+						</Col>
+						<Col span="12">
+							<FormItem prop='money' label='应付维修金额'>
+								<Input type="text" v-model="formItem.money" placeholder="请填写应付维修金额..."
+									   @on-change="moneyChange" ></Input>
+							</FormItem>
+						</Col>
+						<Col span="12">
+							<FormItem prop='insuranceMoney' label='保险抵扣金额'>
+								<Input type="text" v-model="formItem.insuranceMoney" placeholder="请填写保险抵扣金额..."
+									   @on-change="moneyChange" ></Input>
+							</FormItem>
+						</Col>
+						<Col span="12">
+							<FormItem prop='realMoney' label='维修实付金额'>
+								<Input type="text" v-model="formItem.realMoney" placeholder="维修实付金额"
+									   readonly></Input>
 							</FormItem>
 						</Col>
 					</Row>
@@ -39,8 +56,9 @@
 		name: 'wxjlForm',
 		data() {
 			return {
+			    w:window,
 			    v:this,
-                operate:'新建',
+                operate:'维修',
 				saveUrl:this.apis.repair.ADD,
 				showModal: true,
 				readonly: false,
@@ -49,14 +67,11 @@
                     vHphm:'',
                     money:0,
                     insuranceMoney:0,
-                    realMoney:this.realMoney
+                    realMoney:0
 				},
                 formInputs:[
                     {label:'车牌号码',prop:'vHphm',readonly:true},
                     {label:'维修项目',prop:'project'},
-                    {label:'应付维修金额',prop:'money',onChange:this.moneyChange},
-                    {label:'保险抵扣金额',prop:'insuranceMoney',onChange:this.moneyChange},
-                    {label:'维修实付金额',prop:'realMoney'},
                 ],
                 ruleInline:{
 				}
@@ -69,8 +84,10 @@
 		},
 		methods: {
 		    moneyChange(){
-                console.log('moneyChange');
                 this.formItem.realMoney = this.formItem.money - this.formItem.insuranceMoney;
+			},
+			beforeSave(){
+
 			}
 		}
 	}
