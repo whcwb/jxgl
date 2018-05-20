@@ -25,7 +25,9 @@
 		</Row>
 		<Row class="margin-top-10 pageSty">
 			<Page :total=form.total :current=form.pageNum :page-size=form.pageSize show-total show-elevator
-				  @on-change='pageChange'></Page>
+				  :page-size-opts="[8,10,12,14,16,18]"
+				  @on-page-size-change="pageSizeChange"
+				  @on-change='pageChange' show-sizer></Page>
 		</Row>
 		<component :is="componentName"></component>
 	</div>
@@ -89,9 +91,12 @@
             this.util.initTable(this)
         },
         methods: {
-            pageChange(event) {
-                this.util.pageChange(this, event);
+            pageChange(n) {
+                this.util.pageChange(this, n);
             },
+            pageSizeChange(n){
+                this.util.pageSizeChange(this, n);
+			}
         }
     }
 </script>

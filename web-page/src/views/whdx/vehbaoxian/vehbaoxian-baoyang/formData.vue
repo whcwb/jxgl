@@ -46,7 +46,6 @@
 				},
                 formInputs:[
                     {label:'车牌号码',prop:'vHphm',readonly:true},
-                    {label:'车牌Id',prop:'vId',readonly:true},
                     {label:'保养金额',prop:'bydByje'},
                 ],
                 ruleInline:{

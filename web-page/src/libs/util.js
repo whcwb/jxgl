@@ -1,5 +1,6 @@
 import swal from 'sweetalert'
 import dictUtil from './dictUtil'
+import Cookies from 'js-cookie'
 let util = {
 };
 
@@ -136,9 +137,17 @@ util.initForeignKeys = (v)=>{
  * 自动调整table高度，页面加载完成后获取列表数据
  */
 util.initTable = (v)=>{
+    util.initPageSize(v);
     util.initTableHeight(v);
     util.fillTableColumns(v)
     util.getPageData(v)
+}
+util.initPageSize = (v)=>{
+    if (!v.form || !v.form.pageSize)return;
+    let pageSize = Cookies.get("pageSize");
+    if (!pageSize)Cookies.set("pageSize",8);
+    pageSize = parseInt(pageSize);
+    v.form.pageSize = pageSize;
 }
 /**
  * 初始化表单（包括新增和修改）页面
@@ -322,6 +331,11 @@ util.getPageData = function(v) {
 util.pageChange = function(v,e) {
     v.form.pageNum = e
     util.getPageData(v)
+}
+util.pageSizeChange = function(v,n) {
+    Cookies.set("pageSize",n);
+    v.form.pageSize = n;
+    util.getPageData(v);
 }
 /**
  * get方法并执行回调函数

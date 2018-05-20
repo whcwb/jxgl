@@ -7,7 +7,7 @@
 <template>
 	<div>
 		<Modal v-model="showModal" width='900' :closable='false'
-			:mask-closable="false" :title="operate+''">
+			:mask-closable="false" title="加油">
 			<div style="overflow: auto;height: 500px;">
 				<Form
 						ref="form"
@@ -22,7 +22,7 @@
 								<Select v-if="i.type === 'dict'" filterable clearable  v-model="formItem[i.prop]" :placeholder="'请选择'+i.label+'...'">
 									<Option v-for = '(item,index) in v.dictUtil.getByCode(v,i.dict)' :value="item.key">{{item.val}}</Option>
 								</Select>
-								<Select v-if="i.type === 'foreignKey'" filterable clearable  v-model="formItem[i.prop]" :placeholder="'请选择'+i.label+'...'">
+								<Select v-if="i.type === 'foreignKey'" :disabled="i.disabled" filterable clearable  v-model="formItem[i.prop]" :placeholder="'请选择'+i.label+'...'">
 									<Option v-for = '(item,index) in foreignList[i.prop].items' :value="item.key">{{item.val}}</Option>
 								</Select>
 							</FormItem>
@@ -56,7 +56,7 @@
                     {label:'油料类型',prop:'ylYllx',type:'dict',dict:'yllx'},
                     {label:'油料容量',prop:'ylYlrs'},
                     {label:'金额',prop:'ylJe'},
-                    {label:'车辆',prop:'vId',type:'foreignKey'},
+                    {label:'车辆',prop:'vId',type:'foreignKey',disabled:true},
                     {label:'备注',prop:'ylBz'},
                 ],
                 ruleInline:{

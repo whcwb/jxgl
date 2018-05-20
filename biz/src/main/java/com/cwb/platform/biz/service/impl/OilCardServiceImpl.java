@@ -34,6 +34,7 @@ public class OilCardServiceImpl extends BaseServiceImpl<BizOilCard,String> imple
 
     @Override
     public ApiResponse<String> beforeSave(BizOilCard entity) {
+        RuntimeCheck.ifTrue(ifExists(BizOilCard.InnerColumn.ykId.name(),entity.getYkId()),"卡号已存在");
         entity.setCreateTime(DateUtils.getNowTime());
         return ApiResponse.saveSuccess();
     }
