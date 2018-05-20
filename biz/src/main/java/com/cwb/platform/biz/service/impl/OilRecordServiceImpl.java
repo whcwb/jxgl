@@ -2,6 +2,7 @@ package com.cwb.platform.biz.service.impl;
 
 import com.cwb.platform.biz.model.BizOilCard;
 import com.cwb.platform.biz.model.BizVehicle;
+import com.cwb.platform.biz.service.OilCardService;
 import com.cwb.platform.biz.service.VehicleService;
 import com.cwb.platform.sys.base.BaseServiceImpl;
 import com.cwb.platform.biz.mapper.BizOilRecordMapper;
@@ -29,6 +30,8 @@ public class OilRecordServiceImpl extends BaseServiceImpl<BizOilRecord,String> i
     private BizOilRecordMapper entityMapper;
     @Autowired
     private VehicleService vehicleService;
+    @Autowired
+    private OilCardService oilCardService;
 
     @Override
     protected Mapper<BizOilRecord> getBaseMapper() {
@@ -52,6 +55,7 @@ public class OilRecordServiceImpl extends BaseServiceImpl<BizOilRecord,String> i
         entity.setvHphm(car.getvHphm());
         save(entity);
         vehicleService.fuel(entity);
+        oilCardService.fuel(entity);
         return ApiResponse.saveSuccess();
     }
 

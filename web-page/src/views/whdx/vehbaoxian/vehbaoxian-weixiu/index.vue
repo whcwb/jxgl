@@ -8,6 +8,10 @@
 				<label class="searchLabel">{{r.title}}:</label>
 				<Input v-model="form[r.searchKey]" :placeholder="'请输入'+r.title" style="width: 200px"></Input>
 			</div>
+			<div style="display: inline-block">
+				<label class="searchLabel">最后一次维修时间:</label>
+				<DatePicker v-model="dateRange" @on-ok="form.lastRepairTimeInRange = v.util.dateRangeChange(dateRange)" confirm format="yyyy-MM-dd" type="daterange" placeholder="请输时间" style="width: 200px"></DatePicker>
+			</div>
 			<Button type="primary" @click="v.util.getPageData(v)">
 				<Icon type="search"></Icon>
 			</Button>
@@ -28,10 +32,11 @@
 
 <script>
     import formData from './formData.vue'
+    import history from './history.vue'
 
     export default {
         name: 'wxjlTable',
-        components: {formData},
+        components: {formData,history},
         data() {
             return {
                 v:this,
@@ -40,10 +45,10 @@
                 tableHeight: 220,
                 componentName: '',
                 choosedItem: null,
+                dateRange:'',
                 tableColumns: [
                     {title: "序号", width: 70, type: 'index'},
-                    {title: '车辆id',key:'vId'},
-                    {title: '车牌号码',key:'vHphm'},
+                    {title: '车牌号码',key:'vHphm',searchKey:'vHphmLike'},
                     {title: '最后一次维修时间',key:'lastRepairTime'},
                     {title: '最后一次维修项目',key:'lastRepairProject'},
                     {title: '最后一次应付维护费用',key:'lastRepairMoney'},
@@ -54,17 +59,24 @@
                         title: '操作',
                         key: 'action',
                         width: 120,
-                        fixed: 'right',
                         render: (h, params) => {
                             return h('div', [
-                                this.util.buildEditButton(this,h,params),
-                                this.util.buildDeleteButton(this,h,params.row.id),
+                                this.util.buildButton(this,h,'info','wrench','维修',()=>{
+                                    this.choosedItem = params.row;
+                                    this.componentName = 'formData'
+                                }),
+                                this.util.buildButton(this,h,'success','compose','历史记录',()=>{
+                                    this.choosedItem = params.row;
+                                    this.componentName = 'history'
+                                }),
                             ]);
                         }
                     }
                 ],
                 pageData: [],
                 form: {
+                    lastRepairTimeInRange:'',
+                    orderBy:'lastRepairTime desc',
                     total: 0,
                     pageNum: 1,
                     pageSize: 8,

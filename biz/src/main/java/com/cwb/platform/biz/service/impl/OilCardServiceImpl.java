@@ -1,5 +1,6 @@
 package com.cwb.platform.biz.service.impl;
 
+import com.cwb.platform.biz.model.BizOilRecord;
 import com.cwb.platform.biz.service.OilRecordService;
 import com.cwb.platform.sys.base.BaseServiceImpl;
 import com.cwb.platform.biz.mapper.BizOilCardMapper;
@@ -48,5 +49,16 @@ public class OilCardServiceImpl extends BaseServiceImpl<BizOilCard,String> imple
         entityMapper.updateByPrimaryKeySelective(card);
         cardRecordService.chargeLog(card,new BigDecimal(amount));
         return ApiResponse.success();
+    }
+
+    @Override
+    public void fuel(BizOilRecord record) {
+        RuntimeCheck.ifBlank(record.getYkId(),"油卡不存在");
+        BizOilCard card = findById(record.getYkId());
+        card.setYkId(record.getYkId());
+        card.setYkZshphm(record.getvHphm());
+        card.setYkZsyksj(record.getCreateTime());
+        card.setYkYe(card.getYkYe().subtract(record.getYlJe()));
+        entityMapper.updateByPrimaryKeySelective(card);
     }
 }

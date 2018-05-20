@@ -6,6 +6,7 @@ import com.cwb.platform.biz.mapper.BizMaintainMapper;
 import com.cwb.platform.biz.model.BizMaintain;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.biz.service.MaintainService;
+import com.cwb.platform.util.commonUtil.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.common.Mapper;
@@ -30,6 +31,8 @@ public class MaintainServiceImpl extends BaseServiceImpl<BizMaintain,String> imp
     @Override
     public ApiResponse<String> validAndSave(BizMaintain entity) {
         entity.setBydId(genId());
+        entity.setCreateTime(DateUtils.getNowTime());
+        entity.setCreateUser(getOperateUser());
         save(entity);
         maintainInfoService.maintain(entity);
         return ApiResponse.saveSuccess();

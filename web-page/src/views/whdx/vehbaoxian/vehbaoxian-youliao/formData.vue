@@ -44,7 +44,7 @@
 		data() {
 			return {
 			    v:this,
-                operate:'新建',
+                operate:'加油',
 				showModal: true,
 				saveUrl:this.apis.oilRecord.ADD,
 				readonly: false,
@@ -53,7 +53,7 @@
 				},
                 formInputs:[
                     {label:'油卡卡号',prop:'ykId',type:'foreignKey'},
-                    {label:'油料类型',prop:'ylYllx',type:'dict'},
+                    {label:'油料类型',prop:'ylYllx',type:'dict',dict:'yllx'},
                     {label:'油料容量',prop:'ylYlrs'},
                     {label:'金额',prop:'ylJe'},
                     {label:'车辆',prop:'vId',type:'foreignKey'},

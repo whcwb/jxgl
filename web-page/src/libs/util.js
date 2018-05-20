@@ -16,8 +16,12 @@ util.fillTableColumns = (v)=>{
         if (r.title === '序号')continue;
         if (!r.render){
             r.render = (h,p)=>{
-                let s  = p.row[r.key] ? p.row[r.key] : '-';
-                if (r.unit && p.row[r.key])s += r.unit;
+                let val = p.row[r.key];
+                let s  = val ? val : '-';
+                if (r.dict  && val){
+                    s = dictUtil.getValByCode(v,r.dict,p.row[r.key]);
+                }
+                if (r.unit && val)s += r.unit;
                 return h('div',s);
             }
         }
@@ -31,7 +35,7 @@ util.buildDeleteButton = (v,h,id)=>{
     })
 }
 util.buildEditButton = (v,h,p)=>{
-    return util.buildButton(v,h,'success','edit','编辑',()=>{
+    return util.buildButton(v,h,'warning','edit','编辑',()=>{
         v.choosedItem = p.row;
         v.componentName = 'formData'
     })

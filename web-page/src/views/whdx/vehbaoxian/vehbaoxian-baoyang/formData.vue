@@ -18,7 +18,7 @@
 					<Row>
 						<Col v-for="i in formInputs" :span="i.span ? i.span : 12">
 						<FormItem :prop='i.prop' :label='i.label'>
-								<Input type="text" v-model="formItem[i.prop]" :placeholder="'请填写'+i.label+'...'"></Input>
+								<Input type="text" v-model="formItem[i.prop]" :placeholder="'请填写'+i.label+'...'" :disabled="readonly && i.readonly"></Input>
 							</FormItem>
 						</Col>
 					</Row>
@@ -38,18 +38,16 @@
 		data() {
 			return {
 			    v:this,
-                operate:'新建',
-				saveUrl:this.apis.repair.ADD,
+                operate:'保养',
+				saveUrl:this.apis.maintain.ADD,
 				showModal: true,
 				readonly: false,
 				formItem: {
 				},
                 formInputs:[
-                    {label:'车牌号码',prop:'vHphm'},
-                    {label:'维修项目',prop:'project'},
-                    {label:'应付维修金额',prop:'money'},
-                    {label:'保险抵扣金额',prop:'insuranceMoney'},
-                    {label:'维修实付金额',prop:'realMoney'},
+                    {label:'车牌号码',prop:'vHphm',readonly:true},
+                    {label:'车牌Id',prop:'vId',readonly:true},
+                    {label:'保养金额',prop:'bydByje'},
                 ],
                 ruleInline:{
 				}

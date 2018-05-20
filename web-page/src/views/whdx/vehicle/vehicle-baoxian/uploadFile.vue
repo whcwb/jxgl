@@ -18,7 +18,7 @@
 					<Row>
 						<Col span="24">
 						<FormItem label='车牌号'>
-							<Input v-else type="text" :value="hphmLabel" ></Input>
+							<Input type="text" :value="hphmLabel" ></Input>
 						</FormItem>
 						</Col>
 					</Row>
