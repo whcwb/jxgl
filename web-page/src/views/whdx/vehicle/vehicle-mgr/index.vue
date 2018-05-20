@@ -17,6 +17,11 @@
 					</Select>
 				</FormItem>
 			</Col>
+			<Col span="5">
+				<FormItem label="使用人">
+					<Input v-model="form.vLxrLike" placeholder="请输入使用人" ></Input>
+				</FormItem>
+			</Col>
 			<Col span="4" offset="1">
 				<Button type="primary" @click="v.util.getPageData(v)">
 					<Icon type="search"></Icon>
@@ -42,10 +47,12 @@
     import formData from './formData.vue'
 	//分配人员
     import allocPerson from './allocPerson.vue'
+    //证件查看
+    import showPhoto from './addlistfileImg.vue'
 
     export default {
         name: 'vehicleTable',
-        components: {formData, allocPerson},
+        components: {formData, allocPerson, showPhoto},
         data() {
             return {
                 v:this,
@@ -77,17 +84,27 @@
                     }},
                     {title: '车架号',key:'vCjh'},
                     {title: '发动机号',key:'vFdjh'},
-                    {title: '使用人',key:'vLxr'},
+                    {title: '使用人',key:'vLxr',render:(h, params)=>{
+                        let lxr = params.row.vLxr;
+
+                        if (lxr){
+                            lxr = lxr.split("-")[1];
+						}else{
+                            lxr = '-';
+						}
+                        return h('div', lxr);
+                    }},
                     {title: '使用人联系电话',key:'vLxdh'},
                     {
                         title: '操作',
                         key: 'action',
-                        width: 120,
+                        width: 160,
                         fixed: 'right',
                         render: (h, params) => {
                             return h('div', [
                                 this.util.buildEditButton(this,h,params),
                                 this.util.buildButton(this, h, 'info', 'person', '车辆分配', ()=>{this.toPerson(params)}),
+                                this.util.buildButton(this, h, 'info', 'ios-eye', '证件照片', ()=>{this.showImgFile(params)}),
                                 this.util.buildDeleteButton(this,h,params.row.vId),
                             ]);
                         }
@@ -119,7 +136,12 @@
 			toPerson(param){
                 this.choosedItem = param.row;
                 this.componentName = 'allocPerson';
-			}
+			},
+            //证件照片
+            showImgFile(param){
+                this.choosedItem = param.row;
+                this.componentName = 'showPhoto';
+            }
         }
     }
 </script>

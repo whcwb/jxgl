@@ -3,18 +3,28 @@
 </style>
 <template>
 	<div class="boxbackborder">
-		<Row style="padding-bottom: 16px;">
-			<div v-for="r in tableColumns" v-if="r.searchKey" style="display: inline-block">
-				<label class="searchLabel">{{r.title}}:</label>
-				<Input v-model="form[r.searchKey]" :placeholder="'请输入'+r.title" style="width: 200px"></Input>
-			</div>
-			<Button type="primary" @click="v.util.getPageData(v)">
-				<Icon type="search"></Icon>
-			</Button>
-			<Button type="primary" @click="v.util.add(v)">
-				<Icon type="plus-round"></Icon>
-			</Button>
+		<Form :label-width="100">
+		<Row justify="space-between">
+			<Col span="5">
+				<FormItem label="车牌号">
+					<Input v-model="form.vHphmLike" placeholder="请输入车牌号" ></Input>
+				</FormItem>
+			</Col>
+			<Col span="5">
+				<FormItem label="商业险保单编号">
+					<Input v-model="form.inBdh" placeholder="请输入商业险保单编号" ></Input>
+				</FormItem>
+			</Col>
+			<Col span="4" offset="1">
+				<Button type="primary" @click="v.util.getPageData(v)">
+					<Icon type="search"></Icon>
+				</Button>
+				<Button type="primary" @click="v.util.add(v)">
+					<Icon type="plus-round"></Icon>
+				</Button>
+			</Col>
 		</Row>
+		</Form>
 		<Row style="position: relative;">
 			<Table :height="tableHeight" :columns="tableColumns" :data="pageData"></Table>
 		</Row>
@@ -28,10 +38,11 @@
 
 <script>
     import formData from './formData.vue'
-
+	//文件上传
+    import uploadFile from './uploadFile.vue'
     export default {
         name: 'insuranceTable',
-        components: {formData},
+        components: {formData, uploadFile},
         data() {
             return {
                 v:this,
@@ -42,20 +53,33 @@
                 choosedItem: null,
                 tableColumns: [
                     {title: "序号", width: 60, type: 'index'},
-                    {title: '保单编号',key:'inBdh'},
-                    {title: '车辆ID',key:'vId'},
-                    {title: '车牌号码',key:'vHphm',searchKey:'vHphmLike'},
+                    {title: '车牌号码',key:'vHphm'},
+                    {title: '商业险保单号', width: 120,key:'inBdh'},
                     {title: '商业险保险公司',key:'inBxgs'},
-                    {title: '商业险保险电话',key:'inBxdh'},
                     {title: '商业险起保时间',key:'inQbrq'},
-                    {title: '商业险终保时间。根据起保时间自动推算一年',key:'inZbrq'},
+                    {title: '商业险终保时间',key:'inZbrq'},
                     {title: '商业险保险金额',key:'inBxje'},
-                    {title: '商业险险种。多个险种使用,分隔',key:'inXz'},
-                    {title: '交强险保单号',key:'inJqbdh'},
+                    {title: '商业险险种',key:'inXz',render:(h, params)=>{
+                        let val = $.map(this.dicts.bxsyxz.items, item => {
+                            if(params.row.inXz.indexOf(item.key) != -1) {
+                                return item.val;
+                            }
+                        });
+
+                        if (val.length > 0){
+                            let convertVal = $.map(val, item => {
+                                return item+",";
+                            });
+
+                            return convertVal;
+						}
+
+                        return val;
+                    }},
+                    {title: '交强险保单号', width: 120,key:'inJqbdh'},
                     {title: '交强险保险公司',key:'inJqbxgs'},
-                    {title: '交强险保险电话',key:'inJqbxdh'},
                     {title: '交强险起保时间',key:'inJqqbrq'},
-                    {title: '交强险终保时间。根据起保时间自动推算一年',key:'inJqzbrq'},
+                    {title: '交强险终保时间',key:'inJqzbrq'},
                     {title: '交强险保险金额',key:'inJqbxje'},
                     {
                         title: '操作',
@@ -65,6 +89,7 @@
                         render: (h, params) => {
                             return h('div', [
                                 this.util.buildEditButton(this,h,params),
+                                this.util.buildButton(this, h, 'info', 'ios-cloud-upload', '档案上传', ()=>{this.uploadFilePage(params)}),
                                 this.util.buildDeleteButton(this,h,params.row.inId),
                             ]);
                         }
@@ -76,15 +101,24 @@
                     pageNum: 1,
                     pageSize: 8,
                 },
+                dicts:{
+                    bxsyxz:{code:'BXSYXZ',items:[]},
+				}
             }
         },
         created() {
-            this.util.initTable(this)
+            this.util.initTable(this);
+            this.util.initDict(this);
         },
         methods: {
             pageChange(event) {
                 this.util.pageChange(this, event);
             },
+			//档案上传
+            uploadFilePage(param){
+				this.choosedItem = param.row;
+				this.componentName = 'uploadFile';
+			}
         }
     }
 </script>

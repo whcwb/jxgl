@@ -25,7 +25,8 @@ module.exports = {
         ADD:'/api/yh/save',
         CHANGE:'/api/yh/update',
         GIVE:'/api/js/modifyUserRoles',
-        DELE:'/api/yh/removeIds'
+        DELE:'/api/yh/removeIds',
+        SEARCHSOME:'/api/yh/query',//用户管理
     },
     ROLE:{
         QUERY:'/api/js/pager',//角色管理
@@ -92,9 +93,11 @@ module.exports = {
     },
     CAR:{
         QUERY:'api/car/pager',//车辆管理
+        SEARCHSOME:'/api/car/query',//指定条件查询数据
         ADD:'/api/car/save',
         CHANGE:'/api/car/update',
         DELE:'/api/car/removeIds',
+        ALLOCPERSON:'/api/car/allocPerson',
     },
     illegal:{
         QUERY:'api/illegal/pager',//违法管理

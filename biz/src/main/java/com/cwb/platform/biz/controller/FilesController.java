@@ -23,6 +23,8 @@ import com.cwb.platform.sys.base.BaseController;
 import com.cwb.platform.sys.base.BaseService;
 import com.cwb.platform.util.bean.ApiResponse;
 
+import tk.mybatis.mapper.entity.Example;
+
 /**
  * 通用文件管理
  */
@@ -50,13 +52,28 @@ public class FilesController extends BaseController<BizFiles, String> {
 	}
 	
 	/**
+	 * 根据pId和档案类型查询文件信息
+	 * @param pId
+	 * @param vfDamc
+	 * @return
+	 */
+	@RequestMapping(value = "/findByPId/{pId}/{vfDamc}", method = RequestMethod.GET)
+	public ApiResponse<List<BizFiles>> findByPIdAndDamc(@PathVariable("pId")String pId, @PathVariable("vfDamc")String vfDamc){
+		Example condition = new Example(BizFiles.class);
+		condition.and().andEqualTo(BizFiles.InnerColumn.pId.name(), pId);
+		condition.and().andEqualTo(BizFiles.InnerColumn.vfDamc.name(), vfDamc);
+		condition.setOrderByClause(BizFiles.InnerColumn.createTime.asc());
+		return ApiResponse.success(this.filesService.findByConditionParam(condition));
+	}
+	
+	/**
 	 * 通用文件上传
 	 * @param file
 	 * @param targetPath
 	 * @return
 	 */
 	@RequestMapping(value="/upload/{pId}/{pZtlx}/{vfDamc}", method = RequestMethod.POST)
-	public ApiResponse<String> uploadFile(@PathVariable("pId")String pId, @PathVariable("pZtlx")String pZtlx, @PathVariable("vfDamc")String vfDamc, @RequestParam("file") MultipartFile file, String targetPath) {
+	public ApiResponse<String> uploadFile(@PathVariable("pId")String pId, @PathVariable("pZtlx")String pZtlx, @PathVariable("vfDamc")String vfDamc, @RequestParam("file") MultipartFile file, String targetPath,@RequestParam(name="batch", required=false) String batch) {
 		if (StringUtils.isEmpty(targetPath)) targetPath = "temp";
 		targetPath = targetPath + File.separator + DateTime.now().toString("yyyy-MM-dd") + File.separator;
 		String fileName = file.getOriginalFilename();
@@ -80,7 +97,7 @@ public class FilesController extends BaseController<BizFiles, String> {
 		files.setVfDamc(vfDamc);
 		files.setVfLocPath(locFile.getAbsolutePath());
 		files.setVfNetPath(path);
-		this.filesService.saveEntity(files);
+		this.filesService.saveEntity(files, batch);
 		return ApiResponse.success(path);
 	}
 }

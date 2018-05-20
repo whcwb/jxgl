@@ -185,27 +185,38 @@ util.add = (v)=>{
 util.save = function(v){
     // 根据状态自动判断调用新增接口还是修改接口
     let url = v.saveUrl ? v.saveUrl : (v.$parent.choosedItem ? v.apiRoot['CHANGE'] : v.apiRoot['ADD']);
-    v.$refs.form.validate((valid) => {
-        if (valid) {
-            if (typeof v.beforeSave === 'function'){
-                // 执行save方法之前的操作
-                v.beforeSave();
-            }
-            v.$http.post(url,v.formItem).then((res) =>{
-                if(res.code===200){
-                    v.$Message.success(res.message);
-                    util.getPageData(v.$parent)
-                    v.$parent.componentName = ''
-                }else{
-                    v.$Message.error(res.message);
-                }
-            }).catch((error) =>{
-                log(error)
-            })
-        } else {
-            v.$Message.error('请将信息填写完整!');
+    let rules = v.$refs.form.rules;
+
+    function sendSave(){
+        if (typeof v.beforeSave === 'function'){
+            // 执行save方法之前的操作
+            v.beforeSave();
         }
-    })
+        v.$http.post(url,v.formItem).then((res) =>{
+            if(res.code===200){
+                v.$Message.success(res.message);
+                util.getPageData(v.$parent)
+                v.$parent.componentName = ''
+            }else{
+                v.$Message.error(res.message);
+            }
+        }).catch((error) =>{
+            log(error)
+        })
+    }
+
+    if (Object.keys(rules).length == 0){
+        sendSave();
+    }else{
+        v.$refs.form.validate((valid) => {
+            console.log("验证内容："+valid)
+            if (valid) {
+                sendSave();
+            } else {
+                v.$Message.error('请将信息填写完整!');
+            }
+        })
+    }
 }
 
 

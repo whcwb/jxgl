@@ -6,7 +6,7 @@
 </style>
 <template>
 	<div>
-		<Modal v-model="showModal" width='900' :closable='false'
+		<Modal v-model="showModal" width='800' :closable='false'
 			   :mask-closable="false" :title="operate+'车辆'">
 			<div style="overflow: auto;height: 360px;">
 				<Form
@@ -81,11 +81,11 @@
                     vSyxz:''
                 },
                 formInputs:[
-                    {label:'所有人',prop:'vSyl'},
                     {label:'车辆品牌',prop:'vClph'},
                     {label:'车辆型号',prop:'vCllx'},
                     {label:'车架号',prop:'vCjh'},
                     {label:'发动机号',prop:'vFdjh'},
+                    {label:'所有人',prop:'vSyl'},
                 ],
                 ruleInline:{
                     hphm: [

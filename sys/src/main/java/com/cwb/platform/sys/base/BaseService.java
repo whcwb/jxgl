@@ -1,13 +1,14 @@
 package com.cwb.platform.sys.base;
 
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageInfo;
-import com.cwb.platform.util.bean.ApiResponse;
-import com.cwb.platform.util.bean.ExcelParams;
-import tk.mybatis.mapper.entity.Example;
-
 import java.io.Serializable;
 import java.util.List;
+
+import com.cwb.platform.util.bean.ApiResponse;
+import com.cwb.platform.util.bean.ExcelParams;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageInfo;
+
+import tk.mybatis.mapper.entity.Example;
 
 /**
  * 单表通用CURD Service类，业务Service直接继承该Service
@@ -56,6 +57,8 @@ public interface BaseService<T, PK extends Serializable> {
 	 * @return
 	 */
 	public List<T> findByCondition(Example condition);
+	
+	public List<T> findByConditionParam(Example condition);
 
 	/**
 	 * 查询表数据总数

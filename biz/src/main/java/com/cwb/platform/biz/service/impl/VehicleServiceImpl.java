@@ -9,6 +9,8 @@ import com.cwb.platform.biz.model.BizRepairInfo;
 import com.cwb.platform.biz.model.BizVehicle;
 import com.cwb.platform.biz.service.VehicleService;
 import com.cwb.platform.sys.base.BaseServiceImpl;
+import com.cwb.platform.sys.model.SysYh;
+import com.cwb.platform.sys.service.YhService;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.commonUtil.DateUtils;
 import com.cwb.platform.util.exception.RuntimeCheck;
@@ -32,6 +34,8 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
     private BizMaintainInfoMapper maintainInfoMapper;
     @Autowired
     private BizRepairInfoMapper repairInfoMapper;
+    @Autowired
+    private YhService userService;
 
     @Override
     protected Mapper<BizVehicle> getBaseMapper() {
@@ -215,4 +219,24 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
         car.setLastFuelTime(DateUtils.getNowTime());
         entityMapper.updateByPrimaryKeySelective(car);
     }
+
+	@Override
+	public ApiResponse<String> allocPerson(BizVehicle entity) {
+		if (StringUtils.isNotBlank(entity.getvLxr())){
+			//查看用户信息是否存在
+			String[] lxrxx = entity.getvLxr().split("-");
+			SysYh user = this.userService.findById(lxrxx[0]);
+			RuntimeCheck.ifNull(user, "使用人信息不存在");
+			
+			entity.setvLxr(user.getYhid()+"-"+user.getXm());
+			entity.setvLxdh(user.getSjh());
+		}else{
+			entity.setvLxdh("");
+		}
+		
+		entity.setUpdateTime(DateUtils.getNowTime());
+        entity.setUpdateUser(getOperateUser());
+        update(entity);
+		return ApiResponse.saveSuccess();
+	}
 }
