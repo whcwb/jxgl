@@ -3,18 +3,28 @@
 </style>
 <template>
 	<div class="boxbackborder">
-		<Row style="padding-bottom: 16px;">
-			<div v-for="r in tableColumns" v-if="r.searchKey" style="display: inline-block">
-				<label class="searchLabel">{{r.title}}:</label>
-				<Input v-model="form[r.searchKey]" :placeholder="'请输入'+r.title" style="width: 200px"></Input>
-			</div>
-			<Button type="primary" @click="v.util.getPageData(v)">
-				<Icon type="search"></Icon>
-			</Button>
-			<Button type="primary" @click="v.util.add(v)">
-				<Icon type="plus-round"></Icon>
-			</Button>
-		</Row>
+		<Form :label-width="100">
+			<Row justify="space-between">
+				<Col span="5">
+				<FormItem label="车牌号">
+					<Input v-model="form.vHphmLike" placeholder="请输入车牌号" ></Input>
+				</FormItem>
+				</Col>
+				<Col span="5">
+				<FormItem label="商业险保单编号">
+					<Input v-model="form.inBdh" placeholder="请输入商业险保单编号" ></Input>
+				</FormItem>
+				</Col>
+				<Col span="4" offset="1">
+				<Button type="primary" @click="v.util.getPageData(v)">
+					<Icon type="search"></Icon>
+				</Button>
+				<Button type="primary" @click="v.util.add(v)">
+					<Icon type="plus-round"></Icon>
+				</Button>
+				</Col>
+			</Row>
+		</Form>
 		<Row style="position: relative;">
 			<Table :height="tableHeight" :columns="tableColumns" :data="pageData"></Table>
 		</Row>

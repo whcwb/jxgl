@@ -16,65 +16,88 @@
 						:label-width="100"
 						:styles="{top: '20px'}">
 					<Row>
-						<Col span="24">
-						<FormItem label='车牌号'>
-							<Input v-else type="text" :value="hphmLabel" ></Input>
-						</FormItem>
+						<Col span="12">
+							<Card>
+								<p slot="title">
+									[{{formItem.vHphm}}]商业险
+								</p>
+								<FormItem label='保单编号'>
+									<Input type="text" :value="formItem.inBdh" disabled></Input>
+								</FormItem>
+								<FormItem label='承保公司'>
+									<Input type="text" :value="formItem.inBxgs" disabled></Input>
+								</FormItem>
+								<FormItem label='保险有效期'>
+									<Input type="text" :value="formItem.inQbrq+'至'+formItem.inZbrq" disabled></Input>
+								</FormItem>
+								<FormItem label='保险金额'>
+									<Input type="text" :value="formItem.inBxje" disabled></Input>
+								</FormItem>
+							</Card>
+						</Col>
+						<Col span="12">
+							<Card>
+								<p slot="title">
+									[{{formItem.vHphm}}]交强险
+								</p>
+								<FormItem label='保单编号'>
+									<Input type="text" :value="formItem.inJqbdh" disabled></Input>
+								</FormItem>
+								<FormItem label='承保公司'>
+									<Input type="text" :value="formItem.inJqbxgs" disabled></Input>
+								</FormItem>
+								<FormItem label='保险有效期'>
+									<Input type="text" :value="formItem.inJqqbrq+'至'+formItem.inJqzbrq" disabled></Input>
+								</FormItem>
+								<FormItem label='保险金额'>
+									<Input type="text" :value="formItem.inJqbxje" disabled></Input>
+								</FormItem>
+							</Card>
 						</Col>
 					</Row>
 					<Row>
-						<Col v-for="i in formInputs" :span="i.span ? i.span : 12">
-							<FormItem :prop='i.prop' :label='i.label'>
-								<Select v-if="i.type == 'dict-multiple'" multiple filterable clearable  v-model="formItem[i.prop]" :placeholder="'请选择'+i.label+'...'">
-									<Option v-for = '(item,index) in dicts[i.dict].items' :value="item.key" :key="item.val">{{item.val}}</Option>
-								</Select>
-								<Select v-else-if="i.type == 'dict'" filterable clearable  v-model="formItem[i.prop]" :placeholder="'请选择'+i.label+'...'">
-									<Option v-for = '(item,index) in dicts[i.dict].items' :value="item.key+'-'+item.val">{{item.val}}</Option>
-								</Select>
-								<DatePicker v-else-if="i.type == 'date'" :placement="i.placement" :value="formItem[i.prop]" type="date" placeholder="请选择日期" @on-change="(date)=>{formItem[i.prop] = date}"></DatePicker>
-								<Input v-else type="text" v-model="formItem[i.prop]" :placeholder="'请填写'+i.label+'...'"></Input>
-							</FormItem>
-						</Col>
-					</Row>
-					<Row>
 						<Col span="24">
-						<div class="demo-upload-list" v-for="item in uploadList">
-							<template v-if="item.status === 'finished'">
-								<img :src="item.url">
-								<div class="demo-upload-list-cover">
-									<Icon type="ios-eye-outline" @click.native="handleView(item.url)"></Icon>
-									<Icon type="ios-trash-outline" @click.native="handleRemove(item)"></Icon>
+							<Card>
+								<p slot="title">
+									[{{formItem.vHphm}}]保险档案文件
+								</p>
+								<div class="demo-upload-list" v-for="item in uploadList">
+									<template v-if="item.status === 'finished'">
+										<img :src="item.url">
+										<div class="demo-upload-list-cover">
+											<Icon type="ios-eye-outline" size="20" @click.native="handleView(item.url)"></Icon>
+											<Icon type="ios-trash-outline" size="20" @click.native="handleRemove(item)"></Icon>
+										</div>
+									</template>
+									<template v-else>
+										<Progress v-if="item.showProgress" :percent="item.percentage" hide-info></Progress>
+									</template>
 								</div>
-							</template>
-							<template v-else>
-								<Progress v-if="item.showProgress" :percent="item.percentage" hide-info></Progress>
-							</template>
-						</div>
-						<Upload
-								ref="upload"
-								:headers="{'userid':curUser.userId, 'token':curUser.token}"
-								:show-upload-list="false"
-								:default-file-list="defaultList"
-								:on-success="handleSuccess"
-								:format="['jpg','jpeg','png']"
-								:max-size="2048"
-								:on-format-error="handleFormatError"
-								:on-exceeded-size="handleMaxSize"
-								multiple
-								type="drag"
-								:action="uploadUrl+'/'+formItem.vId+'/30/insuranceFile?targetPath=insuranceFile&batch=true'"
-								style="display: inline-block;width:58px;">
-							<div style="width: 58px;height:58px;line-height: 58px;">
-								<Icon type="camera" size="20"></Icon>
-							</div>
-						</Upload>
+								<Upload
+										ref="upload"
+										:headers="{'userid':curUser.userId, 'token':curUser.token}"
+										:show-upload-list="false"
+										:default-file-list="defaultList"
+										:on-success="handleSuccess"
+										:format="['jpg','jpeg','png']"
+										:max-size="2048"
+										:on-format-error="handleFormatError"
+										:on-exceeded-size="handleMaxSize"
+										multiple
+										type="drag"
+										:action="uploadUrl+'/'+formItem.inId+'/30/insuranceFile?targetPath=insuranceFile&batch=true'"
+										style="display: inline-block;width:58px;">
+									<div style="width:58px;height:58px;line-height: 58px;">
+										<Icon type="camera"></Icon>
+									</div>
+								</Upload>
+							</Card>
 						</Col>
 					</Row>
 				</Form>
 			</div>
 			<div slot='footer'>
 				<Button type="ghost" @click="v.util.closeDialog(v)">取消</Button>
-				<Button type="primary" @click="v.util.save(v)">确定</Button>
 			</div>
 		</Modal>
 		<Modal title="图片预览" v-model="visible">
@@ -85,15 +108,12 @@
 </template>
 
 <script>
+    import Cookies from 'js-cookie';
 	export default {
 		name: 'insuranceForm',
 		data() {
 			return {
 			    v:this,
-                remoteLoading: false,
-                remoteOptions:[],
-                operate:'新建',
-                hphmLabel:'',
 				showModal: true,
 				readonly: false,
 				formItem: {
@@ -131,16 +151,13 @@
             this.util.initDict(this);
 		},
         mounted(){
-            this.loadDetail();
-
-            if (this.$parent.chooseItem){
-                this.curUser = JSON.parse(Cookies.get('result')).accessToken;
-                this.loadPhoto();
-			}
+			this.curUser = JSON.parse(Cookies.get('result')).accessToken;
+			this.loadPhoto();
         },
 		methods: {
+            //加载已经上传的档案
             loadPhoto(){
-                this.$http.get(this.apis.FILE.FINDBYPID + "/" + this.formItem.vId + "/vehOtherFile").then((res) =>{
+                this.$http.get(this.apis.FILE.FINDBYPID + "/" + this.formItem.inId + "/insuranceFile").then((res) =>{
                     if (res.code == 200){
                         for (let item of res.result){
                             this.uploadList.push({
@@ -154,22 +171,6 @@
 
                 this.uploadList = this.$refs.upload.fileList;
             },
-            //查看已存在的信息详情。修改时加载显示
-            loadDetail(){
-                if (this.formItem.vHphm){
-                    this.hphmLabel = this.formItem.vHphm;
-                    this.formItem.vHphm = this.formItem.vId;
-                }
-                if (this.formItem.inBxgs){
-                    this.formItem.inBxgs = this.formItem.inBxdh + "-" + this.formItem.inBxgs;
-                }
-                if (this.formItem.inJqbxgs){
-                    this.formItem.inJqbxgs = this.formItem.inJqbxdh + "-" + this.formItem.inJqbxgs;
-                }
-                if (this.formItem.inXz){
-                    this.formItem.inXz = this.formItem.inXz.split(",");
-                }
-			},
             handleView (url) {
                 this.imgUrl = url;
                 this.visible = true;
@@ -203,6 +204,41 @@
 	}
 </script>
 
-<style>
-
+<style scoped>
+	.demo-upload-list{
+		display: inline-block;
+		width: 120px;
+		height: 100px;
+		text-align: center;
+		line-height: 100px;
+		border: 1px solid transparent;
+		border-radius: 4px;
+		overflow: hidden;
+		background: #fff;
+		position: relative;
+		box-shadow: 0 1px 1px rgba(0,0,0,.2);
+		margin-right: 4px;
+	}
+	.demo-upload-list img{
+		width: 100%;
+		height: 100%;
+	}
+	.demo-upload-list-cover{
+		display: none;
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		background: rgba(0,0,0,.6);
+	}
+	.demo-upload-list:hover .demo-upload-list-cover{
+		display: block;
+	}
+	.demo-upload-list-cover i{
+		color: #fff;
+		font-size: 20px;
+		cursor: pointer;
+		margin: 0 8px;
+	}
 </style>
