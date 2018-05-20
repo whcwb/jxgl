@@ -18,11 +18,11 @@
 					<Row>
 						<Col v-for="i in formInputs" :span="i.span ? i.span : 12">
 							<FormItem :prop='i.prop' :label='i.label'>
-								<Input v-if="!i.type || i.type =='text'" type="text" v-model="formItem[i.prop]" :placeholder="'请填写'+i.label+'...'"></Input>
-								<Select v-if="i.type == 'dict'" filterable clearable  v-model="formItem[i.prop]" :placeholder="'请选择'+i.label+'...'">
-									<Option v-for = '(item,index) in dicts[i.prop].items' :value="item.key">{{item.val}}</Option>
+								<Input v-if="!i.type || i.type ==='text'" type="text" v-model="formItem[i.prop]" :placeholder="'请填写'+i.label+'...'"></Input>
+								<Select v-if="i.type === 'dict'" filterable clearable  v-model="formItem[i.prop]" :placeholder="'请选择'+i.label+'...'">
+									<Option v-for = '(item,index) in v.dictUtil.getByCode(v,i.dict)' :value="item.key">{{item.val}}</Option>
 								</Select>
-								<Select v-if="i.type == 'foreignKey'" filterable clearable  v-model="formItem[i.prop]" :placeholder="'请选择'+i.label+'...'">
+								<Select v-if="i.type === 'foreignKey'" filterable clearable  v-model="formItem[i.prop]" :placeholder="'请选择'+i.label+'...'">
 									<Option v-for = '(item,index) in foreignList[i.prop].items' :value="item.key">{{item.val}}</Option>
 								</Select>
 							</FormItem>
@@ -60,10 +60,6 @@
                     {label:'备注',prop:'ylBz'},
                 ],
                 ruleInline:{
-				},
-				dicts:{
-                    ylYllx:{code:'yllx',items:[]},
-                    ylCzlx:{code:'ylCzlx',items:[]},
 				},
 				foreignList:{
                     ykId:{url:this.apis.OIL_CARD.QUERY,key:'ykId',val:'ykId',items:[]},
