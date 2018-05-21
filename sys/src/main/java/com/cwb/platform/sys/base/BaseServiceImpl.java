@@ -461,7 +461,12 @@ public abstract class BaseServiceImpl<T, PK extends Serializable> implements Bas
         for (PK id : ids) {
             getBaseMapper().deleteByPrimaryKey(id);
         }
+        afterRemove(ids);
         return ApiResponse.deleteSuccess();
+    }
+
+    public void afterRemove(PK[] ids){
+
     }
 
     @Override

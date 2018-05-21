@@ -7,20 +7,16 @@
 <template>
 	<div>
 		<Modal v-model="showModal" width='900' :closable='false'
-			:mask-closable="false" :title="operate+''">
+			:mask-closable="false" title="出车申请">
 			<div style="overflow: auto;height: 500px;">
 				<Form
 						ref="form"
 						:model="formItem"
 						:rules="ruleInline"
-						:label-width="100"
+						:label-width="120"
 						:styles="{top: '20px'}">
 					<Row>
-						<Col v-for="i in formInputs" :span="i.span ? i.span : 12">
-						<FormItem :prop='i.prop' :label='i.label'>
-								<Input type="text" v-model="formItem[i.prop]" :placeholder="'请填写'+i.label+'...'"></Input>
-							</FormItem>
-						</Col>
+						<form-items :parent="v"></form-items>
 					</Row>
 				</Form>
 			</div>
@@ -33,8 +29,10 @@
 </template>
 
 <script>
+	import formItems from '../../components/formItems'
 	export default {
 		name: 'usecarForm',
+		components:{formItems},
 		data() {
 			return {
 			    v:this,
@@ -42,30 +40,47 @@
 				showModal: true,
 				readonly: false,
 				formItem: {
+                    ucCclcs:'',
 				},
                 formInputs:[
-                    {label:'车牌id',prop:'vId'},
+                    {label:'车辆',prop:'vId',type:'foreignKey',required:true},
                     {label:'违法编号',prop:'wfId',required:true},
-                    {label:'车牌号码',prop:'vHphm'},
-                    {label:'出车时间',prop:'ucCcsj'},
-                    {label:'出车事由',prop:'ucCcsy'},
-                    {label:'违法编号',prop:'wfId',required:true},
-                    {label:'借用人id',prop:'ucJyrid'},
-                    {label:'借用人',prop:'ucJyr'},
-                    {label:'预计还车时间',prop:'ucYjhcsj'},
-                    {label:'违法编号',prop:'wfId',required:true},
-                    {label:'出车前里程数',prop:'ucCclcs'},
-                    {label:'还车里程数',prop:'unHclcs'},
-                    {label:'备注',prop:'ucBz'},
+                    {label:'出车时间',prop:'ucCcsj',type:'date',required:true},
+                    {label:'预计还车时间',prop:'ucYjhcsj',type:'date',required:true},
+                    {label:'出车事由',prop:'ucCcsy',required:true},
+                    {label:'借用人',prop:'ucJyrid',type:'foreignKey',required:true},
+                    {label:'出车前里程数',prop:'ucCclcs',required:true},
                 ],
+                foreignList:{
+                    vId:{url:this.apis.CAR.notUseCarList,key:'vId',val:'vHphm',items:[]},
+                    ucJyrid:{url:this.apis.USER.QUERY,key:'yhid',val:'xm',items:[]},
+                },
                 ruleInline:{
 				}
+			}
+		},
+		computed:{
+            carNumber(){
+                return this.formItem.vId
+			}
+		},
+		watch:{
+			carNumber(o,n){
+                this.getLastReturnMileage();
 			}
 		},
 		created(){
 		    this.util.initFormModal(this);
 		},
 		methods: {
+            getLastReturnMileage(){
+                this.formItem.ucCclcs = '';
+				this.$http.get(this.apis.userCar.getLastReturnMileage+'?carId='+this.formItem.vId).then((res)=>{
+              		if (res.code === 200 && res.result){
+                        this.formItem.ucCclcs = res.result;
+					}
+				})
+			},
 		}
 	}
 </script>

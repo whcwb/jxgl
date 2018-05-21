@@ -2,18 +2,19 @@ package com.cwb.platform.biz.service.impl;
 
 import com.cwb.platform.biz.mapper.BizMaintainInfoMapper;
 import com.cwb.platform.biz.mapper.BizRepairInfoMapper;
+import com.cwb.platform.biz.mapper.BizUsecarMapper;
 import com.cwb.platform.biz.mapper.BizVehicleMapper;
-import com.cwb.platform.biz.model.BizMaintainInfo;
-import com.cwb.platform.biz.model.BizOilRecord;
-import com.cwb.platform.biz.model.BizRepairInfo;
-import com.cwb.platform.biz.model.BizVehicle;
+import com.cwb.platform.biz.model.*;
+import com.cwb.platform.biz.service.UsecarService;
 import com.cwb.platform.biz.service.VehicleService;
 import com.cwb.platform.sys.base.BaseServiceImpl;
 import com.cwb.platform.sys.model.SysYh;
 import com.cwb.platform.sys.service.YhService;
 import com.cwb.platform.util.bean.ApiResponse;
+import com.cwb.platform.util.bean.SimpleCondition;
 import com.cwb.platform.util.commonUtil.DateUtils;
 import com.cwb.platform.util.exception.RuntimeCheck;
+import javafx.beans.property.SimpleListProperty;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
@@ -24,9 +25,11 @@ import tk.mybatis.mapper.common.Mapper;
 import tk.mybatis.mapper.entity.Example;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> implements VehicleService{
@@ -36,6 +39,8 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
     private BizMaintainInfoMapper maintainInfoMapper;
     @Autowired
     private BizRepairInfoMapper repairInfoMapper;
+    @Autowired
+    private UsecarService usecarService;
     @Autowired
     private YhService userService;
 
@@ -316,4 +321,31 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
         update(entity);
 		return ApiResponse.saveSuccess();
 	}
+
+    @Override
+    public ApiResponse<List<BizVehicle>> notUseCarList() {
+        SimpleCondition condition = getQueryCondition();
+        List<BizVehicle> cars = findByCondition(condition);
+        List<BizUsecar> usecars = usecarService.getNotReturnList();
+        if (usecars.size() != 0){
+            List<String> excludeCarIds = usecars.stream().map(BizUsecar::getvId).collect(Collectors.toList());
+            cars = cars.stream().filter(p->excludeCarIds.contains(p.getvId())).collect(Collectors.toList());
+        }
+        return ApiResponse.success(cars);
+    }
+
+    /**
+     * 车辆删除之后，删除与车辆相关联的最后一次维修记录，最后一次保养记录等
+     * @param ids
+     */
+	@Override
+    public void afterRemove(String[] ids){
+        SimpleCondition condition = new SimpleCondition(BizRepairInfo.class);
+        condition.in(BizRepairInfo.InnerColumn.vId, Arrays.asList(ids));
+        repairInfoMapper.deleteByExample(condition);
+
+        condition = new SimpleCondition(BizMaintainInfo.class);
+        condition.in(BizMaintainInfo.InnerColumn.vId,Arrays.asList(ids));
+        maintainInfoMapper.deleteByExample(condition);
+    }
 }

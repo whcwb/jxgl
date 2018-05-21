@@ -46,6 +46,7 @@ public class MaintainInfoServiceImpl extends BaseServiceImpl<BizMaintainInfo,Str
         List<BizMaintainInfo> maintainInfos = findEq(BizMaintainInfo.InnerColumn.vId,record.getvId());
         if (maintainInfos.size() == 0){
             info.setById(genId());
+            info.setvHphm(record.getvHphm());
             entityMapper.insertSelective(info);
         }else{
             info.setById(maintainInfos.get(0).getById());

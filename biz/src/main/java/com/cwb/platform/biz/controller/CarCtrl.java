@@ -12,6 +12,8 @@ import com.cwb.platform.sys.base.BaseController;
 import com.cwb.platform.sys.base.BaseService;
 import com.cwb.platform.util.bean.ApiResponse;
 
+import java.util.List;
+
 /**
  * 车辆管理业务处理
  * @author Lee
@@ -34,4 +36,13 @@ public class CarCtrl extends BaseController<BizVehicle,String> {
 	public ApiResponse<String> allocPerson(BizVehicle entity){
 		return this.vehicleService.allocPerson(entity);
 	}
+
+
+    /**
+     * 未借出车辆列表
+     */
+    @RequestMapping("notUseCarList")
+    public ApiResponse<List<BizVehicle>> notUseCarList(){
+        return vehicleService.notUseCarList();
+    }
 }

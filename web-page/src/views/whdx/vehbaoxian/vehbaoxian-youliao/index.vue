@@ -4,20 +4,10 @@
 <template>
 	<div class="boxbackborder">
 		<Row style="padding-bottom: 16px;">
-			<div v-for="r in tableColumns" v-if="r.searchKey" style="display: inline-block">
-				<label class="searchLabel">{{r.title}}:</label>
-				<Input v-model="form[r.searchKey]" :placeholder="'请输入'+r.title" style="width: 200px"></Input>
-			</div>
-			<div style="display: inline-block">
-				<label class="searchLabel">最后一次加油时间:</label>
-				<DatePicker v-model="dateRange" @on-ok="form.lastFuelTimeInRange = v.util.dateRangeChange(dateRange)" confirm format="yyyy-MM-dd" type="daterange" placeholder="请输时间" style="width: 200px"></DatePicker>
-			</div>
+			<search-items :parent="v"></search-items>
 			<Button type="primary" @click="v.util.getPageData(v)">
 				<Icon type="search"></Icon>
 			</Button>
-			<!--<Button type="primary" @click="v.util.add(v)">-->
-				<!--<Icon type="plus-round"></Icon>-->
-			<!--</Button>-->
 		</Row>
 		<Row style="position: relative;">
 			<Table :height="tableHeight" :columns="tableColumns" :data="pageData"></Table>
@@ -32,10 +22,11 @@
 
 <script>
     import formData from './formData.vue'
+    import searchItems from '../../components/searchItems'
 
     export default {
         name: 'vehicleTable',
-        components: {formData},
+        components: {formData,searchItems},
         data() {
             return {
                 v:this,
@@ -48,7 +39,7 @@
                 tableColumns: [
                     {title: "序号", width: 70, type: 'index'},
                     {title: '车牌号',key:'vHphm',searchKey:'vHphmLike'},
-                    {title: '最后一次加油时间',key:'lastFuelTime'},
+                    {title: '最后一次加油时间',key:'lastFuelTime',searchKey:'lastFuelTimeInRange',searchType:'daterange'},
                     {title: '最后一次加油金额',key:'lastFuelMoney',unit:'元'},
                     {title: '最后一次加油容量',key:'lastFuelCapacity',unit:'L'},
                     {

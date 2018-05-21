@@ -16,12 +16,7 @@
 						:label-width="100"
 						:styles="{top: '20px'}">
 					<Row>
-						<Col v-for="i in formInputs" :span="i.span ? i.span : 12">
-							<FormItem :prop='i.prop' :label='i.label'>
-								<Input type="text" v-model="formItem[i.prop]" :placeholder="'请填写'+i.label+'...'"
-									   :disabled="readonly && i.readonly"></Input>
-							</FormItem>
-						</Col>
+						<form-items :parent="v"></form-items>
 						<Col span="12">
 							<FormItem prop='money' label='应付维修金额'>
 								<Input type="text" v-model="formItem.money" placeholder="请填写应付维修金额..."
@@ -52,11 +47,12 @@
 </template>
 
 <script>
+	import formItems from '../../components/formItems'
 	export default {
 		name: 'wxjlForm',
+		components:{formItems},
 		data() {
 			return {
-			    w:window,
 			    v:this,
                 operate:'维修',
 				saveUrl:this.apis.repair.ADD,

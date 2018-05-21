@@ -98,6 +98,7 @@ util.rd = (h,p,k)=>{
     return h('div',s);
 }
 util.dateRangeChange = (s)=>{
+    if (s[0] == '')return '';
     return s[0].format("yyyy-MM-dd")+','+s[1].format("yyyy-MM-dd");
 }
 util.initTableHeight = (v)=>{
@@ -112,7 +113,8 @@ util.initForeignKeys = (v)=>{
     if (!v.foreignList)return;
     for (let k in v.foreignList){
         let r = v.foreignList[k];
-        v.$http.get(r.url+"?pageSize=10000").then((res) =>{
+        if (r.url.indexOf("/pager") > 0)r.url+="?pageSize=10000"
+        v.$http.get(r.url).then((res) =>{
             if(res.code===200){
                 let list = [];
                 r.items = [];
@@ -145,7 +147,10 @@ util.initTable = (v)=>{
 util.initPageSize = (v)=>{
     if (!v.form || !v.form.pageSize)return;
     let pageSize = Cookies.get("pageSize");
-    if (!pageSize)Cookies.set("pageSize",8);
+    if (!pageSize){
+        Cookies.set("pageSize",8);
+        pageSize = 8;
+    }
     pageSize = parseInt(pageSize);
     v.form.pageSize = pageSize;
 }

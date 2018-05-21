@@ -5,14 +5,7 @@
 <template>
 	<div class="boxbackborder">
 		<Row style="padding-bottom: 16px;">
-			<div v-for="r in tableColumns" v-if="r.searchKey" style="display: inline-block">
-				<label class="searchLabel">{{r.title}}:</label>
-				<Input v-model="form[r.searchKey]" :placeholder="'请输入'+r.title" style="width: 200px"></Input>
-			</div>
-			<div style="display: inline-block">
-				<label class="searchLabel">最后一次用卡时间:</label>
-				<DatePicker v-model="dateRange" @on-ok="form.ykZsyksjInRange = v.util.dateRangeChange(dateRange)" confirm format="yyyy-MM-dd" type="daterange" placeholder="请输时间" style="width: 200px"></DatePicker>
-			</div>
+			<search-items :parent="v"></search-items>
 			<Button type="primary" @click="v.util.getPageData(v)">
 				<Icon type="search"></Icon>
 			</Button>
@@ -37,10 +30,10 @@
     import formData from './formData.vue'
     import charge from './charge.vue'
     import record from './record.vue'
-
+    import searchItems from '../../components/searchItems'
     export default {
         name: 'oilCard',
-        components: {formData,charge,record},
+        components: {formData,charge,record,searchItems},
         data() {
             return {
                 v:this,
@@ -55,7 +48,7 @@
                     {title: '油卡卡号',key: 'ykId',searchKey:'ykIdLike'},
                     {title: '发卡公司',key: 'ykFkgs'},
                     {title: '卡余额',  key: 'ykYe',unit:'元'},
-                    {title: '最后一次用卡时间',  key: 'ykZsyksj'},
+                    {title: '最后一次用卡时间',  key: 'ykZsyksj',searchKey:'ykZsyksjInRange',searchType:'daterange'},
                     {title: '最后一次用卡车辆牌号',  key: 'ykZshphm',searchKey:'ykZshphmLike'},
                     {
                         title: '操作',

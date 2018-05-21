@@ -98,6 +98,7 @@ module.exports = {
         CHANGE:'/api/car/update',
         DELE:'/api/car/removeIds',
         ALLOCPERSON:'/api/car/allocPerson',
+        notUseCarList:'/api/car/notUseCarList',
     },
     illegal:{
         QUERY:'api/illegal/pager',//违法管理
@@ -128,6 +129,7 @@ module.exports = {
         ADD:'/api/userCar/save',
         CHANGE:'/api/userCar/update',
         DELE:'/api/userCar/removeIds',
+        getLastReturnMileage:'/api/userCar/getLastReturnMileage',
     },
     repair:{
         QUERY:'api/repair/pager',//维修管理
