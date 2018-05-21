@@ -49,10 +49,14 @@
     import allocPerson from './allocPerson.vue'
     //证件查看
     import showPhoto from './addlistfileImg.vue'
+    //车辆年审
+    import clnsForm from './clnsForm.vue'
+    //车辆详情
+    import clxqPage from './clxqPage.vue'
 
     export default {
         name: 'vehicleTable',
-        components: {formData, allocPerson, showPhoto},
+        components: {formData, allocPerson, showPhoto, clnsForm, clxqPage},
         data() {
             return {
                 v:this,
@@ -73,6 +77,22 @@
                         return val;
                     }},
                     {title: '注册登记日期',key:'vCcdjrq'},
+                    {title: '年审日期',width:180,key:'vNsrq',render:(h, params)=>{
+                        return h('Tooltip', {
+                            props: {
+                                trigger: 'hover',
+                                content: '暂不需要年审',
+                                placement: 'bottom'
+                            }
+                        },[
+                            h('Tag', {
+								props: {
+									type: 'dot',
+									color: 'green'
+								}
+                        	}, params.row.vNsrq)
+						]);
+                    }},
                     {title: '所有人',key:'vSyl'},
                     {title: '使用性质',key:'vSyxz',render:(h, params)=>{
                         let val = $.map(this.dicts.syxz.items, item => {
@@ -94,17 +114,19 @@
 						}
                         return h('div', lxr);
                     }},
-                    {title: '使用人联系电话',key:'vLxdh'},
                     {
                         title: '操作',
                         key: 'action',
-                        width: 160,
+                        width: 220,
                         fixed: 'right',
                         render: (h, params) => {
                             return h('div', [
                                 this.util.buildEditButton(this,h,params),
+                                this.util.buildButton(this, h, 'info', 'ios-list-outline', '车辆详情', ()=>{this.showClxqPage(params)}),
+                                this.util.buildButton(this, h, 'info', 'calendar', '车辆年审', ()=>{this.showNsPage(params)}),
                                 this.util.buildButton(this, h, 'info', 'person', '车辆分配', ()=>{this.toPerson(params)}),
                                 this.util.buildButton(this, h, 'info', 'ios-eye', '证件照片', ()=>{this.showImgFile(params)}),
+
                                 this.util.buildDeleteButton(this,h,params.row.vId),
                             ]);
                         }
@@ -141,6 +163,16 @@
             showImgFile(param){
                 this.choosedItem = param.row;
                 this.componentName = 'showPhoto';
+            },
+            //车辆年审界面
+            showNsPage(param){
+                this.choosedItem = param.row;
+                this.componentName = 'clnsForm';
+            },
+            //车辆详情
+            showClxqPage(param){
+                this.choosedItem = param.row;
+                this.componentName = 'clxqPage';
             }
         }
     }

@@ -40,8 +40,7 @@
                 tableColumns: [
                     {title: "序号", width: 70, type: 'index'},
                     {title: '金额',key:'ylJe',unit:'元'},
-                    {title: '操作时间',key:'ylCzsj'},
-                    {title: '备注',key:'ylBz'},
+                    {title: '操作时间',key:'createTime'},
                 ],
                 pageData: [],
                 form: {

@@ -1,11 +1,30 @@
 package com.cwb.platform.biz.service.impl;
 
+import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
+import org.joda.time.Years;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.cwb.platform.biz.mapper.BizMaintainInfoMapper;
 import com.cwb.platform.biz.mapper.BizRepairInfoMapper;
-import com.cwb.platform.biz.mapper.BizUsecarMapper;
 import com.cwb.platform.biz.mapper.BizVehicleMapper;
-import com.cwb.platform.biz.model.*;
+import com.cwb.platform.biz.model.BizMaintainInfo;
+import com.cwb.platform.biz.model.BizOilRecord;
+import com.cwb.platform.biz.model.BizRepairInfo;
+import com.cwb.platform.biz.model.BizUsecar;
+import com.cwb.platform.biz.model.BizVehLog;
+import com.cwb.platform.biz.model.BizVehicle;
 import com.cwb.platform.biz.service.UsecarService;
+import com.cwb.platform.biz.service.VehLogService;
 import com.cwb.platform.biz.service.VehicleService;
 import com.cwb.platform.sys.base.BaseServiceImpl;
 import com.cwb.platform.sys.model.SysYh;
@@ -14,22 +33,9 @@ import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.bean.SimpleCondition;
 import com.cwb.platform.util.commonUtil.DateUtils;
 import com.cwb.platform.util.exception.RuntimeCheck;
-import javafx.beans.property.SimpleListProperty;
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.joda.time.DateTime;
-import org.joda.time.Years;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+
 import tk.mybatis.mapper.common.Mapper;
 import tk.mybatis.mapper.entity.Example;
-
-import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> implements VehicleService{
@@ -43,6 +49,8 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
     private UsecarService usecarService;
     @Autowired
     private YhService userService;
+    @Autowired
+    private VehLogService vehLogService;
 
     @Override
     protected Mapper<BizVehicle> getBaseMapper() {
@@ -348,4 +356,26 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
         condition.in(BizMaintainInfo.InnerColumn.vId,Arrays.asList(ids));
         maintainInfoMapper.deleteByExample(condition);
     }
+
+	@Override
+	public ApiResponse<String> clnsUpdate(BizVehLog entity) {
+		RuntimeCheck.ifBlank(entity.getVlXqsj(), "本次年审时间不能为空");
+		RuntimeCheck.ifBlank(entity.getVlText(), "年审内容不能为空");
+		
+		BizVehicle exist = this.findById(entity.getvId());
+		RuntimeCheck.ifNull(exist, "车辆信息不存在");
+		//保存年审操作记录
+		entity.setVlId(genId());
+		entity.setVlXqlx("10");
+		entity.setCreateTime(DateTime.now().toString("yyyy-MM-dd HH:mm:ss"));
+		entity.setCreateUser(getOperateUser());
+		this.vehLogService.save(entity);
+		//更新车辆年审时间
+		exist.setvNsrq(getNsrq(exist));
+		exist.setUpdateTime(DateTime.now().toString("yyyy-MM-dd HH:mm:ss"));
+		exist.setUpdateUser(getOperateUser());
+		update(exist);
+		
+		return ApiResponse.success("车辆年审更新成功");
+	}
 }

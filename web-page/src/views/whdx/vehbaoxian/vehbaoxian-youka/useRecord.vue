@@ -49,7 +49,6 @@
                     {title: '金额',key:'ylJe',unit:'元'},
                     {title: '车牌号',key:'vHphm'},
                     {title: '操作时间',key:'createTime'},
-                    {title: '备注',key:'ylBz'},
                 ],
 				dateRange:'',
                 pageData: [],

@@ -99,6 +99,7 @@ module.exports = {
         DELE:'/api/car/removeIds',
         ALLOCPERSON:'/api/car/allocPerson',
         notUseCarList:'/api/car/notUseCarList',
+        CLNS:'/api/car/clnsUpdate',
     },
     illegal:{
         QUERY:'api/illegal/pager',//违法管理

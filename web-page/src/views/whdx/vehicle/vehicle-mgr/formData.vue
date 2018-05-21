@@ -78,7 +78,8 @@
                     vHphm:'',
                     vHpzl:'20',
                     vCcdjrq:'',
-                    vSyxz:''
+                    vSyxz:'',
+                    vSyxz:'10'
                 },
                 formInputs:[
                     {label:'车辆品牌',prop:'vClph'},

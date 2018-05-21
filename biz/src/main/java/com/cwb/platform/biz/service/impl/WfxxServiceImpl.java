@@ -10,7 +10,6 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.cwb.platform.biz.mapper.BizWfxxMapper;
 import com.cwb.platform.biz.model.BizFiles;
-import com.cwb.platform.biz.model.BizInsurance;
 import com.cwb.platform.biz.model.BizVehicle;
 import com.cwb.platform.biz.model.BizWfxx;
 import com.cwb.platform.biz.service.FilesService;

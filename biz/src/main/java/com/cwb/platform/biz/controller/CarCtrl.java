@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cwb.platform.biz.model.BizVehLog;
 import com.cwb.platform.biz.model.BizVehicle;
 import com.cwb.platform.biz.service.VehicleService;
 import com.cwb.platform.sys.base.BaseController;
@@ -36,7 +37,17 @@ public class CarCtrl extends BaseController<BizVehicle,String> {
 	public ApiResponse<String> allocPerson(BizVehicle entity){
 		return this.vehicleService.allocPerson(entity);
 	}
+    
 
+    /**
+     * 车辆年审更新
+     * @param entity
+     * @return
+     */
+    @PostMapping("/clnsUpdate")
+	public ApiResponse<String> clnsUpdate(BizVehLog entity){
+		return this.vehicleService.clnsUpdate(entity);
+	}
 
     /**
      * 未借出车辆列表

@@ -10,6 +10,8 @@ public interface VehicleService extends BaseService<BizVehicle,String>{
     void fuel(BizOilRecord record);
     
     public ApiResponse<String> allocPerson(BizVehicle entity);
+    
+    public ApiResponse<String> clnsUpdate(BizVehLog entity);
 
     ApiResponse<List<BizVehicle>> notUseCarList();
 }
