@@ -44,7 +44,6 @@
 				},
                 formInputs:[
                     {label:'车辆',prop:'vId',type:'foreignKey',required:true},
-                    {label:'违法编号',prop:'wfId',required:true},
                     {label:'出车时间',prop:'ucCcsj',type:'date',required:true},
                     {label:'预计还车时间',prop:'ucYjhcsj',type:'date',required:true},
                     {label:'出车事由',prop:'ucCcsy',required:true},
