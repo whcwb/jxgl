@@ -16,6 +16,8 @@ import com.cwb.platform.util.commonUtil.DateUtils;
 import com.cwb.platform.util.exception.RuntimeCheck;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
+import org.joda.time.Years;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.common.Mapper;
@@ -166,6 +168,79 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
     	if (StringUtils.isNotBlank(entity.getvCjh())){
     		RuntimeCheck.ifFalse(checkVIN(entity.getvCjh()), "车架号格式不正确");
     	}
+    	
+    	
+    }
+    
+    /**
+     * 计算车辆年审时间
+     * @param entity
+     * @return
+     */
+    public String getNsrq(BizVehicle entity){
+    	String nsrq = null;
+	    /*
+		  	车辆类型为小型汽车的车辆，且使用性质为非营运的车辆：距注册日期6年以内的每2年检验1次；超过6年的，每年检验1次；超过15年的，每6个月检验1次。
+			           车辆类型为中型汽车、大型汽车的车辆，且使用性质为非营运的车辆：距注册日期10年以内每年检验1次；超过10年的，每6个月检验1次。
+			           使用性质为营运的车辆：距注册日期5年以内每年检验1次；超过5年的，每6个月检验1次。超过10年的状态为“需强制报废”。
+		*/
+		if (StringUtils.isNotBlank(entity.getvSyxz())){
+			//车辆初次登记日期
+			DateTime ccdjrqDate = DateTime.parse(entity.getvCcdjrq());
+			//计算初登日期和当前时间相差多少年
+			int year = Years.yearsBetween(ccdjrqDate, DateTime.now()).getYears();
+			//如果是当年的新车，自动将年间隔+1
+			if (year == 0){
+				year += 1;
+			}
+			//计算出初登日期到今年的日期
+			DateTime nsrqDate = ccdjrqDate.plusYears(year).dayOfMonth().withMaximumValue();
+			if ("10".equals(entity.getvSyxz())){
+				//非营运机动车
+				if ("20".equals(entity.getvHpzl())){
+					//小型汽车年审
+					if (year <= 6){
+	    				//6年以内每2年检验1次
+						nsrq = nsrqDate.toString("yyyy-MM-dd");
+						int xorYear = year % 2;
+						if (xorYear != 0){
+							nsrq = nsrqDate.plusYears(1).toString("yyyy-MM-dd");
+						}
+	    			}else if (year > 6 && year <= 15){
+	    				//超过6年小于15年的每1年检验1次
+	    				nsrq = nsrqDate.plusYears(1).toString("yyyy-MM-dd");
+	    			}else if (year > 15){
+	    				//超过15年的每6个月检验1次
+	    				nsrq = nsrqDate.plusYears(1).plusMonths(6).toString("yyyy-MM-dd");
+	    			}
+				}else{
+					//非小型汽车年审
+					if (year <= 10){
+	    				//10年以内每年检验1次
+						nsrq = nsrqDate.toString("yyyy-MM-dd");
+	    			}else if (year > 10){
+	    				//超过10年的每6个月检验1次
+	    				nsrq = nsrqDate.plusMonths(6).toString("yyyy-MM-dd");
+	    			}
+				}
+			}else if ("20".equals(entity.getvSyxz())){
+				//营运机动车或是非小型车辆，每年一审
+				if (year <= 5){
+					//5年以内每年检验1次
+					nsrq = nsrqDate.toString("yyyy-MM-dd");
+				}else if (year > 5){
+					//超过5年的每6个月检验1次
+					nsrq = nsrqDate.plusMonths(6).toString("yyyy-MM-dd");
+				}else if (year >= 10){
+					//超过10年的状态为“需强制报废”
+					nsrq = "强制报废";
+				}
+			}
+			
+			entity.setvNsrq(nsrq);
+		}
+		
+		return nsrq;
     }
 
     @Override
@@ -176,6 +251,7 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
         entity.setCreateTime(DateUtils.getNowTime());
         entity.setCreateUser(getOperateUser());
         entity.setvId(genId());
+        entity.setvNsrq(getNsrq(entity));
         save(entity);
 
         // 初始化保养信息
@@ -199,6 +275,7 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
     public ApiResponse<String> validAndUpdate(BizVehicle entity){
     	valid(entity, true);
 
+    	entity.setvNsrq(getNsrq(entity));
     	entity.setvHphm(entity.getvHphm().toUpperCase());
         entity.setUpdateTime(DateUtils.getNowTime());
         entity.setUpdateUser(getOperateUser());
