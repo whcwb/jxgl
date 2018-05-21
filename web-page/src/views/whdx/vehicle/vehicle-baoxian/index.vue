@@ -62,17 +62,9 @@
                     {title: '商业险险种',key:'inXz',render:(h, params)=>{
                         let val = $.map(this.dicts.bxsyxz.items, item => {
                             if(params.row.inXz.indexOf(item.key) != -1) {
-                                return item.val;
+                                return item.val + ',';
                             }
                         });
-
-                        if (val.length > 0){
-                            let convertVal = $.map(val, item => {
-                                return item+",";
-                            });
-
-                            return convertVal;
-						}
 
                         return val;
                     }},

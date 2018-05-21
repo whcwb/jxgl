@@ -47,40 +47,6 @@
 							</FormItem>
 						</Col>
 					</Row>
-					<Row>
-						<Col span="24">
-						<div class="demo-upload-list" v-for="item in uploadList">
-							<template v-if="item.status === 'finished'">
-								<img :src="item.url">
-								<div class="demo-upload-list-cover">
-									<Icon type="ios-eye-outline" @click.native="handleView(item.url)"></Icon>
-									<Icon type="ios-trash-outline" @click.native="handleRemove(item)"></Icon>
-								</div>
-							</template>
-							<template v-else>
-								<Progress v-if="item.showProgress" :percent="item.percentage" hide-info></Progress>
-							</template>
-						</div>
-						<Upload
-								ref="upload"
-								:headers="{'userid':curUser.userId, 'token':curUser.token}"
-								:show-upload-list="false"
-								:default-file-list="defaultList"
-								:on-success="handleSuccess"
-								:format="['jpg','jpeg','png']"
-								:max-size="2048"
-								:on-format-error="handleFormatError"
-								:on-exceeded-size="handleMaxSize"
-								multiple
-								type="drag"
-								:action="uploadUrl+'/'+formItem.vId+'/20/vehOtherFile?targetPath=vehOtherFile&batch=true'"
-								style="display: inline-block;width:58px;">
-							<div style="width: 58px;height:58px;line-height: 58px;">
-								<Icon type="camera" size="20"></Icon>
-							</div>
-						</Upload>
-						</Col>
-					</Row>
 				</Form>
 			</div>
 			<div slot='footer'>
@@ -130,14 +96,6 @@
                     bxsyxz:{code:'BXSYXZ',items:[]},
                     bxgsxx:{code:'BXGSXX',items:[]}
                 },
-				//图片上传属性
-                curUser:{},
-                visible:false,
-                uploadUrl:this.apis.FILE.UPLOAD,
-                imgUrl: '',
-                defaultList: [],
-                imgName: '',
-                uploadList: []
 			}
 		},
 		created(){
@@ -147,27 +105,8 @@
         mounted(){
             this.loadDetail();
 
-            if (this.$parent.chooseItem){
-                this.curUser = JSON.parse(Cookies.get('result')).accessToken;
-                this.loadPhoto();
-			}
         },
 		methods: {
-            loadPhoto(){
-                this.$http.get(this.apis.FILE.FINDBYPID + "/" + this.formItem.vId + "/vehOtherFile").then((res) =>{
-                    if (res.code == 200){
-                        for (let item of res.result){
-                            this.uploadList.push({
-                                name:item.vfDamc,
-                                status:'finished',
-                                url:this.apis.STATIC_PATH + item.vfNetPath
-                            });
-                        }
-                    }
-                })
-
-                this.uploadList = this.$refs.upload.fileList;
-            },
             //查看已存在的信息详情。修改时加载显示
             loadDetail(){
                 if (this.formItem.vHphm){
