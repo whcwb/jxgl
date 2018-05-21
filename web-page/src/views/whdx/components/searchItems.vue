@@ -27,9 +27,15 @@
             }
         },
         created(){
-            this.tableColumns = this.parent.tableColumns;
-            this.dateRange = this.parent.dateRange;
-            this.form = this.parent.form;
+            if (this.parent.tableColumns){
+                this.tableColumns = this.parent.tableColumns;
+            }
+            if (this.parent.dateRange){
+                this.dateRange = this.parent.dateRange;
+            }
+            if (this.parent.form){
+                this.form = this.parent.form;
+            }
         }
     }
 </script>
