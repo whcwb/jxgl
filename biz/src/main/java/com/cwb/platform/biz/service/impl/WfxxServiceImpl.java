@@ -1,12 +1,19 @@
 package com.cwb.platform.biz.service.impl;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.cwb.platform.biz.mapper.BizWfxxMapper;
+import com.cwb.platform.biz.model.BizFiles;
 import com.cwb.platform.biz.model.BizInsurance;
 import com.cwb.platform.biz.model.BizVehicle;
 import com.cwb.platform.biz.model.BizWfxx;
+import com.cwb.platform.biz.service.FilesService;
 import com.cwb.platform.biz.service.VehicleService;
 import com.cwb.platform.biz.service.WfxxService;
 import com.cwb.platform.sys.base.BaseServiceImpl;
@@ -22,6 +29,8 @@ public class WfxxServiceImpl extends BaseServiceImpl<BizWfxx,String> implements 
     private BizWfxxMapper entityMapper;
     @Autowired
     private VehicleService vehicleService;
+    @Autowired
+    private FilesService filesService;
 
     @Override
     protected Mapper<BizWfxx> getBaseMapper() {
@@ -46,7 +55,21 @@ public class WfxxServiceImpl extends BaseServiceImpl<BizWfxx,String> implements 
     	entity.setvHphm(vehicle.getvHphm());
     	//
     	RuntimeCheck.ifTrue((entity.getWfWfjf() != null && entity.getWfWfjf() > 12), "违法记分不能大于12分");
-    	
+    	//查看是否上传了图片
+    	HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+    	String photos = request.getParameter("photos");
+    	if (StringUtils.isNotEmpty(photos)){
+    		String[] photoArr = photos.split(",");
+    		for (int i=0; i<photoArr.length; i++){
+    			BizFiles file = new BizFiles();
+    			file.setpZtlx("40");
+    			file.setVfDamc("wfzp-"+i);
+    			file.setpId(entity.getWfId());
+    			file.setVfNetPath(photoArr[i]);
+    			
+    			this.filesService.saveEntity(file, null);
+    		}
+    	}
     	
     	return entity;
     }

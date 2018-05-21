@@ -1,7 +1,10 @@
 package com.cwb.platform.biz.model;
 
 import java.io.Serializable;
-import javax.persistence.*;
+
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Table(name = "biz_wfxx")
 public class BizWfxx implements Serializable {
