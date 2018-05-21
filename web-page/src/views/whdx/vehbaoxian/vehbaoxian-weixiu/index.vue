@@ -4,19 +4,9 @@
 <template>
 	<div class="boxbackborder">
 		<Row style="padding-bottom: 16px;">
-			<div v-for="r in tableColumns" v-if="r.searchKey" style="display: inline-block">
-				<label class="searchLabel">{{r.title}}:</label>
-				<Input v-model="form[r.searchKey]" :placeholder="'请输入'+r.title" style="width: 200px"></Input>
-			</div>
-			<div style="display: inline-block">
-				<label class="searchLabel">最后一次维修时间:</label>
-				<DatePicker v-model="dateRange" @on-ok="form.lastRepairTimeInRange = v.util.dateRangeChange(dateRange)" confirm format="yyyy-MM-dd" type="daterange" placeholder="请输时间" style="width: 200px"></DatePicker>
-			</div>
+			<search-items :parent="v"></search-items>
 			<Button type="primary" @click="v.util.getPageData(v)">
 				<Icon type="search"></Icon>
-			</Button>
-			<Button type="primary" @click="v.util.add(v)">
-				<Icon type="plus-round"></Icon>
 			</Button>
 		</Row>
 		<Row style="position: relative;">
@@ -33,10 +23,10 @@
 <script>
     import formData from './formData.vue'
     import history from './history.vue'
-
+    import searchItems from '../../components/searchItems'
     export default {
         name: 'wxjlTable',
-        components: {formData,history},
+        components: {formData,history,searchItems},
         data() {
             return {
                 v:this,
@@ -49,7 +39,7 @@
                 tableColumns: [
                     {title: "序号", width: 70, type: 'index'},
                     {title: '车牌号码',key:'vHphm',searchKey:'vHphmLike'},
-                    {title: '最后一次维修时间',key:'lastRepairTime'},
+                    {title: '最后一次维修时间',key:'lastRepairTime',searchKey:'lastRepairTimeInRange',searchType:'daterange'},
                     {title: '最后一次维修项目',key:'lastRepairProject'},
                     {title: '最后一次应付维护费用',key:'lastRepairMoney'},
                     {title: '最后一次保险抵扣费用',key:'lastRepairInsuranceMoney'},

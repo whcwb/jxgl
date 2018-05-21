@@ -9,18 +9,13 @@
 		<Modal v-model="showModal" width='900' :closable='false'
 			:mask-closable="false" :title="operate+''">
 			<div style="overflow: auto;height: 500px;">
-				<Form
-						ref="form"
+				<Form ref="form"
 						:model="formItem"
 						:rules="ruleInline"
 						:label-width="100"
 						:styles="{top: '20px'}">
 					<Row>
-						<Col v-for="i in formInputs" :span="i.span ? i.span : 12">
-						<FormItem :prop='i.prop' :label='i.label'>
-								<Input type="text" v-model="formItem[i.prop]" :placeholder="'请填写'+i.label+'...'" :disabled="readonly && i.readonly"></Input>
-							</FormItem>
-						</Col>
+						<form-items :parent="v"></form-items>
 					</Row>
 				</Form>
 			</div>
@@ -33,8 +28,10 @@
 </template>
 
 <script>
+	import formItems from '../../components/formItems'
 	export default {
 		name: 'byxxForm',
+		components:{formItems},
 		data() {
 			return {
 			    v:this,
