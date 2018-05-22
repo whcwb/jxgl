@@ -15,6 +15,4 @@ public interface VehicleService extends BaseService<BizVehicle,String>{
     public ApiResponse<String> clnsUpdate(BizVehLog entity);
 
     ApiResponse<List<BizVehicle>> notUseCarList();
-
-    void lqnjCarList(LimitedCondition condition);
 }

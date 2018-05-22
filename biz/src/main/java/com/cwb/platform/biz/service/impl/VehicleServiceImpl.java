@@ -350,7 +350,7 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
     public boolean fillPagerCondition(LimitedCondition condition){
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         String lqnj = request.getParameter("lqnj");
-        if ("lqnj".equals(lqnj)){
+        if ("lqnj".equals(lqnj)){ // 临期年审
             DateTime now = new DateTime();
             Date minDate = now.minusMonths(1).toDate();
             minDate.setDate(1);
@@ -361,14 +361,10 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
             condition.gte(BizVehicle.InnerColumn.vNsrq,minLimit);
             condition.lte(BizVehicle.InnerColumn.vNsrq,maxLimit);
             condition.setOrderByClause("v_nsrq asc");
-        }else if ("qzbf".equals(lqnj)){
+        }else if ("qzbf".equals(lqnj)){ // 强制报废
             condition.eq(BizVehicle.InnerColumn.vNsrq,QZBF);
         }
         return true;
-    }
-
-    @Override
-    public void lqnjCarList(LimitedCondition condition) {
     }
 
     /**
