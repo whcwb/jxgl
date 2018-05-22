@@ -22,6 +22,8 @@ import com.github.pagehelper.PageInfo;
 
 import tk.mybatis.mapper.common.Mapper;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Service
 public class InsuranceServiceImpl extends BaseServiceImpl<BizInsurance,String> implements InsuranceService{
     @Autowired
@@ -38,7 +40,7 @@ public class InsuranceServiceImpl extends BaseServiceImpl<BizInsurance,String> i
     protected Class<?> getEntityCls(){
         return BizInsurance.class;
     }
-    
+
     @Override
     public ApiResponse<List<BizInsurance>> pager(Page<BizInsurance> pager) {
     	ApiResponse<List<BizInsurance>> result = new ApiResponse<>();
@@ -53,7 +55,30 @@ public class InsuranceServiceImpl extends BaseServiceImpl<BizInsurance,String> i
         result.setPage(resultPage);
         return result;
     }
-    
+
+    public boolean fillPagerCondition(LimitedCondition condition){
+        HttpServletRequest request = getRequest();
+        String bxlq = request.getParameter("bxlq");// 保险临期
+        DateTime minTime = new DateTime().minusDays(60);
+        String minTimeStr = minTime.toString("yyyy-MM-dd");
+        String nowStr = new DateTime().toString("yyyy-MM-dd");
+        switch(bxlq){
+            case "jqx":// 交强险
+                condition.gte(BizInsurance.InnerColumn.inJqzbrq,minTimeStr);
+                break;
+            case "syx": // 商业险
+                condition.gte(BizInsurance.InnerColumn.inZbrq,minTimeStr);
+                break;
+            case "jqxgb":
+                condition.gte(BizInsurance.InnerColumn.inJqzbrq,nowStr);
+                break;
+            case "syxgb":
+                condition.gte(BizInsurance.InnerColumn.inZbrq,nowStr);
+                break;
+        }
+        return true;
+    }
+
     /**
      * 保险信息验证同时自动填充修改项
      * @param entity
@@ -65,7 +90,7 @@ public class InsuranceServiceImpl extends BaseServiceImpl<BizInsurance,String> i
     	//查看车辆信息是否存在
     	BizVehicle vehicle = this.vehicleService.findById(entity.getvHphm());
     	RuntimeCheck.ifNull(vehicle, "选择的车辆信息不存在");
-    	
+
     	entity.setvId(vehicle.getvId());
     	entity.setvHphm(vehicle.getvHphm());
     	//录入了起保日期，则自动计算终保日期，根据起保日期+1年
@@ -75,7 +100,7 @@ public class InsuranceServiceImpl extends BaseServiceImpl<BizInsurance,String> i
     	if (StringUtils.isNotBlank(entity.getInJqqbrq())){
     		entity.setInJqzbrq(DateTime.parse(entity.getInJqqbrq()).plusYears(1).minusDays(1).toString("yyyy-MM-dd"));
     	}
-    	
+
     	if (StringUtils.isNotBlank(entity.getInBxgs())){
     		String[] bxgs = entity.getInBxgs().split("-");
     		entity.setInBxdh(bxgs[0]);
@@ -86,28 +111,28 @@ public class InsuranceServiceImpl extends BaseServiceImpl<BizInsurance,String> i
     		entity.setInJqbxdh(bxgs[0]);
     		entity.setInJqbxgs(bxgs[1]);
     	}
-    	
+
     	return entity;
     }
 
     @Override
     public ApiResponse<String> validAndSave(BizInsurance entity) {
     	entity = this.validEntity(entity);
-    	
+
         entity.setInId(genId());
         entity.setCreateTime(DateUtils.getNowTime());
         entity.setCreateUser(getOperateUser());
         save(entity);
         return ApiResponse.saveSuccess();
     }
-    
+
     @Override
     public ApiResponse<String> validAndUpdate(BizInsurance entity) {
     	RuntimeCheck.ifBlank(entity.getInId(), "修改信息不存在");
     	BizInsurance exist = this.findById(entity.getInId());
     	RuntimeCheck.ifNull(exist, "修改信息不存在");
     	entity = this.validEntity(entity);
-    	
+
         update(entity);
         return ApiResponse.saveSuccess();
     }

@@ -4,7 +4,7 @@
 <template>
 	<div class="boxbackborder">
 		<Row>
-			<span style="font-size: 14px;">临期保养</span>
+			<span style="font-size: 14px;">交强险临期</span>
 			<span style="float: right;color: deepskyblue;cursor: pointer" @click="showMore()">查看更多</span>
 		</Row>
 		<Row style="position: relative;">
@@ -22,23 +22,23 @@
             return {
                 v:this,
                 SpinShow: true,
-                apiRoot:this.apis.maintainInfo,
+				pagerUrl:this.apis.insurance.QUERY+'?bxlq=jqx',
                 tableHeight: 300,
                 componentName: '',
                 choosedItem: null,
                 dateRange:'',
                 tableColumns: [
                     {title: "序号", width: 70, type: 'index'},
-                    {title: '车牌号码',key:'vHphm',searchKey:'vHphmLike'},
-                    {title: '最后一次保养时间',key:'byBysj',searchKey:'byBysjInRange',searchType:'daterange'},
+                    {title: '车牌号码',key:'vHphm'},
+                    {title: '交强险终保时间',key:'inJqzbrq'},
                 ],
                 pageData: [],
                 form: {
                     byBysjInRange:'',
-                    orderBy:'byBysj desc',
+                    orderBy:'inJqzbrq asc',
                     total: 0,
                     pageNum: 1,
-                    pageSize: 10,
+                    pageSize: 5,
                 },
             }
         },
@@ -50,7 +50,7 @@
                 this.util.pageChange(this, event);
             },
             showMore(type){
-                this.$router.push({name:'vehbaoxian-baoyang'})
+                this.$router.push({name:'vehicle-baoxian'})
             }
         }
     }

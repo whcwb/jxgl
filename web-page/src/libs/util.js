@@ -145,6 +145,7 @@ util.initTable = (v)=>{
     util.getPageData(v)
 }
 util.initSimpleTable = (v)=>{
+    v.tableHeight = window.innerHeight - 780
     util.initPageSize(v);
     util.fillTableColumns(v)
     util.getPageData(v)
