@@ -9,7 +9,7 @@
 			box-shadow: 2px 5px 5px #888888;
     		border: solid 2px #ded9d9;
 			.divbgcolor{
-				height: 260px;
+				height: 360px;
 				/*background: rgba(0,0,0,0.5);*/
 				background-color: #fff;
 			}
@@ -18,31 +18,48 @@
 </style>
 <template>
 	<div class="box" style="height: 100%;background:#fff">
-		<component :is="compName"></component>
-		<div  v-if="false" class="homeE" style="padding: 5px 3px;">
+		<component :is="componentName"></component>
+		<div  class="homeE" style="padding: 5px 3px;">
 			<Row :gutter="8" class="margin-bottom-10 indexCarType">
 				<Col :xs="24" :sm="12" :md="6" :style="{marginBottom: '10px'}">
-					<infor-card id-name="user_created_count" :end-val="count.total" iconSrc="/static/icon/device.png" color="#2d8cf0" intro-text="设备总数"></infor-card>
+					<infor-card id-name="user_created_count" :end-val="count.total" iconSrc="/static/icon/device.png" color="#2d8cf0" intro-text="车辆总数"></infor-card>
 				</Col>
 				<Col :xs="24" :sm="12" :md="6" :style="{marginBottom: '10px'}">
-					<infor-card id-name="visit_count" :end-val="count.online"  iconSrc="/static/icon/device_online.png" color="#64d572" :iconSize="50" intro-text="设备在线数量"></infor-card>
+					<infor-card id-name="visit_count" :end-val="count.lqby"  iconSrc="/static/icon/device_online.png" color="#64d572" :iconSize="50" intro-text="临期保养"></infor-card>
 				</Col>
 				<Col :xs="24" :sm="12" :md="6" :style="{marginBottom: '10px'}">
-					<infor-card id-name="collection_count" :end-val="count.stop" iconSrc="/static/icon/device_stop.png" color="#ffd572" intro-text="设备熄火数量"></infor-card>
+					<infor-card id-name="collection_count" :end-val="count.stop" iconSrc="/static/icon/device_stop.png" color="#ffd572" intro-text="临期年检"></infor-card>
 				</Col>
 				<Col :xs="24" :sm="12" :md="6" :style="{marginBottom: '10px'}">
-					<infor-card id-name="transfer_count" :end-val="count.offline" iconSrc="/static/icon/device_offline.png" color="#f25e43" intro-text="设备离线数量"></infor-card>
+					<infor-card id-name="transfer_count" :end-val="count.offline" iconSrc="/static/icon/device_offline.png" color="#f25e43" intro-text="保单到期"></infor-card>
 				</Col>
 			</Row>
 			<Row :gutter="12" class="margin-bottom-15">
-				<Col span="8">
+				<Col span="12">
 					<div class="divpadd">
 						<div class="divbgcolor">
-							<e-Line Eid="Eline"></e-Line>
+							<maintain-simple-table ></maintain-simple-table>
 						</div>
 					</div>
 				</Col>
-				<Col span="8">
+				<Col span="12">
+					<!--年审提醒-->
+					<div class="divpadd">
+						<div class="divbgcolor">
+							<nianshen-table></nianshen-table>
+						</div>
+					</div>
+				</Col>
+			</Row>
+			<Row :gutter="12" class="margin-bottom-15">
+				<Col span="12">
+					<div class="divpadd">
+						<div class="divbgcolor">
+							<qzbf-table></qzbf-table>
+						</div>
+					</div>
+				</Col>
+				<Col span="12">
 					<!--年审提醒-->
 					<div class="divpadd">
 						<div class="divbgcolor">
@@ -50,53 +67,7 @@
 						</div>
 					</div>
 				</Col>
-				<Col span="8">
-					<div class="divpadd">
-						<div class="divbgcolor">
-							<scbar Eid="scbar"></scbar>
-						</div>
-					</div>
-				</Col>
-
 			</Row>
-			<Row :gutter="12" class="margin-bottom-15">
-				<Col span="12">
-				<!--超速统计-->
-					<div class="divpadd">
-						<div class="divbgcolor">
-							<extra Eid="extra"></extra>
-						</div>
-					</div>
-				</Col>
-				<Col span="12">
-					<!--今日派单统计-->
-					<div class="divpadd">
-						<div class="divbgcolor">
-							<listpie Eid="listpie"></listpie>
-						</div>
-					</div>
-				</Col>
-			</Row>
-			<Row :gutter="12" class="margin-bottom-15">
-				<Col span="24">
-					<!--安全驾驶统计-->
-					<div class="divpadd">
-						<div class="divbgcolor">
-							<safeline Eid="saveline"></safeline>
-						</div>
-					</div>
-				</Col>
-			</Row>
-		</div>
-		<div v-else class="body" style="position: relative">
-			<span style="position: absolute;top: 45%;left: 50%;transform: translate(-50%,-50%);font-size: 26px;text-align: center;color: #a4a4a4">
-				<h1>
-					欢迎登录
-				</h1>
-				<h1>
-					{{title}}
-				</h1>
-			</span>
 		</div>
 	</div>
 </template>
@@ -111,21 +82,23 @@
 	import scbar from './compEcharts/scbar.vue'
 	import risk from './compEcharts/riskRecord.vue'
 
-
+	import maintainSimpleTable from '../../views/whdx/vehbaoxian/vehbaoxian-baoyang/simpleTable'
 	import csMessbar from './compEcharts/comp/csMessbar'
+	import nianshenTable from '../../views/whdx/vehicle/vehicle-baoxian/simpleTable'
+	import qzbfTable from '../../views/whdx/vehicle/vehicle-baoxian/qzbf'
 	export default {
 		name: 'home',
 		components: {
 			inforCard,eLine,yPie,
-			safeline,listpie,extra,scbar,risk,
-                    	csMessbar
+			safeline,listpie,extra,scbar,risk,csMessbar,maintainSimpleTable,nianshenTable,qzbfTable
 		},
 		data() {
 			return {
                 userType:'',
                 showChart:false,
-				compName:'',
+                componentName:'',
 				count: {
+                    lqby:0,
                     total: 0,
                     online: 0,
                     stop: 0,
@@ -143,12 +116,36 @@
         },
 		watch:{
 			echData:function (n,o) {
-				this.compName = 'csMessbar'
+				this.componentName = 'csMessbar'
 			}
 		},
 		created() {
+		    this.getShouldMaintainList();
+		    this.getTotalCarCount();
+		    this.getQZBFList();
 		},
 		methods: {
+		    getTotalCarCount(){
+				this.$http.get(this.apis.CAR.countByCondition).then((res)=>{
+				    if (res.code === 200 && res.result){
+                        this.count.total = res.result;
+					}
+				})
+			},
+		    getShouldMaintainList(){
+		        this.$http.get("/api/maintainInfo/getShouldMaintainList").then((res)=>{
+		            if (res.code === 200 && res.result){
+		                this.count.lqby = res.result.length;
+					}
+                })
+			},
+		    getQZBFList(){
+		        this.$http.get("/api/car/lqnjCarList").then((res)=>{
+		            if (res.code === 200 && res.result){
+		                this.count.lqby = res.result.length;
+					}
+                })
+			},
 		}
 	};
 </script>

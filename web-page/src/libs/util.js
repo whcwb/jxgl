@@ -144,6 +144,11 @@ util.initTable = (v)=>{
     util.fillTableColumns(v)
     util.getPageData(v)
 }
+util.initSimpleTable = (v)=>{
+    util.initPageSize(v);
+    util.fillTableColumns(v)
+    util.getPageData(v)
+}
 util.initPageSize = (v)=>{
     if (!v.form || !v.form.pageSize)return;
     let pageSize = Cookies.get("pageSize");

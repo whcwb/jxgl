@@ -6,11 +6,14 @@ import com.cwb.platform.biz.model.BizMaintainInfo;
 import com.cwb.platform.biz.service.MaintainInfoService;
 import com.cwb.platform.sys.base.BaseServiceImpl;
 import com.cwb.platform.util.bean.ApiResponse;
+import com.cwb.platform.util.bean.SimpleCondition;
 import com.cwb.platform.util.commonUtil.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.common.Mapper;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -52,5 +55,20 @@ public class MaintainInfoServiceImpl extends BaseServiceImpl<BizMaintainInfo,Str
             info.setById(maintainInfos.get(0).getById());
             entityMapper.updateByPrimaryKeySelective(info);
         }
+    }
+
+    /**
+     * 当前时间+180天大于最后一次保养时间时为“临期保养”的范围。
+     * @return
+     */
+    @Override
+    public ApiResponse<List<BizMaintainInfo>> getShouldMaintainList() {
+        SimpleCondition condition = new SimpleCondition(BizMaintainInfo.class);
+        Calendar now = Calendar.getInstance();
+        now.add(Calendar.DATE,90);
+        String d = DateUtils.getDateStr(now.getTime(),"yyyy-MM-dd");
+        condition.lte(BizMaintainInfo.InnerColumn.byBysj,d);
+        List<BizMaintainInfo> maintainInfos = entityMapper.selectByExample(condition);
+        return ApiResponse.success(maintainInfos);
     }
 }

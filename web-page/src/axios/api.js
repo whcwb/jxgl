@@ -95,6 +95,8 @@ module.exports = {
         QUERY:'api/car/pager',//车辆管理
         SEARCHSOME:'/api/car/query',//指定条件查询数据
         ADD:'/api/car/save',
+        countByCondition:'/api/car/countByCondition',
+        lqnjCarList:'/api/car/lqnjCarList',
         CHANGE:'/api/car/update',
         DELE:'/api/car/removeIds',
         ALLOCPERSON:'/api/car/allocPerson',

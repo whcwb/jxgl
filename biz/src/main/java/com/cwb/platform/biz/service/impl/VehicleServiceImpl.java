@@ -1,12 +1,10 @@
 package com.cwb.platform.biz.service.impl;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
+import com.cwb.platform.sys.base.LimitedCondition;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
@@ -34,8 +32,12 @@ import com.cwb.platform.util.bean.SimpleCondition;
 import com.cwb.platform.util.commonUtil.DateUtils;
 import com.cwb.platform.util.exception.RuntimeCheck;
 
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import tk.mybatis.mapper.common.Mapper;
 import tk.mybatis.mapper.entity.Example;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Service
 public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> implements VehicleService{
@@ -51,6 +53,8 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
     private YhService userService;
     @Autowired
     private VehLogService vehLogService;
+
+    private static final String QZBF = "强制报废"; // 强制报废
 
     @Override
     protected Mapper<BizVehicle> getBaseMapper() {
@@ -246,7 +250,7 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
 					nsrq = nsrqDate.plusMonths(6).toString("yyyy-MM-dd");
 				}else if (year >= 10){
 					//超过10年的状态为“需强制报废”
-					nsrq = "强制报废";
+					nsrq = QZBF;
 				}
 			}
 			
@@ -340,6 +344,31 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
             cars = cars.stream().filter(p->excludeCarIds.contains(p.getvId())).collect(Collectors.toList());
         }
         return ApiResponse.success(cars);
+    }
+
+    @Override
+    public boolean fillPagerCondition(LimitedCondition condition){
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        String lqnj = request.getParameter("lqnj");
+        if ("lqnj".equals(lqnj)){
+            DateTime now = new DateTime();
+            Date minDate = now.minusMonths(1).toDate();
+            minDate.setDate(1);
+            Date maxDate = now.plusMonths(1).toDate();
+            maxDate.setDate(1);
+            String minLimit = DateUtils.getDateStr(minDate,"yyyy-MM-dd");
+            String maxLimit = DateUtils.getDateStr(maxDate,"yyyy-MM-dd");
+            condition.gte(BizVehicle.InnerColumn.vNsrq,minLimit);
+            condition.lte(BizVehicle.InnerColumn.vNsrq,maxLimit);
+            condition.setOrderByClause("v_nsrq asc");
+        }else if ("qzbf".equals(lqnj)){
+            condition.eq(BizVehicle.InnerColumn.vNsrq,QZBF);
+        }
+        return true;
+    }
+
+    @Override
+    public void lqnjCarList(LimitedCondition condition) {
     }
 
     /**

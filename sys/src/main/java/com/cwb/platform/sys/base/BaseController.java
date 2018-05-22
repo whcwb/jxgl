@@ -78,6 +78,15 @@ public abstract class BaseController<T, PK extends Serializable> {
 	public ApiResponse<List<T>> getCondition(T entity){
 		return ApiResponse.success(getBaseService().findByEntity(entity));
 	}
+    /**
+     * 根据对象字段值查询数据
+     * @return
+     */
+    @RequestMapping(value="/countByCondition", method={RequestMethod.GET})
+	public ApiResponse<Integer> countByCondition(){
+    	int count = getBaseService().countByCondition(getBaseService().getQueryCondition());
+		return ApiResponse.success(count);
+	}
 
     /**
      * 分页查询。默认根据前台传递的值做精确搜索。需要其他搜索方式，请自行重新该方法
