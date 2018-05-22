@@ -87,7 +87,7 @@
 				</Col>
 			</Row>
 			<Row :gutter="12" class="margin-bottom-15">
-				<Col span="12">
+				<Col span="8">
 					<!--商业险已过保-->
 					<div class="divpadd">
 						<div class="divbgcolor">
@@ -95,11 +95,19 @@
 						</div>
 					</div>
 				</Col>
-				<Col span="12">
+				<Col span="8">
 					<!--交强险提醒-->
 					<div class="divpadd">
 						<div class="divbgcolor">
 							<jqx-gb-table></jqx-gb-table>
+						</div>
+					</div>
+				</Col>
+				<Col span="8">
+					<!--逾期年审提醒-->
+					<div class="divpadd">
+						<div class="divbgcolor">
+							<yqns-table></yqns-table>
 						</div>
 					</div>
 				</Col>
@@ -127,13 +135,14 @@
 	import jqxGbTable from '../../views/whdx/vehicle/vehicle-baoxian/jqxGbSimpleTable'
 	import syxGbTable from '../../views/whdx/vehicle/vehicle-baoxian/syxGbSimpleTable'
 	import ljbf from '../../views/whdx/vehicle/vehicle-baoxian/ljbfSimpleTable'
+	import yqnsTable from '../../views/whdx/vehicle/vehicle-mgr/yqnsSimpleTable'
 
 	export default {
 		name: 'home',
 		components: {
 			inforCard,eLine,yPie,
 			safeline,listpie,extra,scbar,risk,csMessbar,maintainSimpleTable,nianshenTable,qzbfTable,syxTable,jqxTable,
-            jqxGbTable,syxGbTable,ljbf
+            jqxGbTable,syxGbTable,ljbf,yqnsTable
 		},
 		data() {
 			return {

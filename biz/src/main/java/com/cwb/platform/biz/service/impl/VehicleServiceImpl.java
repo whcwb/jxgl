@@ -185,10 +185,10 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
     	if (StringUtils.isNotBlank(entity.getvCjh())){
     		RuntimeCheck.ifFalse(checkVIN(entity.getvCjh()), "车架号格式不正确");
     	}
-    	
-    	
+
+
     }
-    
+
     /**
      * 计算车辆年审时间
      * @param entity
@@ -253,10 +253,10 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
 					nsrq = QZBF;
 				}
 			}
-			
+
 			entity.setvNsrq(nsrq);
 		}
-		
+
 		return nsrq;
     }
 
@@ -321,13 +321,13 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
 			String[] lxrxx = entity.getvLxr().split("-");
 			SysYh user = this.userService.findById(lxrxx[0]);
 			RuntimeCheck.ifNull(user, "使用人信息不存在");
-			
+
 			entity.setvLxr(user.getYhid()+"-"+user.getXm());
 			entity.setvLxdh(user.getSjh());
 		}else{
 			entity.setvLxdh("");
 		}
-		
+
 		entity.setUpdateTime(DateUtils.getNowTime());
         entity.setUpdateUser(getOperateUser());
         update(entity);
@@ -363,6 +363,10 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
             condition.setOrderByClause("v_nsrq asc");
         }else if ("qzbf".equals(lqnj)){ // 强制报废
             condition.eq(BizVehicle.InnerColumn.vNsrq,QZBF);
+        }else if ("nsyq".equals(lqnj)){ // 逾期年审
+            DateTime now = new DateTime();
+            String nowStr = now.toString("yyyy-MM-dd");
+            condition.lte(BizVehicle.InnerColumn.vNsrq,nowStr);
         }
         return true;
     }
@@ -386,7 +390,7 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
 	public ApiResponse<String> clnsUpdate(BizVehLog entity) {
 		RuntimeCheck.ifBlank(entity.getVlXqsj(), "本次年审时间不能为空");
 		RuntimeCheck.ifBlank(entity.getVlText(), "年审内容不能为空");
-		
+
 		BizVehicle exist = this.findById(entity.getvId());
 		RuntimeCheck.ifNull(exist, "车辆信息不存在");
 		//保存年审操作记录
@@ -400,7 +404,7 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
 		exist.setUpdateTime(DateTime.now().toString("yyyy-MM-dd HH:mm:ss"));
 		exist.setUpdateUser(getOperateUser());
 		update(exist);
-		
+
 		return ApiResponse.success("车辆年审更新成功");
 	}
 }
