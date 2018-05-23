@@ -19,8 +19,8 @@
 						<Col v-for="i in formInputs" :span="i.span ? i.span : 12">
 							<FormItem :prop='i.prop' :label='i.label'>
 								<Input v-if="!i.type || i.type ==='text'" type="text" v-model="formItem[i.prop]" :placeholder="'请填写'+i.label+'...'"></Input>
-								<DatePicker v-else-if="i.type == 'date'"  :value="formItem[i.prop]" type="date" placeholder="请选择日期" @on-change="(date)=>{formItem[i.prop] = date}"></DatePicker>
-								<Select v-else-if="i.type === 'dict'" filterable clearable  v-model="formItem[i.prop]" :placeholder="'请选择'+i.label+'...'">
+								<DatePicker v-else-if="i.type == 'date'"  :value="formItem[i.prop]" type="date" disabled placeholder="请选择日期" @on-change="(date)=>{formItem[i.prop] = date}"></DatePicker>
+								<Select v-else-if="i.type === 'dict'" filterable clearable :disabled="i.disabled"  v-model="formItem[i.prop]" :placeholder="'请选择'+i.label+'...'">
 									<Option v-for = '(item,index) in v.dictUtil.getByCode(v,i.dict)' :value="item.key">{{item.val}}</Option>
 								</Select>
 								<Select v-else-if="i.type === 'foreignKey'" :disabled="i.disabled" filterable clearable  v-model="formItem[i.prop]" :placeholder="'请选择'+i.label+'...'">
@@ -51,12 +51,11 @@
 				formItem: {
 				},
                 formInputs:[
-                    {label:'车牌',prop:'vId',type:'foreignKey'},
-                    {label:'违法编号',prop:'wfId',required:true},
+                    {label:'车牌',prop:'vId', span:24, type:'foreignKey', disabled:true},
                     {label:'出车时间',prop:'ucCcsj',type:'date'},
                     {label:'预计还车时间',prop:'ucYjhcsj',type:'date'},
-                    {label:'出车事由',prop:'ucCcsy'},
-                    {label:'借用人',prop:'ucJyrid',type:'foreignKey'},
+                    {label:'出车事由',prop:'ucCcsy', span:24},
+                    {label:'借用人',prop:'ucJyrid',type:'foreignKey', disabled:true},
                     {label:'出车前里程数',prop:'ucCclcs'},
                     {label:'还车里程数',prop:'unHclcs'},
                 ],

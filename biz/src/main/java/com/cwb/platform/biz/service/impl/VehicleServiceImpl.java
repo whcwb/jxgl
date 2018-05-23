@@ -336,13 +336,19 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
 
     @Override
     public ApiResponse<List<BizVehicle>> notUseCarList() {
-        SimpleCondition condition = getQueryCondition();
-        List<BizVehicle> cars = findByCondition(condition);
+        List<BizVehicle> cars = null;
         List<BizUsecar> usecars = usecarService.getNotReturnList();
+		//查询全库车辆还是数据太多，目前加入redis缓存，解决一部分速度，后期调整方式，不全库查询
         if (usecars.size() != 0){
             List<String> excludeCarIds = usecars.stream().map(BizUsecar::getvId).collect(Collectors.toList());
-            cars = cars.stream().filter(p->excludeCarIds.contains(p.getvId())).collect(Collectors.toList());
+            //查询哪些车辆未被使用
+            Example condition = new Example(BizVehicle.class);
+            condition.and().andNotIn(BizVehicle.InnerColumn.vId.name(), excludeCarIds);
+            cars = findByConditionParam(condition);
+        }else{
+        	cars = findAll();
         }
+        
         return ApiResponse.success(cars);
     }
 

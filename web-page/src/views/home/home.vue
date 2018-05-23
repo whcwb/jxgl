@@ -52,10 +52,10 @@
 					</div>
 				</Col>
 				<Col span="8">
-					<!--强制报废提醒 -->
+					<!--逾期年审提醒-->
 					<div class="divpadd">
 						<div class="divbgcolor">
-							<qzbf-table></qzbf-table>
+							<yqns-table></yqns-table>
 						</div>
 					</div>
 				</Col>
@@ -88,14 +88,6 @@
 			</Row>
 			<Row :gutter="12" class="margin-bottom-15">
 				<Col span="8">
-					<!--商业险已过保-->
-					<div class="divpadd">
-						<div class="divbgcolor">
-							<syx-gb-table></syx-gb-table>
-						</div>
-					</div>
-				</Col>
-				<Col span="8">
 					<!--交强险提醒-->
 					<div class="divpadd">
 						<div class="divbgcolor">
@@ -104,10 +96,18 @@
 					</div>
 				</Col>
 				<Col span="8">
-					<!--逾期年审提醒-->
+					<!--商业险已过保-->
 					<div class="divpadd">
 						<div class="divbgcolor">
-							<yqns-table></yqns-table>
+							<syx-gb-table></syx-gb-table>
+						</div>
+					</div>
+				</Col>
+				<Col span="8">
+					<!--强制报废提醒 -->
+					<div class="divpadd">
+						<div class="divbgcolor">
+							<qzbf-table></qzbf-table>
 						</div>
 					</div>
 				</Col>
@@ -179,6 +179,7 @@
 		methods: {
 		    getTotalCarCount(){
 				this.$http.get(this.apis.CAR.countByCondition).then((res)=>{
+				    console.log(res)
 				    if (res.code === 200 && res.result){
                         this.count.total = res.result;
 					}

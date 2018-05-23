@@ -50,7 +50,7 @@
                 this.util.pageChange(this, event);
             },
             showMore(type){
-                this.$router.push({name:'vehbaoxian-baoyang'})
+                this.$router.push({name:'vehicle-mgr'})
             }
         }
     }

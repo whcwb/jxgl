@@ -53,6 +53,23 @@
                     {title:'出车前里程数',key:'ucCclcs'},
                     {title:'还车里程数',key:'unHclcs'},
                     {title:'出车事由',key:'ucCcsy'},
+                    {title:'状态',render:(h,p)=>{
+                        if (p.row.unHclcs != ''){
+                            return h('Tag', {
+                                props: {
+                                    type: 'dot',
+                                    color: 'blue'
+                                }
+                            }, '已还车');
+                        }
+                        let f = this.today >= p.row.ucYjhcsj;
+                        return h('Tag', {
+                            props: {
+                                type: 'dot',
+                                color: 'red'
+                            }
+                        }, '超出预计时间');
+                    }},
                     {
                         title: '操作',
                         key: 'action',
