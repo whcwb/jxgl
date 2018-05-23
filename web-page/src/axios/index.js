@@ -15,7 +15,6 @@ let httpInstance = axios.create({
 });
 // 添加请求拦截器 数据请求之前
 httpInstance.interceptors.request.use((config) => {
-
 	if(config.url =="/api/clzd/getzdcl/"
         || '/api/clsbyxsjjl/historygps' == config.url
         || '/api/cl/carAccStatistics' == config.url

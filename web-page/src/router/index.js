@@ -29,21 +29,20 @@ router.beforeEach((to, from, next) => {
     for (let r of matched){
         breadMenuTitles.push({title: r.meta.title})
     }
-    console.log(breadMenuTitles);
-    console.log(to);
+
     store.commit('setCurrentPath', breadMenuTitles)
     iView.LoadingBar.start();
     if(to.name=='login'){
-    	next()
+        next()
     }else if(to.name!='login'&&Cookies.get('usermess')){
-    	next()
+        next()
     }else if((to.name=='home_index'|| from.name=='login')&&!Cookies.get('usermess')){
-    	next({
+        next({
             name: 'login'
         });
     }else if(from.name!='login'&&!Cookies.get('usermess')){
-    	iView.Message.error("用户信息丢失，请重新登陆！！！");
-    	next({
+        iView.Message.error("用户信息丢失，请重新登陆！！！");
+        next({
             name: 'login'
         });
     }

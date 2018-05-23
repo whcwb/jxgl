@@ -136,13 +136,10 @@ export default {
                 		v.SpinShow = false
                 	}).catch((error) =>{
                 		v.SpinShow = false
-                		log('error',error)
+                        this.$Message.error("网络连接失败，请稍后重试");
                 	})
                 }
-            }),
-            setTimeout(()=>{
-            	v.SpinShow = false
-            },500)
+            })
         },
         getMenuTree(){
         	var v = this
