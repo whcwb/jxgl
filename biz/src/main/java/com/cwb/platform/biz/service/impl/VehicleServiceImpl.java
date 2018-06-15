@@ -1,16 +1,23 @@
 package com.cwb.platform.biz.service.impl;
 
 import java.math.BigDecimal;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import com.cwb.platform.sys.base.LimitedCondition;
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.Years;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.cwb.platform.biz.mapper.BizMaintainInfoMapper;
 import com.cwb.platform.biz.mapper.BizRepairInfoMapper;
@@ -25,19 +32,17 @@ import com.cwb.platform.biz.service.UsecarService;
 import com.cwb.platform.biz.service.VehLogService;
 import com.cwb.platform.biz.service.VehicleService;
 import com.cwb.platform.sys.base.BaseServiceImpl;
+import com.cwb.platform.sys.base.LimitedCondition;
 import com.cwb.platform.sys.model.SysYh;
 import com.cwb.platform.sys.service.YhService;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.bean.SimpleCondition;
 import com.cwb.platform.util.commonUtil.DateUtils;
 import com.cwb.platform.util.exception.RuntimeCheck;
+import com.google.common.collect.Lists;
 
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 import tk.mybatis.mapper.common.Mapper;
 import tk.mybatis.mapper.entity.Example;
-
-import javax.servlet.http.HttpServletRequest;
 
 @Service
 public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> implements VehicleService{
@@ -194,7 +199,7 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
      * @param entity
      * @return
      */
-    public String getNsrq(BizVehicle entity){
+    public String getNsrq(BizVehicle entity, int plusYear){
     	String nsrq = null;
 	    /*
 		  	车辆类型为小型汽车的车辆，且使用性质为非营运的车辆：距注册日期6年以内的每2年检验1次；超过6年的，每年检验1次；超过15年的，每6个月检验1次。
@@ -204,60 +209,112 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
 		if (StringUtils.isNotBlank(entity.getvSyxz())){
 			//车辆初次登记日期
 			DateTime ccdjrqDate = DateTime.parse(entity.getvCcdjrq());
+			if (plusYear != 0){
+				ccdjrqDate = ccdjrqDate.plusYears(plusYear);
+			}
+			//一次性计算出初登日期后15年的每年的年审时间
+			List<DateTime> dateLists = Lists.newArrayList();
+			for (int i=1; i<=15; i++){
+				dateLists.add(ccdjrqDate.plusYears(i));
+			}
+			
 			//计算初登日期和当前时间相差多少年
 			int year = Years.yearsBetween(ccdjrqDate, DateTime.now()).getYears();
-			//如果是当年的新车，自动将年间隔+1
-			if (year == 0){
-				year += 1;
-			}
+			//年审检验步长
+			float step = 0;
 			//计算出初登日期到今年的日期
 			DateTime nsrqDate = ccdjrqDate.plusYears(year).dayOfMonth().withMaximumValue();
 			if ("10".equals(entity.getvSyxz())){
 				//非营运机动车
 				if ("20".equals(entity.getvHpzl())){
 					//小型汽车年审
-					if (year <= 6){
+					if (year < 6){
 	    				//6年以内每2年检验1次
-						nsrq = nsrqDate.toString("yyyy-MM-dd");
 						int xorYear = year % 2;
 						if (xorYear != 0){
-							nsrq = nsrqDate.plusYears(1).toString("yyyy-MM-dd");
+							step = 1;
+						}else{
+							step = 2;
 						}
-	    			}else if (year > 6 && year <= 15){
+						/*nsrq = nsrqDate.toString("yyyy-MM-dd");
+						int xorYear = year % 2;
+						if (xorYear != 0){
+							nsrq = nsrqDate.plusYears(2).toString("yyyy-MM-dd");
+						}*/
+	    			}else if (year >= 6 && year <= 15){
 	    				//超过6年小于15年的每1年检验1次
-	    				nsrq = nsrqDate.plusYears(1).toString("yyyy-MM-dd");
+	    				step = 1;
+	    				//nsrq = nsrqDate.plusYears(1).toString("yyyy-MM-dd");
 	    			}else if (year > 15){
 	    				//超过15年的每6个月检验1次
-	    				nsrq = nsrqDate.plusYears(1).plusMonths(6).toString("yyyy-MM-dd");
+	    				step = 0.5f;
+	    				//nsrq = nsrqDate.plusYears(1).plusMonths(6).toString("yyyy-MM-dd");
 	    			}
 				}else{
 					//非小型汽车年审
 					if (year <= 10){
 	    				//10年以内每年检验1次
-						nsrq = nsrqDate.toString("yyyy-MM-dd");
+						step = 1;
+						//nsrq = nsrqDate.plusYears(1).toString("yyyy-MM-dd");
 	    			}else if (year > 10){
 	    				//超过10年的每6个月检验1次
-	    				nsrq = nsrqDate.plusMonths(6).toString("yyyy-MM-dd");
+	    				step = 0.5f;
+	    				//nsrq = nsrqDate.plusMonths(6).toString("yyyy-MM-dd");
 	    			}
 				}
 			}else if ("20".equals(entity.getvSyxz())){
 				//营运机动车或是非小型车辆，每年一审
 				if (year <= 5){
 					//5年以内每年检验1次
-					nsrq = nsrqDate.toString("yyyy-MM-dd");
+					step = 1;
+					//nsrq = nsrqDate.plusYears(1).toString("yyyy-MM-dd");
 				}else if (year > 5){
 					//超过5年的每6个月检验1次
-					nsrq = nsrqDate.plusMonths(6).toString("yyyy-MM-dd");
+					step = 0.5f;
+					//nsrq = nsrqDate.plusMonths(6).toString("yyyy-MM-dd");
 				}else if (year >= 10){
 					//超过10年的状态为“需强制报废”
-					nsrq = QZBF;
+					step = -1;
 				}
 			}
-
+			
+			if (step == -1){
+				nsrq = QZBF;
+			}else{
+				//根据当前年份找到最近一次需年审的时间，必须要大于当前时间，之前的都认为已年审
+				for (int i=0; i<dateLists.size(); i++){
+					DateTime tmp = dateLists.get(i);
+					if (tmp.isAfter(DateTime.now()) && step == 2){
+						int tmpIndex = i + 1;
+						if (tmpIndex >= dateLists.size()){
+							nsrq = QZBF;
+						}else{
+							nsrq = dateLists.get(i + 1).toString("yyyy-MM-dd");
+						}
+						break;
+					}else if (tmp.isAfter(DateTime.now()) && step == 1){
+						nsrq = tmp.toString("yyyy-MM-dd");
+						break;
+					}else if (tmp.isAfter(DateTime.now()) && step == 0.5){
+						nsrq = tmp.plusMonths(6).toString("yyyy-MM-dd");
+						break;
+					}
+				}
+			}
+			
 			entity.setvNsrq(nsrq);
 		}
 
 		return nsrq;
+    }
+    
+    public static void main(String[] args){
+    	BizVehicle entity = new BizVehicle();
+    	entity.setvSyxz("10");
+    	entity.setvCcdjrq("2012-07-10");
+    	entity.setvHpzl("20");
+    	VehicleServiceImpl veh = new VehicleServiceImpl();
+    	System.out.println(veh.getNsrq(entity, 0));
     }
 
     @Override
@@ -268,7 +325,7 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
         entity.setCreateTime(DateUtils.getNowTime());
         entity.setCreateUser(getOperateUser());
         entity.setvId(genId());
-        entity.setvNsrq(getNsrq(entity));
+        entity.setvNsrq(getNsrq(entity, 0));
         save(entity);
 
         // 初始化保养信息
@@ -292,7 +349,7 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
     public ApiResponse<String> validAndUpdate(BizVehicle entity){
     	valid(entity, true);
 
-    	entity.setvNsrq(getNsrq(entity));
+    	entity.setvNsrq(getNsrq(entity, 0));
     	entity.setvHphm(entity.getvHphm().toUpperCase());
         entity.setUpdateTime(DateUtils.getNowTime());
         entity.setUpdateUser(getOperateUser());
@@ -340,7 +397,13 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
         List<BizUsecar> usecars = usecarService.getNotReturnList();
 		//查询全库车辆还是数据太多，目前加入redis缓存，解决一部分速度，后期调整方式，不全库查询
         if (usecars.size() != 0){
-            List<String> excludeCarIds = usecars.stream().map(BizUsecar::getvId).collect(Collectors.toList());
+        	//List<String> excludeCarIds = usecars.stream().map(BizUsecar::getvId).collect(Collectors.toList());
+        	List<String> excludeCarIds = new ArrayList<String>();
+        	for (int i=0; i<usecars.size(); i++){
+        		BizUsecar item = usecars.get(i);
+        		excludeCarIds.add(item.getvId());
+        	}
+            
             //查询哪些车辆未被使用
             Example condition = new Example(BizVehicle.class);
             condition.and().andNotIn(BizVehicle.InnerColumn.vId.name(), excludeCarIds);
@@ -369,11 +432,12 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
             condition.setOrderByClause("v_nsrq asc");
         }else if ("qzbf".equals(lqnj)){ // 强制报废
             condition.eq(BizVehicle.InnerColumn.vNsrq,QZBF);
-        }else if ("nsyq".equals(lqnj)){ // 逾期年审
+        }else if ("yqns".equals(lqnj)){ // 逾期年审
             DateTime now = new DateTime();
             String nowStr = now.toString("yyyy-MM-dd");
             condition.lte(BizVehicle.InnerColumn.vNsrq,nowStr);
         }
+        
         return true;
     }
 
@@ -406,10 +470,14 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
 		entity.setCreateUser(getOperateUser());
 		this.vehLogService.save(entity);
 		//更新车辆年审时间
-		exist.setvNsrq(getNsrq(exist));
-		exist.setUpdateTime(DateTime.now().toString("yyyy-MM-dd HH:mm:ss"));
-		exist.setUpdateUser(getOperateUser());
-		update(exist);
+		String nsrq = exist.getvNsrq();
+		boolean isNs = DateTime.parse(nsrq).isAfter(DateTime.now());
+		if (!isNs){
+			exist.setvNsrq(getNsrq(exist, -1));
+			exist.setUpdateTime(DateTime.now().toString("yyyy-MM-dd HH:mm:ss"));
+			exist.setUpdateUser(getOperateUser());
+			update(exist);
+		}
 
 		return ApiResponse.success("车辆年审更新成功");
 	}

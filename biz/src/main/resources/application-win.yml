@@ -5,12 +5,12 @@ spring:
     port: 6379
   #数据库连接配置信息
   datasource:
-    url: jdbc:oracle:thin:@//47.98.39.45:1521/orcl
-    username: 'C##wdxc_admin'
-    password: 'wdxc123456'
+    url: jdbc:mysql://127.0.0.1:9097/vehcile_platform?useUnicode=true&characterEncoding=utf-8
+    username: root
+    password: 'TMcar-DB2018**'
 
 
 server:
-  port: 8091
+  port: 8180
   
-staticPath: E:\statistics\8090
+staticPath: /UserFiles/cwb/web/image/

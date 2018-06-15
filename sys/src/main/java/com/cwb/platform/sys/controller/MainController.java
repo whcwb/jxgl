@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -54,6 +56,8 @@ public class MainController {
 
 	@Value("${staticPath:/}")
 	private String staticPath;
+	
+	Logger errorLog = LoggerFactory.getLogger("error_info");
 
 	@Autowired
 	private YhService userService;
@@ -126,8 +130,11 @@ public class MainController {
 				}
 				result.setResult(rMap);
 			} catch (Exception e) {
+				e.printStackTrace();
+				errorLog.error(result.getMessage(), e);
 				result.setCode(ApiResponse.FAILED);
 				result.setMessage("用户登陆失败，请重试！");
+				
 			}
 		}else{
 			result.setCode(ApiResponse.FAILED);

@@ -37,6 +37,12 @@
 			<artifactId>commons-lang3</artifactId>
 			<version>3.4</version>
 		</dependency>
+		<dependency>
+		    <groupId>com.google.guava</groupId>
+		    <artifactId>guava</artifactId>
+		    <version>23.0</version>
+		</dependency>
+		
 	</dependencies>
 
 	<build>
@@ -46,6 +52,18 @@
 			<resource>
 				<directory>${project.basedir}/src/main/resources</directory>
 				<filtering>true</filtering>
+				<excludes>  
+                     <exclude>**/fonts/**</exclude>  
+                     <exclude>**/font/**</exclude>  
+                </excludes>  
+			</resource>
+			<resource>
+				<directory>${project.basedir}/src/main/resources</directory>
+				<filtering>false</filtering>
+				<includes>  
+                     <include>static/**/fonts/**</include>  
+                     <include>static/**/font/**</include> 
+                </includes>
 			</resource>
 		</resources>
 		<plugins>

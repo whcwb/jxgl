@@ -18,7 +18,7 @@
 			<Row>
 				<Col>
 					<FormItem prop="xm" label='身份证号：'>
-						<Input type="text" v-model="usermes.sfzmhm" disabled></Input>
+						<Input type="text" v-model="usermes.zjhm" disabled></Input>
 					</FormItem>
 				</Col>
 			</Row>

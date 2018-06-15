@@ -8,7 +8,7 @@
 			<span style="float: right;color: deepskyblue;cursor: pointer" @click="showMore()">查看更多</span>
 		</Row>
 		<Row style="position: relative;">
-			<Table :height="tableHeight" :columns="tableColumns" :data="pageData"></Table>
+			<Table height="170" :columns="tableColumns" :data="pageData"></Table>
 		</Row>
 		<component :is="componentName"></component>
 	</div>
@@ -23,7 +23,7 @@
                 v:this,
                 SpinShow: true,
 				pagerUrl:this.apis.CAR.QUERY+'?lqnj=yqns',
-                tableHeight: 300,
+                tableHeight: 170,
                 componentName: '',
                 choosedItem: null,
                 dateRange:'',

@@ -3,6 +3,7 @@
 		<Modal
 		    v-model="showModal"
 			height="460"
+			width="600"
 		    :closable='false'
 		    :mask-closable="false"
 		    :title="operate+'用户'">
@@ -116,7 +117,7 @@
 				showModal:true,
 				operate:"新增",
 				//新增数据
-            	addmess: {
+                addmess: {
                     zh: '',
                     xm:'',
                     mm:'123456',
@@ -136,9 +137,6 @@
                 ruleInline: {
                   	zh: [
                       	{ required: true, message: '请输入用户名', trigger: 'blur' }
-                  	],
-                  	xm: [
-                      	{ required: true, message: '请输入姓名', trigger: 'blur' }
                   	],
                   	sjh:[
                       	{ required: true,message: '请输入手机号码', trigger: 'blur' }
@@ -172,8 +170,6 @@
                     }
                     if (curVal.lx == '10'){
                         this.addmess.xm = '管理员';
-					}else{
-                        this.addmess.xm = '';
 					}
                 },
                 deep:true

@@ -11,7 +11,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-@Table(name = "SYS_PTJG")
+@Table(name = "sys_ptjg")
 public class SysJg implements Serializable {
     /**
      * 机构代码生成方式：

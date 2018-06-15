@@ -2,7 +2,7 @@
 <!-- 日志级别从低到高分为TRACE < DEBUG < INFO < WARN < ERROR < FATAL -->
 <Configuration status="DEBUG">
 	<properties>  
-        <property name="LOG_HOME">/var/log/ldz/biz</property>
+        <property name="LOG_HOME">/UserFiles/cwb/logs</property>
         <!-- 日志备份目录 -->  
         <property name="BACKUP_HOME">${LOG_HOME}/backup</property>  
         <property name="STAT_NAME">{sys:catalina.home}</property>  
@@ -121,26 +121,26 @@
         <!-- 第三方日志系统 -->
         <logger name="org.springframework.web" level="info"/>
         
-		<!-- 打印Mybatis SQL日志信息，仅开发测试使用 -->
+		<!-- 打印Mybatis SQL日志信息，仅开发测试使用
 		<logger name="com.ldz.biz.**.mapper" level="debug" includeLocation="false" additivity="false">
             <appender-ref ref="Console"/>
-        </logger>
+        </logger> -->
         
         <logger name="access_info" level="debug" includeLocation="false" additivity="false">
-            <appender-ref ref="debug_appender"/>
+            <!-- <appender-ref ref="debug_appender"/> -->
             <appender-ref ref="accessInfoLog_appender"/>
-            <appender-ref ref="Console"/>
+            <!-- <appender-ref ref="Console"/> -->
         </logger>
         <logger name="error_info" level="debug" includeLocation="false" additivity="false">
-            <appender-ref ref="debug_appender"/>
+            <!-- <appender-ref ref="debug_appender"/> -->
             <appender-ref ref="errorInfoLog_appender"/>
-            <appender-ref ref="Console"/>
+            <!-- <appender-ref ref="Console"/> -->
         </logger>
         <!-- 日志实例(info),其中'service-log'继承root,但是root将日志输出控制台,而'service-log'将日志输出到文件,通过属性'additivity="false"'将'service-log'的
              的日志不再输出到控制台  -->
         <logger name="com.cwb.platform" level="debug" includeLocation="false" additivity="false">
             <appender-ref ref="debug_appender"/>
-            <appender-ref ref="Console"/>
+            <!-- <appender-ref ref="Console"/> -->
         </logger>
 	</Loggers>
 </Configuration>

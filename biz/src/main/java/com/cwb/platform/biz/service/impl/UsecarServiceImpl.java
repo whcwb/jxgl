@@ -2,7 +2,10 @@ package com.cwb.platform.biz.service.impl;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.session.RowBounds;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,16 +13,20 @@ import org.springframework.stereotype.Service;
 
 import com.cwb.platform.biz.mapper.BizUsecarMapper;
 import com.cwb.platform.biz.mapper.BizVehicleMapper;
+import com.cwb.platform.biz.model.BizInsurance;
 import com.cwb.platform.biz.model.BizUsecar;
 import com.cwb.platform.biz.model.BizVehicle;
 import com.cwb.platform.biz.service.UsecarService;
 import com.cwb.platform.sys.base.BaseServiceImpl;
+import com.cwb.platform.sys.base.LimitedCondition;
 import com.cwb.platform.sys.mapper.SysClkPtyhMapper;
 import com.cwb.platform.sys.model.SysYh;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.bean.SimpleCondition;
 import com.cwb.platform.util.commonUtil.DateUtils;
 import com.cwb.platform.util.exception.RuntimeCheck;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageInfo;
 
 import tk.mybatis.mapper.common.Mapper;
 import tk.mybatis.mapper.entity.Example;
@@ -41,6 +48,18 @@ public class UsecarServiceImpl extends BaseServiceImpl<BizUsecar,String> impleme
     @Override
     protected Class<?> getEntityCls(){
         return BizUsecar.class;
+    }
+    
+    @Override
+    public ApiResponse<List<BizUsecar>> pager(Page<BizUsecar> pager) {
+    	ApiResponse<List<BizUsecar>> result = new ApiResponse<>();
+        LimitedCondition condition = getQueryCondition();
+        condition.setOrderByClause("uc_yjhcsj desc");
+
+        PageInfo<BizUsecar> resultPage = findPage(pager, condition);
+        afterPager(resultPage);
+        result.setPage(resultPage);
+        return result;
     }
     
     public BizUsecar validEntity(BizUsecar entity){

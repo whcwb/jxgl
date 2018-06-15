@@ -78,16 +78,16 @@
 					</div>
 				</Col>
 				<Col span="8">
-					<!--临近报废 -->
+					<!--强制报废提醒 -->
 					<div class="divpadd">
 						<div class="divbgcolor">
-							<ljbf></ljbf>
+							<qzbf-table></qzbf-table>
 						</div>
 					</div>
 				</Col>
 			</Row>
 			<Row :gutter="12" class="margin-bottom-15">
-				<Col span="8">
+				<Col span="12">
 					<!--交强险提醒-->
 					<div class="divpadd">
 						<div class="divbgcolor">
@@ -95,19 +95,11 @@
 						</div>
 					</div>
 				</Col>
-				<Col span="8">
+				<Col span="12">
 					<!--商业险已过保-->
 					<div class="divpadd">
 						<div class="divbgcolor">
 							<syx-gb-table></syx-gb-table>
-						</div>
-					</div>
-				</Col>
-				<Col span="8">
-					<!--强制报废提醒 -->
-					<div class="divpadd">
-						<div class="divbgcolor">
-							<qzbf-table></qzbf-table>
 						</div>
 					</div>
 				</Col>

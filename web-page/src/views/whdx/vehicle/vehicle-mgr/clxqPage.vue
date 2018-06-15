@@ -1,9 +1,12 @@
 <style lang="less">
 	@import '../../../../styles/common.less';
+	.clxqPage{
+		background-color: #f8f8f9;
+	}
 </style>
 
 <template>
-	<div>
+	<div id="clxqPage">
 		<Modal v-model="showModal" width='1200' :closable='false'
 			:mask-closable="false" :title="'['+formItem.vHphm+']车辆详情'">
 			<div style="overflow: auto;height: 500px;">
@@ -18,7 +21,7 @@
 							<Row>
 								<Col span="12">
 									<FormItem prop='hphm' label="车牌号">
-										<Input v-model="formItem.vHphm" readonly disabled></Input>
+										<Input v-model="formItem.vHphm" readonly ></Input>
 									</FormItem>
 								</Col>
 								<Col span="12">
@@ -32,24 +35,24 @@
 							<Row>
 								<Col span="12">
 									<FormItem  label="初登日期">
-										<Input v-model="formItem.vCcdjrq" readonly disabled></Input>
+										<Input v-model="formItem.vCcdjrq" readonly ></Input>
 									</FormItem>
 								</Col>
 								<Col span="12">
 									<FormItem  label="年审日期">
-										<Input v-model="formItem.vNsrq" readonly disabled></Input>
+										<Input v-model="formItem.vNsrq" readonly ></Input>
 									</FormItem>
 								</Col>
 							</Row>
 							<Row>
 								<Col span="12">
 									<FormItem  label="所有人">
-										<Input v-model="formItem.vSyl" readonly disabled></Input>
+										<Input v-model="formItem.vSyl" readonly ></Input>
 									</FormItem>
 								</Col>
 								<Col span="12">
 									<FormItem  label="使用性质">
-										<Select filterable clearable disabled  v-model="formItem.vSyxz">
+										<Select filterable  disabled  v-model="formItem.vSyxz">
 											<Option v-for = "(item,index) in dicts.syxz.items" :value="item.key">{{item.val}}</Option>
 										</Select>
 									</FormItem>
@@ -58,24 +61,24 @@
 							<Row>
 								<Col span="12">
 									<FormItem  label="车辆品牌">
-										<Input v-model="formItem.vClph" readonly disabled></Input>
+										<Input v-model="formItem.vClph" readonly ></Input>
 									</FormItem>
 								</Col>
 								<Col span="12">
 									<FormItem  label="车辆型号">
-										<Input v-model="formItem.vCllx" readonly disabled></Input>
+										<Input v-model="formItem.vCllx" readonly ></Input>
 									</FormItem>
 								</Col>
 							</Row>
 							<Row>
 								<Col span="12">
 									<FormItem  label="车架号">
-										<Input v-model="formItem.vCjh" readonly disabled></Input>
+										<Input v-model="formItem.vCjh" readonly ></Input>
 									</FormItem>
 								</Col>
 								<Col span="12">
 									<FormItem  label="发动机号">
-										<Input v-model="formItem.vFdjh" readonly disabled></Input>
+										<Input v-model="formItem.vFdjh" readonly ></Input>
 									</FormItem>
 								</Col>
 							</Row>
@@ -84,9 +87,9 @@
 					<Tab-pane label="违法记录" icon="ios-download-outline">
 						<clxq-wfxx-page :vehcile="formItem"></clxq-wfxx-page>
 					</Tab-pane>
-					<!--<Tab-pane label="年审记录" icon="ios-download-outline">
-						<clxq-nsxx-page></clxq-nsxx-page>
-					</Tab-pane>-->
+					<Tab-pane label="年审记录" icon="ios-download-outline">
+						<clxq-nsxx-page :vehcile="formItem"></clxq-nsxx-page>
+					</Tab-pane>
 				</Tabs>
 			</div>
 			<div slot='footer'>

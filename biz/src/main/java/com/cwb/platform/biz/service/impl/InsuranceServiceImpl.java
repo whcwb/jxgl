@@ -46,8 +46,60 @@ public class InsuranceServiceImpl extends BaseServiceImpl<BizInsurance,String> i
     	ApiResponse<List<BizInsurance>> result = new ApiResponse<>();
         LimitedCondition condition = getQueryCondition();
         condition.setOrderByClause("v_hphm asc,create_time desc");
-        if (!fillPagerCondition(condition)){
-            return new ApiResponse<List<BizInsurance>>().emptyPage();
+        HttpServletRequest request = getRequest();
+        String bxlq = request.getParameter("bxlq");// 保险临期
+        if (StringUtils.isNotBlank(bxlq)){
+        	DateTime maxTime = new DateTime().plusDays(60);
+            String maxTimeStr = maxTime.toString("yyyy-MM-dd");
+            String nowStr = new DateTime().toString("yyyy-MM-dd");
+            switch(bxlq){
+                case "jqx":// 交强险
+                	condition.gte(BizInsurance.InnerColumn.inJqzbrq, nowStr);
+                    condition.lte(BizInsurance.InnerColumn.inJqzbrq, maxTimeStr);
+                    break;
+                case "syx": // 商业险
+                	condition.gte(BizInsurance.InnerColumn.inZbrq, nowStr);
+                    condition.lte(BizInsurance.InnerColumn.inZbrq, maxTimeStr);
+                    break;
+                case "jqxgb":
+                    condition.lte(BizInsurance.InnerColumn.inJqzbrq, nowStr);
+                    break;
+                case "syxgb":
+                    condition.lte(BizInsurance.InnerColumn.inZbrq, nowStr);
+                    break;
+            }
+        }
+
+        PageInfo<BizInsurance> resultPage = findPage(pager, condition);
+        afterPager(resultPage);
+        result.setPage(resultPage);
+        return result;
+    }
+    
+    public ApiResponse<List<BizInsurance>> pagerTotal(Page<BizInsurance> pager) {
+    	ApiResponse<List<BizInsurance>> result = new ApiResponse<>();
+        LimitedCondition condition = getQueryCondition();
+        condition.setOrderByClause("v_hphm asc,create_time desc");
+        HttpServletRequest request = getRequest();
+        String bxlq = request.getParameter("bxlq");// 保险临期
+        if (StringUtils.isNotBlank(bxlq)){
+        	DateTime minTime = new DateTime().minusDays(60);
+            String minTimeStr = minTime.toString("yyyy-MM-dd");
+            String nowStr = new DateTime().toString("yyyy-MM-dd");
+            switch(bxlq){
+                case "jqx":// 交强险
+                    condition.gte(BizInsurance.InnerColumn.inJqzbrq, minTimeStr);
+                    break;
+                case "syx": // 商业险
+                    condition.gte(BizInsurance.InnerColumn.inZbrq, minTimeStr);
+                    break;
+                case "jqxgb":
+                    condition.gte(BizInsurance.InnerColumn.inJqzbrq, nowStr);
+                    break;
+                case "syxgb":
+                    condition.gte(BizInsurance.InnerColumn.inZbrq, nowStr);
+                    break;
+            }
         }
 
         PageInfo<BizInsurance> resultPage = findPage(pager, condition);
@@ -59,6 +111,10 @@ public class InsuranceServiceImpl extends BaseServiceImpl<BizInsurance,String> i
     public boolean fillPagerCondition(LimitedCondition condition){
         HttpServletRequest request = getRequest();
         String bxlq = request.getParameter("bxlq");// 保险临期
+        if (StringUtils.isBlank(bxlq)){
+        	return true;
+        }
+        
         DateTime minTime = new DateTime().minusDays(60);
         String minTimeStr = minTime.toString("yyyy-MM-dd");
         String nowStr = new DateTime().toString("yyyy-MM-dd");
@@ -76,6 +132,7 @@ public class InsuranceServiceImpl extends BaseServiceImpl<BizInsurance,String> i
                 condition.gte(BizInsurance.InnerColumn.inZbrq,nowStr);
                 break;
         }
+        
         return true;
     }
 

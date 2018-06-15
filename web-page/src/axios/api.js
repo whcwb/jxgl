@@ -1,10 +1,11 @@
-//网络请求地址前缀
-let BASE_URL = 'http://127.0.0.1';
+//网络请求地址前缀 "http://127.0.0.1";//
+let BASE_URL = 'http://119.97.172.181/platform';
 module.exports = {
     url: BASE_URL,
     //图片上传地址
     UPLOAD: BASE_URL + '/upload',
-    STATIC_PATH: BASE_URL + ':8765/server/',
+    STATIC_PATH: 'http://119.97.172.181/image/',
+    //STATIC_PATH: BASE_URL + ':8765/server/',
     VIDEO_PATH:'',
     USERROOT:{
         GET_MENU_LIST:'/api/gn/getUserFunctions',
@@ -102,6 +103,7 @@ module.exports = {
         ALLOCPERSON:'/api/car/allocPerson',
         notUseCarList:'/api/car/notUseCarList',
         CLNS:'/api/car/clnsUpdate',
+        CLNSPAGER:'/api/car/clnsPager',
     },
     illegal:{
         QUERY:'api/illegal/pager',//违法管理

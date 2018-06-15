@@ -94,6 +94,7 @@ public class YhServiceImpl extends BaseServiceImpl<SysYh, String> implements YhS
 	@Override
 	public ApiResponse<String> saveEntity(SysYh user) {
 		RuntimeCheck.ifBlank(user.getZh(),"请先输入登陆名！");
+		RuntimeCheck.ifBlank(user.getXm(),"请先输入姓名！");
 		RuntimeCheck.ifBlank(user.getMm(),"请先输入登陆密码！");
 		RuntimeCheck.ifFalse(StringUtils.isAlphanumeric(user.getZh()),"登陆名只能是数字和字母组成！");
 		RuntimeCheck.ifBlank(user.getLx(),"请先选择用户类型！");

@@ -8,6 +8,8 @@ import com.cwb.platform.sys.base.BaseServiceImpl;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.bean.SimpleCondition;
 import com.cwb.platform.util.commonUtil.DateUtils;
+
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.common.Mapper;
@@ -64,10 +66,11 @@ public class MaintainInfoServiceImpl extends BaseServiceImpl<BizMaintainInfo,Str
     @Override
     public ApiResponse<List<BizMaintainInfo>> getShouldMaintainList() {
         SimpleCondition condition = new SimpleCondition(BizMaintainInfo.class);
-        Calendar now = Calendar.getInstance();
-        now.add(Calendar.DATE,90);
-        String d = DateUtils.getDateStr(now.getTime(),"yyyy-MM-dd");
-        condition.lte(BizMaintainInfo.InnerColumn.byBysj,d);
+        DateTime nowDate = DateTime.now();
+        //上一次保养时间，当前时间-180天，如果数据有在这个范围内，说明没有超期保养
+        String prevTime = nowDate.minusDays(180).toString("yyyy-MM-dd") + " 00:00:00";
+        condition.and().andIsNotNull(BizMaintainInfo.InnerColumn.byBysj.name());
+        condition.and().andLessThanOrEqualTo(BizMaintainInfo.InnerColumn.byBysj.name(), prevTime);
         List<BizMaintainInfo> maintainInfos = entityMapper.selectByExample(condition);
         return ApiResponse.success(maintainInfos);
     }

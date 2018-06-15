@@ -78,32 +78,58 @@
                     }},
                     {title: '注册登记日期',key:'vCcdjrq'},
                     {title: '年审日期',width:180,key:'vNsrq',render:(h, params)=>{
-                        return h('Tooltip', {
-                            props: {
-                                trigger: 'hover',
-                                content: '暂不需要年审',
-                                placement: 'bottom'
-                            }
-                        },[
-                            h('Tag', {
+							let today = new Date().format("yyyy-MM-dd");
+							let f = today >= params.row.vNsrq;
+							let content = "请尽快完成年审";
+							let color = "red";
+							if (!f){
+								color = "green";
+								content = "暂不需要年审";
+							}
+
+							return h('Tooltip', {
 								props: {
-									type: 'dot',
-									color: 'green'
+									trigger: 'hover',
+									content: content,
+									placement: 'bottom'
 								}
-                        	}, params.row.vNsrq)
-						]);
-                    }},
+							},[
+								h('Tag', {
+									props: {
+										type: 'dot',
+										color: color
+									}
+								}, params.row.vNsrq)
+							]);
+						},
+                        filters: [
+                            {
+                                label: '超期未年审',
+                                value: 1
+                            }
+                        ],
+                        filterMultiple: false,
+                        filterMethod (value, row) {
+                            let today = new Date().format("yyyy-MM-dd");
+                            let f = today >= row.vNsrq;
+                            if (!f){
+                                return false;
+                            }
+
+                            return true;
+                        }
+                    },
                     {title: '所有人',key:'vSyl'},
-                    {title: '使用性质',key:'vSyxz',render:(h, params)=>{
+                    /*{title: '使用性质',key:'vSyxz',render:(h, params)=>{
                         let val = $.map(this.dicts.syxz.items, item => {
                             if(item.key == params.row.vSyxz) {
                                 return item.val;
                             }
                         });
                         return val;
-                    }},
-                    {title: '车架号',key:'vCjh'},
-                    {title: '发动机号',key:'vFdjh'},
+                    }},*/
+                    {title: '车架号', width: 120,key:'vCjh'},
+                    /*{title: '发动机号',key:'vFdjh'},*/
                     {title: '使用人',key:'vLxr',render:(h, params)=>{
                         let lxr = params.row.vLxr;
 

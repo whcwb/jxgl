@@ -46,6 +46,9 @@
                         	    return h('div',p.row.ucYjhcsj);
 							}
                             let f = this.today >= p.row.ucYjhcsj;
+                            if (!f){
+                                return h('div',p.row.ucYjhcsj);
+							}
                         	return h('div',{style:{color:'red'}},p.row.ucYjhcsj)
 						}
 					},
@@ -62,7 +65,16 @@
                                 }
                             }, '已还车');
                         }
+
                         let f = this.today >= p.row.ucYjhcsj;
+                        if (!f){
+                            return h('Tag', {
+                                props: {
+                                    type: 'dot',
+                                    color: 'red'
+                                }
+                            }, '未还车');
+                        }
                         return h('Tag', {
                             props: {
                                 type: 'dot',

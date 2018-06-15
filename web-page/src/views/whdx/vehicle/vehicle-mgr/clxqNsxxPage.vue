@@ -4,8 +4,8 @@
 <template>
 	<div class="boxbackborder">
 		<Form :label-width="100">
-			<Row justify="space-between">
-				<Col span="4" offset="1">
+			<Row type="flex" justify="end">
+				<Col offset="1">
 					<Button type="primary" @click="v.util.getPageData(v)">
 						<Icon type="search"></Icon>
 					</Button>
@@ -24,43 +24,44 @@
 </template>
 
 <script>
-    import formData from './formData.vue'
 
     export default {
-        name: 'wfxx',
-        components: {formData},
+        name: 'clns',
+        props:{
+            vehcile:{
+                type:Object,
+                default:{}
+            }
+        },
         data() {
             return {
                 v:this,
                 SpinShow: true,
-                apiRoot:this.apis.illegal,
+                pagerUrl:this.apis.CAR.CLNSPAGER,
                 tableHeight: 220,
                 componentName: '',
-                choosedItem: null,
                 tableColumns: [
                     {title: "序号", width: 60, type: 'index'},
-                    {title:'车牌号码',key:'vHphm'},
-                    {title:'违法编号',key:'wfId'},
-                    {title:'违法时间',key:'wfWfsj'},
-                    {title:'违法地点',key:'wfWfdz'},
-                    {title:'违法行为',key:'wfWfxw'},
-                    {title:'违法记分',key:'wfWfjf'},
-                    {title:'违法金额',key:'wfWfje'}
+                    {title:'操作时间',key:'createTime', width:140},
+                    {title:'年审时间',key:'vlXqsj', width:140},
+                    {title:'年审内容',key:'vlText'},
+
                 ],
                 pageData: [],
                 form: {
+                    vId:'',
+                    vlXqlx:'10',
+                    orderBy:'createTime desc',
                     total: 0,
                     pageNum: 1,
                     pageSize: 8,
-                },
-                dicts:{
-                    wfzt:{code:'WFZT',items:[]},
                 }
             }
         },
         created() {
+            console.log(this.vehcile);
+            this.form.vId = this.vehcile.vId;
             this.util.initTable(this);
-            this.util.initDict(this);
         },
         methods: {
             pageChange(event) {
