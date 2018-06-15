@@ -4,6 +4,9 @@
     .login{
 	    .imgLeft{
 	    	position: relative;
+			border-right: 1px solid #eee;
+			margin-right: 36px;
+			margin-bottom: 26px;
 	    	.loginImg{
 	    		width: 90%;
 	    		position: absolute;
