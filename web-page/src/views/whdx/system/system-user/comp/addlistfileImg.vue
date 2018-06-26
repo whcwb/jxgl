@@ -271,7 +271,7 @@
                         this.$data[item.vfDamc] = {
                             name:item.vfDamc,
 							status:'finished',
-							url:this.apis.STATIC_PATH + item.vfNetPath
+							url:this.apis.STATIC_PATH + item.vfNetPath + '?d='+new Date().getTime()
                         };
 					}
 				}

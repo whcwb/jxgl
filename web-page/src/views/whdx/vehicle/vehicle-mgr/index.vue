@@ -18,8 +18,20 @@
 				</FormItem>
 			</Col>
 			<Col span="5">
-				<FormItem label="使用人">
-					<Input v-model="form.vLxrLike" placeholder="请输入使用人" ></Input>
+				<FormItem label="所有人">
+					<Input v-model="form.vSylLike" placeholder="请输入所有人" ></Input>
+				</FormItem>
+			</Col>
+			<Col span="5">
+				<FormItem label="责任人">
+					<Input v-model="form.vZrrLike" placeholder="请输入责任人" ></Input>
+				</FormItem>
+			</Col>
+		</Row>
+		<Row  justify="space-between">
+			<Col span="5">
+				<FormItem label="年审日期">
+					<DatePicker :value="form.vNsrqLike" type="month" placement="top-start" placeholder="请选择日期" @on-change="(date)=>{form.vNsrqLike = date}"></DatePicker>
 				</FormItem>
 			</Col>
 			<Col span="4" offset="1">
@@ -40,6 +52,20 @@
 		</Row>
 		</Form>
 		<component :is="componentName"></component>
+
+		<!-- 年审单打印 -->
+		<div id="printDiv" ref="printDiv" style="position: absolute;left:0;top:0;z-index: -10">
+			<ul>
+				<li>
+					<img v-for="img in jszPrintImgs" v-if="img.vfDamc == 'jszzmFile'" :src="apis.STATIC_PATH + img.vfNetPath + '?d='+new Date().getTime()" width="240">
+					<img v-for="img in jszPrintImgs" v-if="img.vfDamc == 'jszfmFile'" :src="apis.STATIC_PATH + img.vfNetPath + '?d='+new Date().getTime()" width="240">
+				</li>
+				<li>
+					<img v-for="img in xszPrintImgs" v-if="img.vfDamc == 'xszzmFile'" :src="apis.STATIC_PATH + img.vfNetPath + '?d='+new Date().getTime()" width="240">
+					<img v-for="img in xszPrintImgs" v-if="img.vfDamc == 'xszfmFile'" :src="apis.STATIC_PATH + img.vfNetPath + '?d='+new Date().getTime()" width="240">
+				</li>
+			</ul>
+		</div>
 	</div>
 </template>
 
@@ -53,6 +79,8 @@
     import clnsForm from './clnsForm.vue'
     //车辆详情
     import clxqPage from './clxqPage.vue'
+    import swal from 'sweetalert2'
+    import Print from 'print-js'
 
     export default {
         name: 'vehicleTable',
@@ -62,13 +90,13 @@
                 v:this,
                 SpinShow: true,
                 apiRoot:this.apis.CAR,
-                tableHeight: 220,
+                tableHeight: 160,
                 componentName: '',
                 choosedItem: null,
                 tableColumns: [
                     {title: "序号", width: 60, type: 'index'},
-                    {title: '车牌号',key:'vHphm',searchKey:'vHphm'},
-                    {title: '车辆类型',key:'vHpzl',render:(h, params)=>{
+                    {title: '车牌号',width: 120,key:'vHphm',searchKey:'vHphm'},
+                    {title: '车辆类型',width: 120,key:'vHpzl',render:(h, params)=>{
                         let val = $.map(this.dicts.hpzl.items, item => {
                             if(item.key == params.row.vHpzl) {
                                 return item.val;
@@ -76,7 +104,7 @@
                         });
                         return val;
                     }},
-                    {title: '注册登记日期',key:'vCcdjrq'},
+                    {title: '初登日期',width: 120,key:'vCcdjrq'},
                     {title: '年审日期',width:180,key:'vNsrq',render:(h, params)=>{
 							let today = new Date().format("yyyy-MM-dd");
 							let f = today >= params.row.vNsrq;
@@ -119,7 +147,19 @@
                             return true;
                         }
                     },
-                    {title: '所有人',key:'vSyl'},
+                    {title: '运营证', width: 120,render:(h, params)=>{
+                        let lxr = params.row.vLxr;
+
+                        return h('Tag', {
+                            props: {
+                                type: 'dot',
+                                color: 'success'
+                            }
+                        }, '暂无');
+                    }},
+                    {title: '责任人', width: 120,key:'vZrr'},
+                    {title: '责任人电话', width: 120,key:'vZrrlxdh'},
+                    {title: '所有人', width: 180,key:'vSyl'},
                     /*{title: '使用性质',key:'vSyxz',render:(h, params)=>{
                         let val = $.map(this.dicts.syxz.items, item => {
                             if(item.key == params.row.vSyxz) {
@@ -128,9 +168,8 @@
                         });
                         return val;
                     }},*/
-                    {title: '车架号', width: 120,key:'vCjh'},
                     /*{title: '发动机号',key:'vFdjh'},*/
-                    {title: '使用人',key:'vLxr',render:(h, params)=>{
+                    {title: '使用人', width: 160,key:'vLxr',render:(h, params)=>{
                         let lxr = params.row.vLxr;
 
                         if (lxr){
@@ -143,8 +182,8 @@
                     {
                         title: '操作',
                         key: 'action',
-                        width: 220,
                         fixed: 'right',
+                    	width: 300,
                         render: (h, params) => {
                             return h('div', [
                                 this.util.buildEditButton(this,h,params),
@@ -152,6 +191,8 @@
                                 this.util.buildButton(this, h, 'info', 'calendar', '车辆年审', ()=>{this.showNsPage(params)}),
                                 this.util.buildButton(this, h, 'info', 'person', '车辆分配', ()=>{this.toPerson(params)}),
                                 this.util.buildButton(this, h, 'info', 'ios-eye', '证件照片', ()=>{this.showImgFile(params)}),
+                                this.util.buildButton(this, h, 'info', 'printer', '年审打印', ()=>{this.showNsdyPage(params)}),
+                                this.util.buildButton(this, h, 'info', 'email', '年审通知', ()=>{this.showDxtzPage(params)}),
 
                                 this.util.buildDeleteButton(this,h,params.row.vId),
                             ]);
@@ -169,12 +210,15 @@
                 dicts:{
                 	hpzl:{code:'HPZL',items:[]},
                     syxz:{code:'SYXZ',items:[]}
-            	}
+            	},
+                jszPrintImgs:[],
+                xszPrintImgs:[]
             }
         },
         created() {
             this.util.initTable(this);
             this.util.initDict(this);
+            this.tableHeight = window.innerHeight - 290;
         },
         methods: {
             pageChange(event) {
@@ -199,6 +243,82 @@
             showClxqPage(param){
                 this.choosedItem = param.row;
                 this.componentName = 'clxqPage';
+            },
+            //年审打印
+            showNsdyPage(param){
+                let v = this;
+                swal.showLoading();
+                v.$http.get(v.apis.FILE.FINDBYPID + '/' + param.row.vId).then((res) =>{
+
+                    if (res.code === 200 && res.result != null && res.result.length > 0){
+                        this.xszPrintImgs = res.result;
+
+                        v.$http.get(v.apis.FILE.FINDBYPID + '/' + param.row.vLxr.split('-')[0]).then((res) =>{
+                            swal.close();
+
+                            this.jszPrintImgs = res.result;
+							Print({
+								printable: 'printDiv',
+								type: 'html',
+								onLoadingStart:()=>{
+									this.$refs.printDiv.style = "display:block";
+								},
+								onLoadingEnd:()=>{
+									this.$refs.printDiv.style = "display:none";
+								}
+							});
+                        }, (error)=>{
+                            swal({
+                                text: '网络异常',
+                                type: 'error'
+                            })
+                        });
+                    }else{
+                        swal({
+                            text: "请先上传证件！",
+                            type: "error"
+                        })
+                    }
+                }, (error)=>{
+                    swal({
+                        text: '网络异常',
+                        type: 'error'
+                    })
+                })
+            },
+            //年审通知
+            showDxtzPage(param){
+                let v = this;
+                swal.queue([{
+                    text: "确认发送年审通知短信?",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: '确认',
+                    cancelButtonText: '取消',
+                    showLoaderOnConfirm: true,
+                    preConfirm: function () {
+                        return new Promise(function (resolve) {
+                            v.$http.get(v.apis.CAR.SENDSMS + param.row.vId).then((res) =>{
+                                let type = "success";
+								if(res.code !== 200){
+									type = "error";
+								}
+								swal.insertQueueStep({
+									text: res.message,
+									type: type
+								})
+
+                                resolve();
+                            }, (error)=>{
+                                swal.insertQueueStep({
+                                    text: '网络异常',
+                                    type: 'error'
+                                })
+                                resolve();
+							})
+                        })
+                    }
+                }]);
             }
         }
     }

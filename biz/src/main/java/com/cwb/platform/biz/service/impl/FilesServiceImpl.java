@@ -5,10 +5,12 @@ import java.io.File;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.cwb.platform.biz.baidu.AiApis;
 import com.cwb.platform.biz.mapper.BizFilesMapper;
 import com.cwb.platform.biz.model.BizFiles;
 import com.cwb.platform.biz.service.FilesService;

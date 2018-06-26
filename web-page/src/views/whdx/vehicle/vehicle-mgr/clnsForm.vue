@@ -41,12 +41,19 @@
 			        vId:'',
                     vlXqlx:'10',
 				},
-                formInputs:[
-                    {label:'车牌号',prop:'vHphm', readonly:true, disabled: true, span:'8'},
-                    {label:'初次登记日期',prop:'vCcdjrq', readonly:true, disabled: true, span:'8'},
-                    {label:'年审日期',prop:'vNsrq', readonly:true, disabled: true, span:'8'},
-                    {label:'本次年审日期',prop:'vlXqsj',type:'datetime',required:true, span:'24'},
-                    {label:'年审内容',prop:'vlText',required:true, span:'24'},
+                formInputGroups:[
+                    [
+                        {label:'车牌号',prop:'vHphm', readonly:true, disabled: true, span:'8'},
+                    	{label:'初次登记日期',prop:'vCcdjrq', readonly:true, disabled: true, span:'8'},
+                    	{label:'年审日期',prop:'vNsrq', readonly:true, disabled: true, span:'8'}
+                    ],
+                    [
+                        {label:'本次年审日期',prop:'vlXqsj',type:'datetime',required:true, span:'12'},
+                    	{label:'下次年审日期',prop:'vlBz',type:'date',required:true, span:'12'}
+                    ],
+                    [
+                        {label:'年审内容',prop:'vlText',required:true, span:'24'}
+					]
                 ],
                 ruleInline:{
 				}

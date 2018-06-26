@@ -102,6 +102,18 @@ public class BizVehicle implements Serializable {
      */
     @Column(name = "v_lxdh")
     private String vLxdh;
+    
+    /**
+     * 责任人
+     */
+    @Column(name = "v_zrr")
+    private String vZrr;
+
+    /**
+     * 责任人联系电话
+     */
+    @Column(name = "v_zrrlxdh")
+    private String vZrrlxdh;
 
     /**
      * 保单号码
@@ -149,7 +161,23 @@ public class BizVehicle implements Serializable {
     @Column(name = "last_fuel_capacity")
     private Integer lastFuelCapacity;
 
-    public String getLastFuelTime() {
+    public String getvZrr() {
+		return vZrr;
+	}
+
+	public void setvZrr(String vZrr) {
+		this.vZrr = vZrr;
+	}
+
+	public String getvZrrlxdh() {
+		return vZrrlxdh;
+	}
+
+	public void setvZrrlxdh(String vZrrlxdh) {
+		this.vZrrlxdh = vZrrlxdh;
+	}
+
+	public String getLastFuelTime() {
         return lastFuelTime;
     }
 
@@ -571,6 +599,8 @@ public class BizVehicle implements Serializable {
         vGsmc("v_gsmc"),
         vLxr("v_lxr"),
         vLxdh("v_lxdh"),
+        vZrr("v_zrr"),
+        vZrrlxdh("v_zrrlxdh"),
         vBdhm("v_bdhm"),
         createUser("create_user"),
         createTime("create_time"),

@@ -13,8 +13,6 @@ import apis from './axios/api';
 import dictUtil from './libs/dictUtil';
 import session from './libs/session';
 
-import swal from 'sweetalert'
-
 Vue.use(VueI18n);
 Vue.use(iView);
 

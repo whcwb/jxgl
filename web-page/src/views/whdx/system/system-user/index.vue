@@ -5,16 +5,27 @@
 <template>
 	<div class="boxbackborder">
 		<Row style="padding-bottom: 16px;">
-			<div v-for="s in searchItems" style="display: inline-block">
-				<label class="searchLabel">{{s.label}}:</label>
-				<Input v-model="findMess[s.formKey]" :placeholder="'请输入'+s.label" style="width: 200px"></Input>
-			</div>
-			<Button type="primary" @click="findMessList">
-				<Icon type="search"></Icon>
-			</Button>
-			<Button type="primary" @click="AddDataList">
-				<Icon type="plus-round"></Icon>
-			</Button>
+			<Col span="5">
+				<label class="searchLabel">用户姓名:</label>
+				<Input v-model="findMess.xmLike" placeholder="请输入用户姓名" style="width: 200px"></Input>
+			</Col>
+			<Col span="6">
+				<label >用户类型:</label>
+				<Select filterable clearable  v-model="findMess.lx" style="width: 200px">
+					<Option value="10">管理员</Option>
+					<Option value="20">工作人员</Option>
+					<Option value="30">教练员</Option>
+					<Option value="40">车主</Option>
+				</Select>
+			</Col>
+			<Col span="8">
+				<Button type="primary" @click="findMessList">
+					<Icon type="search"></Icon>
+				</Button>
+				<Button type="primary" @click="AddDataList">
+					<Icon type="plus-round"></Icon>
+				</Button>
+			</Col>
 		</Row>
 			<Row style="position: relative;">
 				<Table
@@ -32,6 +43,22 @@
 			:usermes="usermes"
 			:usermesType="userMesType"
 			@listF='listF'></component>
+		<!-- 资质审验单打印 -->
+		<div v-if="printImgs.length > 0" id="printDiv" ref="printDiv" style="position: absolute;left:0;top:0;z-index: -10">
+			<ul>
+				<li>
+					<img v-for="img in printImgs" v-if="img.vfDamc == 'sfzzmFile'" :src="apis.STATIC_PATH + img.vfNetPath + '?d='+new Date().getTime()" width="240">
+					<img v-for="img in printImgs" v-if="img.vfDamc == 'sfzfmFile'" :src="apis.STATIC_PATH + img.vfNetPath + '?d='+new Date().getTime()" width="240">
+				</li>
+				<li>
+					<img v-for="img in printImgs" v-if="img.vfDamc == 'jszzmFile'" :src="apis.STATIC_PATH + img.vfNetPath + '?d='+new Date().getTime()" width="240">
+					<img v-for="img in printImgs" v-if="img.vfDamc == 'jszfmFile'" :src="apis.STATIC_PATH + img.vfNetPath + '?d='+new Date().getTime()" width="240">
+				</li>
+				<li>
+					<img v-for="img in printImgs" v-if="img.vfDamc == 'jlzzmFile'" :src="apis.STATIC_PATH + img.vfNetPath + '?d='+new Date().getTime()" width="240">
+				</li>
+			</ul>
+		</div>
 	</div>
 </template>
 
@@ -40,6 +67,8 @@
 	import newmess from './comp/newmes.vue'
 	import changemes from './comp/changmes.vue'
     import addlistfileImg from './comp/addlistfileImg.vue'
+    import swal from 'sweetalert2'
+    import Print from 'print-js'
 	export default {
 		name: 'char',
 		components: {
@@ -96,6 +125,8 @@
                                 val = '工作人员';
 							}else if (params.row.lx === '30'){
                                 val = '教练员';
+                            }else if (params.row.lx === '40'){
+                                val = '车主';
                             }else{
                                 val = '管理员';
 							}
@@ -169,29 +200,53 @@
 								})
 								]),
                                 h('Tooltip', {
-                                    props: {
-                                        placement: 'top',
-                                        content: '证件照片查看',
-                                    }
-                                },
-								[h('Button', {
-                                    props: {
-                                        type: 'info',
-                                        icon: 'ios-eye',
-                                        shape: 'circle',
-                                        size: 'small'
-                                    },
-                                    style: {
-                                        cursor: "pointer",
-                                        margin: '0 8px 0 0'
-                                    },
-                                    on: {
-                                        click: () => {
-                                            this.showImgFile(params.row)
+                                        props: {
+                                            placement: 'top',
+                                            content: '证件照片',
                                         }
-                                    }
-                                })]
-								),
+                                    },
+                                    [h('Button', {
+                                        props: {
+                                            type: 'info',
+                                            icon: 'ios-eye',
+                                            shape: 'circle',
+                                            size: 'small'
+                                        },
+                                        style: {
+                                            cursor: "pointer",
+                                            margin: '0 8px 0 0'
+                                        },
+                                        on: {
+                                            click: () => {
+                                                this.showImgFile(params.row)
+                                            }
+                                        }
+                                    })]
+                                ),
+                                h('Tooltip', {
+                                        props: {
+                                            placement: 'top',
+                                            content: '审验打印',
+                                        }
+                                    },
+                                    [h('Button', {
+                                        props: {
+                                            type: 'info',
+                                            icon: 'printer',
+                                            shape: 'circle',
+                                            size: 'small'
+                                        },
+                                        style: {
+                                            cursor: "pointer",
+                                            margin: '0 8px 0 0'
+                                        },
+                                        on: {
+                                            click: () => {
+                                                this.showPrintPage(params.row)
+                                            }
+                                        }
+                                    })]
+                                ),
 								h('Button', {
 									props: {
 										type: 'error',
@@ -223,7 +278,10 @@
 					pageSize:8
 				},
 				yhlxDict:[],
-				yhlxDictCode:'ZDCLK0003'
+				yhlxDictCode:'ZDCLK0003',
+                zjcxListCode:'ZJCX',
+                zjcxList:[],
+				printImgs:[]
 			}
 		},
 		watch: {
@@ -239,7 +297,7 @@
 		methods: {
 		    getDict(){
                 this.yhlxDict = this.dictUtil.getByCode(this,this.yhlxDictCode);
-                log(this.yhlxDict);
+                this.zjcxList = this.dictUtil.getByCode(this,this.zjcxListCode);
             },
 			enter(mes){
 //				log(mes)
@@ -296,7 +354,43 @@
 				var v = this
 				v.findMess.pageNum = event
 				v.getmess()
-			}
+			},
+            //审验单打印
+            showPrintPage(row){
+                let v = this;
+                swal.showLoading();
+                v.$http.get(v.apis.FILE.FINDBYPID + '/' + row.yhid).then((res) =>{
+                    swal.close();
+                    if (res.code === 200 && res.result != null && res.result.length > 0){
+                        this.printImgs = res.result;
+
+                        setTimeout(()=>{
+                            Print({
+                                printable: 'printDiv',
+                                type: 'html',
+                                onLoadingStart:()=>{
+                                    this.$refs.printDiv.style = "display:block";
+                                },
+                                onLoadingEnd:()=>{
+                                    this.$refs.printDiv.style = "display:none";
+                                }
+                            });
+						}, 500);
+                    }else{
+                        swal({
+                            text: "请先上传证件！",
+                            type: "error"
+                        })
+					}
+                }, (error)=>{
+                    swal.close();
+
+                    swal({
+                        text: '网络异常',
+                        type: 'error'
+                    })
+                })
+            },
 		}
 	}
 </script>

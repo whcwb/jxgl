@@ -3,7 +3,7 @@
 		<Modal
 				v-model="showModal"
 				height="460"
-				width="900"
+				width="1200"
 				:closable='false'
 				:mask-closable="false"
 				title="证件照片">
@@ -34,7 +34,7 @@
 			<Row style="padding-bottom: 15px">
 				<Card dis-hover>
 					<Row>
-						<Col span="8">
+						<Col span="6">
 							<div style="text-align:center">
 								<div class="demo-upload-list" v-if="xszzmFile != null">
 									<template v-if="xszzmFile.status === 'finished'">
@@ -56,6 +56,7 @@
 										:headers="{'userid':curUser.userId, 'token':curUser.token}"
 										:show-upload-list="false"
 										:on-success="(res, file,fileList)=>{successCallback(res, file,'xszzmFile')}"
+										:on-error="errorCallback"
 										:format="['jpg','jpeg','png']"
 										:max-size="2048"
 										:on-format-error="handleFormatError"
@@ -70,7 +71,7 @@
 								<h3>行驶证正本</h3>
 							</div>
 						</Col>
-						<Col span="8">
+						<Col span="6">
 							<div style="text-align:center">
 								<div class="demo-upload-list" v-if="xszfmFile != null">
 									<template v-if="xszfmFile.status === 'finished'">
@@ -92,6 +93,7 @@
 										:headers="{'userid':curUser.userId, 'token':curUser.token}"
 										:show-upload-list="false"
 										:on-success="(res, file,fileList)=>{successCallback(res, file,'xszfmFile')}"
+										:on-error="errorCallback"
 										:format="['jpg','jpeg','png']"
 										:max-size="2048"
 										:on-format-error="handleFormatError"
@@ -106,7 +108,7 @@
 								<h3>行驶证副本</h3>
 							</div>
 						</Col>
-						<Col span="8">
+						<Col span="6">
 							<div style="text-align:center">
 								<div class="demo-upload-list" v-if="cqdjzFile != null">
 									<template v-if="cqdjzFile.status === 'finished'">
@@ -128,6 +130,7 @@
 										:headers="{'userid':curUser.userId, 'token':curUser.token}"
 										:show-upload-list="false"
 										:on-success="(res, file,fileList)=>{successCallback(res, file,'cqdjzFile')}"
+										:on-error="errorCallback"
 										:format="['jpg','jpeg','png']"
 										:max-size="2048"
 										:on-format-error="handleFormatError"
@@ -140,6 +143,43 @@
 									</div>
 								</Upload>
 								<h3>产权登记证书</h3>
+							</div>
+						</Col>
+						<Col span="6">
+							<div style="text-align:center">
+								<div class="demo-upload-list" v-if="yyzFile != null">
+									<template v-if="yyzFile.status === 'finished'">
+										<img :src="yyzFile.url">
+										<div class="demo-upload-list-cover">
+											<Icon type="ios-eye-outline" size="32" @click.native="handleView(yyzFile.url)"></Icon>
+											&nbsp;&nbsp;&nbsp;&nbsp;
+											<Icon type="refresh" size="32" @click.native="handleRemove(yyzFile)"></Icon>
+										</div>
+									</template>
+									<template v-else>
+										<Progress v-if="yyzFile.showProgress" :percent="yyzFile.percentage" hide-info></Progress>
+									</template>
+								</div>
+
+								<Upload
+										v-show="yyzFile == null"
+										ref="upload"
+										:headers="{'userid':curUser.userId, 'token':curUser.token}"
+										:show-upload-list="false"
+										:on-success="(res, file,fileList)=>{successCallback(res, file,'yyzFile')}"
+										:on-error="errorCallback"
+										:format="['jpg','jpeg','png']"
+										:max-size="2048"
+										:on-format-error="handleFormatError"
+										:on-exceeded-size="handleMaxSize"
+										type="drag"
+										:action="uploadUrl+'/'+formItem.vId+'/20/yyzFile?targetPath=yunyzFile'"
+										style="display: inline-block;width:180px;height:180px">
+									<div style="width: 180px;height:180px;line-height: 200px;">
+										<Icon type="ios-cloud-upload" size="80" style="color: #3399ff"></Icon>
+									</div>
+								</Upload>
+								<h3>营运证</h3>
 							</div>
 						</Col>
 					</Row>
@@ -178,6 +218,8 @@
                 xszfmFile:null,
 				//机动车产权登记证书
                 cqdjzFile:null,
+				//营运证
+                yyzFile:null,
                 dicts:{
 					hpzl:{code:'HPZL',items:[]}
 				}
@@ -197,7 +239,7 @@
 							 this.$data[item.vfDamc] = {
 								 name:item.vfDamc,
 								 status:'finished',
-								 url:this.apis.STATIC_PATH + item.vfNetPath
+								 url:this.apis.STATIC_PATH + item.vfNetPath + '?d='+new Date().getTime()
 							 };
 						 }
                     }
@@ -225,6 +267,10 @@
 				}else{
                     this.$Message.error("文件上传失败："+res.message);
 				}
+            },
+            //文件上传成功后，回调该方法，进行后续处理
+            errorCallback (res, file, locDataName) {
+				this.$Message.error("文件上传失败，请稍后重试！");
             },
             handleRemove (file) {
                 this.$data[file.name] = null;

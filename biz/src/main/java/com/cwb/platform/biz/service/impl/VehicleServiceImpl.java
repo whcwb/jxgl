@@ -34,12 +34,16 @@ import com.cwb.platform.biz.service.VehicleService;
 import com.cwb.platform.sys.base.BaseServiceImpl;
 import com.cwb.platform.sys.base.LimitedCondition;
 import com.cwb.platform.sys.model.SysYh;
+import com.cwb.platform.sys.model.SysZdxm;
 import com.cwb.platform.sys.service.YhService;
+import com.cwb.platform.sys.service.ZdxmService;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.bean.SimpleCondition;
 import com.cwb.platform.util.commonUtil.DateUtils;
+import com.cwb.platform.util.commonUtil.HttpUtil;
 import com.cwb.platform.util.exception.RuntimeCheck;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 import tk.mybatis.mapper.common.Mapper;
 import tk.mybatis.mapper.entity.Example;
@@ -58,6 +62,9 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
     private YhService userService;
     @Autowired
     private VehLogService vehLogService;
+    @Autowired
+    private ZdxmService zdxmService;
+    
 
     private static final String QZBF = "强制报废"; // 强制报废
 
@@ -460,6 +467,7 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
 	public ApiResponse<String> clnsUpdate(BizVehLog entity) {
 		RuntimeCheck.ifBlank(entity.getVlXqsj(), "本次年审时间不能为空");
 		RuntimeCheck.ifBlank(entity.getVlText(), "年审内容不能为空");
+		RuntimeCheck.ifBlank(entity.getVlBz(), "下次年审时间不能为空");
 
 		BizVehicle exist = this.findById(entity.getvId());
 		RuntimeCheck.ifNull(exist, "车辆信息不存在");
@@ -470,15 +478,39 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
 		entity.setCreateUser(getOperateUser());
 		this.vehLogService.save(entity);
 		//更新车辆年审时间
-		String nsrq = exist.getvNsrq();
-		boolean isNs = DateTime.parse(nsrq).isAfter(DateTime.now());
-		if (!isNs){
-			exist.setvNsrq(getNsrq(exist, -1));
-			exist.setUpdateTime(DateTime.now().toString("yyyy-MM-dd HH:mm:ss"));
-			exist.setUpdateUser(getOperateUser());
-			update(exist);
-		}
-
+		exist.setvNsrq(entity.getVlBz());
+		exist.setUpdateTime(DateTime.now().toString("yyyy-MM-dd HH:mm:ss"));
+		exist.setUpdateUser(getOperateUser());
+		update(exist);
+		
 		return ApiResponse.success("车辆年审更新成功");
+	}
+	
+	@Override
+	public ApiResponse<String> sendSms(String vehId) {
+		BizVehicle exist = this.findById(vehId);
+		RuntimeCheck.ifNull(exist, "车辆信息不存在");
+		RuntimeCheck.ifNull(exist.getvZrrlxdh(), "请先维护责任人联系电话");
+		List<SysZdxm> nstels = this.zdxmService.findEq(SysZdxm.InnerColumn.zdlmdm.name(), "NSTEL");
+		RuntimeCheck.ifTrue(CollectionUtils.isEmpty(nstels), "请先在字典管理维护客服电话");
+		
+		//发送短信是通知到车辆负责人，不是使用人
+		Map<String, String> params = Maps.newConcurrentMap();
+		DateTime nsDate = DateTime.now().parse(exist.getvNsrq());
+		params.put("SpCode", "239118");
+		params.put("LoginName", "wh_tmjx");
+		params.put("Password", "tmjx2017");
+		params.put("MessageContent", exist.getvHphm()+"车主，您好！您的爱车于"+nsDate.toString("yyyy年MM月")+"需年审，请在收到短信后5天内前往总校办公室找车管专员领取车辆年审资料及时办理年审业务，如有疑问请拨打"+nstels.get(0).getZdmc());
+		params.put("UserNumber", exist.getvZrrlxdh());
+		params.put("SerialNumber", String.valueOf(DateTime.now().getMillis()));
+		params.put("ScheduleTime", "");
+		params.put("f", "1");
+		
+		String smsResult = HttpUtil.post("https://api.ums86.com:9600/sms/Api/Send.do", params, "gbk");
+		if (smsResult.indexOf("result=0") != -1){
+			return ApiResponse.success("短信发送成功");
+		}
+		
+		return ApiResponse.fail("短信发送失败");
 	}
 }

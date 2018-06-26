@@ -2,8 +2,7 @@
 	<div>
 		<Modal
 		    v-model="showModal"
-			height="460"
-			width="600"
+			width="800"
 		    :closable='false'
 		    :mask-closable="false"
 		    :title="operate+'用户'">
@@ -13,7 +12,7 @@
 				:rules="ruleInline"
     			:label-width="120"
     			:styles="{top: '20px'}">
-	    		<div style="overflow: auto;height: 520px;">
+	    		<div :style="isEdit ? 'overflow: auto;height: 420px;' : 'overflow: auto;height: 360px;'">
 					<Row>
 						<Col span="12">
 							<FormItem prop="zh" label='登录名：'>
@@ -42,13 +41,11 @@
 						</Col>
 						<Col span="24">
 							<FormItem label='用户类型：'>
-								<!--<Select filterable clearable  v-model="addmess.lx">
-									<Option v-for="item in yhlxDict" :value="item.key">{{item.val}}</Option>
-								</Select>-->
 								<RadioGroup v-model="addmess.lx">
 									<Radio label="10">管理员</Radio>
 									<Radio label="20">工作人员</Radio>
 									<Radio label="30">教练员</Radio>
+									<Radio label="40">车主</Radio>
 								</RadioGroup>
 							</FormItem>
 						</Col>
@@ -56,47 +53,56 @@
 					<Row>
 						<Col span="12">
 							<FormItem prop="zjhm" label='身份证号码：'>
-								<Input type="text" v-model="addmess.zjhm" style="width:160px" placeholder="请输入身份证号码">
+								<Input type="text" v-model="addmess.zjhm"  placeholder="请输入身份证号码">
 								</Input>
 							</FormItem>
 						</Col>
 						<Col span="12">
-							<FormItem prop="zjcx" label='准驾车型：'>
-							<Select filterable clearable  v-model="addmess.zjcx">
-								<Option v-for="e in zjcxList" :value="e.key" :key="e.key">{{e.val}}</Option>
-							</Select>
+							<FormItem label='入职日期：'>
+								<DatePicker :value="addmess.rzrq" type="date" placement="left" placeholder="请选择日期" @on-change="(date)=>{addmess.rzrq = date}"></DatePicker>
 							</FormItem>
 						</Col>
 					</Row>
-					<Row>
-						<Col span="24">
-						<FormItem label='入职日期：'>
-							<DatePicker :value="addmess.rzrq" type="date" placement="top-start" placeholder="请选择日期" @on-change="(date)=>{addmess.rzrq = date}"></DatePicker>
-						</FormItem>
-						</Col>
-					</Row>
-					<Row>
-						<Col span="24">
-							<FormItem prop="zjhmexp" label='身份证有效期止：'>
-								<DatePicker :value="addmess.zjhmexp" type="date" placement="top-start" placeholder="请选择日期" @on-change="(date)=>{addmess.zjhmexp = date}"></DatePicker>
-							</FormItem>
-						</Col>
-					</Row>
-					<Row>
-						<Col span="24">
-							<FormItem prop="jszclrq" label='驾驶证初领日期：'>
-								<DatePicker :value="addmess.jszclrq" type="date" placement="top-start" placeholder="请选择日期" @on-change="(date)=>{addmess.jszclrq = date}"></DatePicker>
-							</FormItem>
-						</Col>
-					</Row>
-					<Row>
-						<Col span="24">
-							<FormItem prop="jszjzrq" label='驾驶证截止日期：'>
-								<DatePicker :value="addmess.jszjzrq" type="date" placement="top-start" placeholder="请选择日期" @on-change="(date)=>{addmess.jszjzrq = date}"></DatePicker>
-							</FormItem>
-						</Col>
-
-					</Row>
+					<div v-if="isEdit">
+						<Row>
+							<Col span="24">
+								<FormItem prop="sfzdz" label='居住地址：'>
+									<Input type="text" v-model="addmess.sfzdz" ></Input>
+								</FormItem>
+							</Col>
+						</Row>
+						<Row>
+							<Col span="12">
+								<FormItem prop="zjhmexp" label='身份证有效期：'>
+									<Input type="text" v-model="addmess.zjhmexp" ></Input>
+								</FormItem>
+							</Col>
+							<Col span="12">
+								<FormItem prop="zjcx" label='准驾车型：'>
+									<Select filterable clearable  v-model="addmess.zjcx" placement="top">
+										<Option v-for="e in zjcxList" :value="e.key" :key="e.key">{{e.val}}</Option>
+									</Select>
+								</FormItem>
+							</Col>
+						</Row>
+						<Row>
+							<Col span="8">
+								<FormItem prop="dabh" label='档案编号：'>
+									<Input type="text" v-model="addmess.dabh" ></Input>
+								</FormItem>
+							</Col>
+							<Col span="8">
+								<FormItem prop="jszclrq" label='登记日期：'>
+									<Input type="text" v-model="addmess.jszclrq" ></Input>
+								</FormItem>
+							</Col>
+							<Col span="8">
+								<FormItem prop="jszjzrq" label='截止日期：'>
+									<Input type="text" v-model="addmess.jszjzrq" ></Input>
+								</FormItem>
+							</Col>
+						</Row>
+					</div>
 	    		</div>
     		</Form>
 		    <div slot='footer'>
@@ -116,6 +122,7 @@
 			return {
 				showModal:true,
 				operate:"新增",
+				isEdit: false,
 				//新增数据
                 addmess: {
                     zh: '',
@@ -137,9 +144,6 @@
                 ruleInline: {
                   	zh: [
                       	{ required: true, message: '请输入用户名', trigger: 'blur' }
-                  	],
-                  	sjh:[
-                      	{ required: true,message: '请输入手机号码', trigger: 'blur' }
                   	],
 					mm:[
 						{ required: true,message: '请输入登录密码', trigger: 'blur' }
@@ -180,8 +184,8 @@
                 this.showPsd = true;
             }else{
                 this.addmess = JSON.parse(JSON.stringify(this.usermes));
-                console.log(this.addmess);
-                this.operate = '编辑'
+                this.operate = '编辑';
+				this.isEdit = true;
 			}
 
             this.zjcxList = this.dictUtil.getByCode(this,this.zjcxListCode);

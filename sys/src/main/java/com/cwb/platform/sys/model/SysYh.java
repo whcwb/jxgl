@@ -131,10 +131,52 @@ public class SysYh implements Serializable {
      */
     @Column(name = "jszjzrq")
     private String jszjzrq;
+    
+    /**
+     * 身份证地址
+     */
+    @Column(name = "sfzdz")
+    private String sfzdz;
+    
+    /**
+     * 驾驶证地址
+     */
+    @Column(name = "jszdz")
+    private String jszdz;
+    
+    /**
+     * 档案编号
+     */
+    @Column(name = "dabh")
+    private String dabh;
 
     private static final long serialVersionUID = 1L;
 
-    /**
+    public String getSfzdz() {
+		return sfzdz;
+	}
+
+	public void setSfzdz(String sfzdz) {
+		this.sfzdz = sfzdz;
+	}
+
+	public String getJszdz() {
+		return jszdz;
+	}
+
+	public void setJszdz(String jszdz) {
+		this.jszdz = jszdz;
+	}
+
+	public String getDabh() {
+		return dabh;
+	}
+
+	public void setDabh(String dabh) {
+		this.dabh = dabh;
+	}
+
+	/**
      * 获取用户id
      *
      * @return YHID - 用户id
@@ -533,6 +575,9 @@ public class SysYh implements Serializable {
         zjcx("zjcx"),
         rzrq("rzrq"),
         jszclrq("jszclrq"),
+        sfzdz("sfzdz"),
+        jszdz("jszdz"),
+        dabh("dabh"),
         jszjzrq("jszjzrq");
 
         private final String column;

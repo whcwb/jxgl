@@ -98,27 +98,11 @@ public class YhServiceImpl extends BaseServiceImpl<SysYh, String> implements YhS
 		RuntimeCheck.ifBlank(user.getMm(),"请先输入登陆密码！");
 		RuntimeCheck.ifFalse(StringUtils.isAlphanumeric(user.getZh()),"登陆名只能是数字和字母组成！");
 		RuntimeCheck.ifBlank(user.getLx(),"请先选择用户类型！");
+		RuntimeCheck.ifBlank(user.getZjhm(),"请先输入证件号码！");
 		
-		if ("20".equals(user.getLx())){
-			//工作人员验证
-			RuntimeCheck.ifBlank(user.getSjh(),"请先输入手机号码！");
-			RuntimeCheck.ifBlank(user.getZjhm(),"请先输入证件号码！");
-		}else if ("30".equals(user.getLx())){
-			//教练员验证
-			RuntimeCheck.ifBlank(user.getSjh(),"请先输入手机号码！");
-			RuntimeCheck.ifBlank(user.getZjhm(),"请先输入证件号码！");
-			RuntimeCheck.ifBlank(user.getZjhmexp(),"请先选择身份证有效期！");
-			RuntimeCheck.ifBlank(user.getJszclrq(),"请先选择驾证初领日期！");
-			RuntimeCheck.ifBlank(user.getJszjzrq(),"请先选择驾证截止日期！");
-			RuntimeCheck.ifBlank(user.getZjcx(),"请先选择准驾车型！");
-		}
 		
 		if (StringUtils.isNotBlank(user.getZjhm()) && !new IdcardValidator().isValidatedAllIdcard(user.getZjhm())){
 			throw new RuntimeCheckException("请先输入正确的证件号码！");
-		}
-		
-		if (StringUtils.isNotBlank(user.getJszclrq()) && StringUtils.isEmpty(user.getZjcx())){
-			throw new RuntimeCheckException("请选择准驾车型！");
 		}
 
 		SimpleCondition condition = new SimpleCondition(SysYh.class);
@@ -220,30 +204,13 @@ public class YhServiceImpl extends BaseServiceImpl<SysYh, String> implements YhS
 		
 		RuntimeCheck.ifBlank(user.getZh(),"账号不能为空");
 		RuntimeCheck.ifBlank(user.getXm(),"姓名不能为空");
-		RuntimeCheck.ifBlank(user.getSjh(),"手机号不能为空");
 		RuntimeCheck.ifFalse(StringUtils.isAlphanumeric(user.getZh()),"登陆名只能是数字和字母组成！");
 		RuntimeCheck.ifBlank(user.getLx(),"请先选择用户类型！");
+		RuntimeCheck.ifBlank(user.getZjhm(),"请先输入证件号码！");
 		
-		if ("20".equals(user.getLx())){
-			//工作人员验证
-			RuntimeCheck.ifBlank(user.getSjh(),"请先输入手机号码！");
-			RuntimeCheck.ifBlank(user.getZjhm(),"请先输入证件号码！");
-		}else if ("30".equals(user.getLx())){
-			//教练员验证
-			RuntimeCheck.ifBlank(user.getSjh(),"请先输入手机号码！");
-			RuntimeCheck.ifBlank(user.getZjhm(),"请先输入证件号码！");
-			RuntimeCheck.ifBlank(user.getZjhmexp(),"请先选择身份证有效期！");
-			RuntimeCheck.ifBlank(user.getJszclrq(),"请先选择驾证初领日期！");
-			RuntimeCheck.ifBlank(user.getJszjzrq(),"请先选择驾证截止日期！");
-			RuntimeCheck.ifBlank(user.getZjcx(),"请先选择准驾车型！");
-		}
 		
 		if (StringUtils.isNotBlank(user.getZjhm()) && !new IdcardValidator().isValidatedAllIdcard(user.getZjhm())){
 			throw new RuntimeCheckException("请先输入正确的证件号码！");
-		}
-		
-		if (StringUtils.isNotBlank(user.getJszclrq()) && StringUtils.isEmpty(user.getZjcx())){
-			throw new RuntimeCheckException("请选择准驾车型！");
 		}
 
 		baseMapper.updateByPrimaryKeySelective(user);

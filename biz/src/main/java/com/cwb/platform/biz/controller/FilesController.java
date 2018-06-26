@@ -2,12 +2,16 @@
 package com.cwb.platform.biz.controller;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,10 +21,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.cwb.platform.biz.baidu.AiApis;
 import com.cwb.platform.biz.model.BizFiles;
 import com.cwb.platform.biz.service.FilesService;
 import com.cwb.platform.sys.base.BaseController;
 import com.cwb.platform.sys.base.BaseService;
+import com.cwb.platform.sys.model.SysYh;
+import com.cwb.platform.sys.service.YhService;
 import com.cwb.platform.util.bean.ApiResponse;
 
 import tk.mybatis.mapper.entity.Example;
@@ -36,6 +43,9 @@ public class FilesController extends BaseController<BizFiles, String> {
 	private FilesService filesService;
 	@Value("${staticPath:/}")
 	private String staticPath;
+	private Executor mThreads = Executors.newFixedThreadPool(2);
+	@Autowired
+	private YhService userService;
 	@Override
 	protected BaseService<BizFiles, String> getBaseService() {
 		return filesService;
@@ -98,6 +108,63 @@ public class FilesController extends BaseController<BizFiles, String> {
 		files.setVfLocPath(locFile.getAbsolutePath());
 		files.setVfNetPath(path);
 		this.filesService.saveEntity(files, batch);
+		
+		//如果是以下两种证件类型，则做数据自动提取
+    	/*if ("sfzzmFile".equals(vfDamc)){
+    		SysYh user = this.userService.findById(pId);
+    		//身份证正面内容识别
+    		mThreads.execute(()->{
+				try {
+					JSONObject words = AiApis.idcardFromImageBytes(file.getBytes(), "front");
+					words.keySet().parallelStream().forEach(key -> {
+	    				String value = words.getJSONObject(key.toString()).getString("words");
+	    				if (key.equals("住址")){
+	    					//
+	    				}
+	    			});
+				} catch (IOException e) {
+				}
+    			
+    		});
+    	}else if ("sfzfmFile".equals(vfDamc)){
+    		SysYh user = this.userService.findById(pId);
+    		//身份证正面内容识别
+    		mThreads.execute(()->{
+				try {
+					JSONObject words = AiApis.idcardFromImageBytes(file.getBytes(), "back");
+					words.keySet().parallelStream().forEach(key -> {
+	    				String value = words.getJSONObject(key.toString()).getString("words");
+	    				if (key.equals("有效期限")){
+	    					//
+	    				}
+	    			});
+				} catch (IOException e) {
+				}
+    			
+    		});
+    	}else if ("jszzmFile".equals(vfDamc)){
+    		SysYh user = this.userService.findById(pId);
+    		//驾驶证正面
+    		mThreads.execute(()->{
+				try {
+					JSONObject words = AiApis.drivingLicense(file.getBytes());
+					words.keySet().parallelStream().forEach(key -> {
+	    				String value = words.getJSONObject(key.toString()).getString("words");
+	    				if (key.equals("初次领证日期")){
+	    					//
+	    				}else if (key.equals("住址")){
+	    					//
+	    				}else if (key.equals("有效期限")){
+	    					//
+	    				}else if (key.equals("准驾车型")){
+	    					//
+	    				}
+	    			});
+				} catch (IOException e) {
+				}
+    			
+    		});
+    	}*/
 		return ApiResponse.success(path);
 	}
 }

@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: win  #合并 application-test.yml 中的配置参数
+    active: test  #合并 application-test.yml 中的配置参数
   #上传文件设置
   http:
     multipart:
@@ -48,6 +48,3 @@ logging:
 
 mapper:
   identity: MYSQL
-
-server:
-  port: 8180

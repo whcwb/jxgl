@@ -1,4 +1,4 @@
-import swal from 'sweetalert'
+import swal from 'sweetalert2'
 import dictUtil from './dictUtil'
 import Cookies from 'js-cookie'
 let util = {
@@ -254,12 +254,13 @@ util.save = function(v){
  */
 util.delete = function(v,ids,callback){//数据删除方法封装
     swal({
-        title: "是否删除数据?",
-        text: "",
-        icon: "warning",
-        buttons:['取消','确认'],
-    }).then((willDelete) => {
-            if (willDelete) {
+        text: "是否删除数据?",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonText: '确认',
+        cancelButtonText: '取消'
+    }).then((isConfirm) => {
+            if (isConfirm.value) {
                 let url = v.apiRoot['DELE'];
                 v.$http.post(url,{'ids':ids}).then((res) =>{
                     if(res.code===200){
@@ -286,12 +287,13 @@ util.delete = function(v,ids,callback){//数据删除方法封装
  */
 util.del = function(v,url,ids,callback){//数据删除方法封装
     swal({
-        title: "是否删除数据?",
-        text: "",
-        icon: "warning",
-        buttons:['取消','确认'],
-    }).then((willDelete) => {
-            if (willDelete) {
+        text: "是否删除数据?",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonText: '确认',
+        cancelButtonText: '取消'
+    }).then((isConfirm) => {
+        if (isConfirm.value) {
                 v.$http.post(url,{'ids':ids}).then((res) =>{
                     if(res.code===200){
                         v.$Message.success(res.message);
