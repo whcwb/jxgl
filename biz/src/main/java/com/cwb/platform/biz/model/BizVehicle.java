@@ -160,8 +160,22 @@ public class BizVehicle implements Serializable {
      */
     @Column(name = "last_fuel_capacity")
     private Integer lastFuelCapacity;
+    
+    /**
+     * 是否上传运营证。0未上传；1已上传
+     */
+    @Column(name = "yyz_flag")
+    private Integer yyzFlag;
 
-    public String getvZrr() {
+    public Integer getYyzFlag() {
+		return yyzFlag;
+	}
+
+	public void setYyzFlag(Integer yyzFlag) {
+		this.yyzFlag = yyzFlag;
+	}
+
+	public String getvZrr() {
 		return vZrr;
 	}
 

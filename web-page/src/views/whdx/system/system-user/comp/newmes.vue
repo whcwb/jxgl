@@ -12,7 +12,7 @@
 				:rules="ruleInline"
     			:label-width="120"
     			:styles="{top: '20px'}">
-	    		<div :style="isEdit ? 'overflow: auto;height: 420px;' : 'overflow: auto;height: 360px;'">
+	    		<div :style="isEdit ? 'overflow: auto;height: 480px;' : 'overflow: auto;height: 360px;'">
 					<Row>
 						<Col span="12">
 							<FormItem prop="zh" label='登录名：'>
@@ -99,6 +99,13 @@
 							<Col span="8">
 								<FormItem prop="jszjzrq" label='截止日期：'>
 									<Input type="text" v-model="addmess.jszjzrq" ></Input>
+								</FormItem>
+							</Col>
+						</Row>
+						<Row>
+							<Col span="24">
+								<FormItem prop="jszdz" label='驾证地址：'>
+									<Input type="text" v-model="addmess.jszdz" ></Input>
 								</FormItem>
 							</Col>
 						</Row>

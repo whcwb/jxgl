@@ -38,6 +38,7 @@
 				<div style="font-size: 30px;">数据加载中...</div>
 			</Spin>
 		</div>
+		<!--<vue-sign-canvas :options="options" @result="saveResult" @clear="clear" />-->
         <div class="login-con">
             <Card :bordered="false" style="width: 100%;">
                 <div class="form-con box-row">
@@ -82,6 +83,7 @@
 </template>
 
 <script>
+
 import Cookies from 'js-cookie';
 
 import menuList from '../data/list'
@@ -89,6 +91,16 @@ import {appRouter} from '../router/router';
 export default {
     data () {
         return {
+            options: {
+                width: 500,
+                height: 500,
+                brushColor: '#000',
+                brushWidth: 10,
+                shadowEnable: false,
+                shadowWidth: 10,
+                canvasBackgroundColor: '#fff',
+                brushType: 'marker'
+            },
         	SpinShow:false,
             form: {
                 username: 'admini',
@@ -114,6 +126,12 @@ export default {
         menuList.menuTree = [];
     },
     methods: {
+        saveResult(data){
+            console.log(data);
+		},
+		clear(){
+
+		},
         handleSubmit () {
         	var v = this
             this.$refs.loginForm.validate((valid) => {

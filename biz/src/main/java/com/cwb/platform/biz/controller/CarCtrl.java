@@ -1,15 +1,9 @@
 package com.cwb.platform.biz.controller;
 
 
-import java.io.File;
-import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
-import org.joda.time.DateTime;
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,18 +15,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.baidu.aip.ocr.AipOcr;
 import com.cwb.platform.biz.baidu.AiApis;
-import com.cwb.platform.biz.model.BizFiles;
 import com.cwb.platform.biz.model.BizVehLog;
 import com.cwb.platform.biz.model.BizVehicle;
+import com.cwb.platform.biz.model.BizVehicleChange;
 import com.cwb.platform.biz.service.VehLogService;
+import com.cwb.platform.biz.service.VehicleChangeService;
 import com.cwb.platform.biz.service.VehicleService;
 import com.cwb.platform.sys.base.BaseController;
 import com.cwb.platform.sys.base.BaseService;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.github.pagehelper.Page;
-import com.google.common.io.Files;
+
 
 /**
  * 车辆管理业务处理
@@ -47,6 +41,8 @@ public class CarCtrl extends BaseController<BizVehicle,String> {
     private VehicleService vehicleService;
     @Autowired
     private VehLogService vehLogService;
+    @Autowired
+    private VehicleChangeService vehChangeService;
     
     @Override
     protected BaseService<BizVehicle, String> getBaseService() {
@@ -68,6 +64,7 @@ public class CarCtrl extends BaseController<BizVehicle,String> {
      */
     @GetMapping("/sendSms/{vehId}")
 	public ApiResponse<String> sendSms(@PathVariable("vehId") String vehId){
+    	this.vehicleService.reportZrr();
 		return this.vehicleService.sendSms(vehId);
 	}
     
@@ -77,7 +74,7 @@ public class CarCtrl extends BaseController<BizVehicle,String> {
      * @return
      */
     @GetMapping("/print/{vehId}")
-	public ApiResponse<String> print(@PathVariable("vehId") String vehId){
+	public ApiResponse<String> print(@PathVariable("vehId") String vehId){    	
 		return ApiResponse.success();
 	}
     
@@ -134,6 +131,11 @@ public class CarCtrl extends BaseController<BizVehicle,String> {
 	public ApiResponse<List<BizVehLog>> pager(BizVehLog entity, Page<BizVehLog> pager){
 		return this.vehLogService.pager(pager);
 	}
+    
+    @PostMapping(value="/zrrChangePager")
+	public ApiResponse<List<BizVehicleChange>> zrrChangePager(BizVehicleChange entity, Page<BizVehicleChange> pager){
+		return this.vehChangeService.pager(pager);
+	}
 
     /**
      * 车辆年审更新
@@ -152,4 +154,15 @@ public class CarCtrl extends BaseController<BizVehicle,String> {
     public ApiResponse<List<BizVehicle>> notUseCarList(){
         return vehicleService.notUseCarList();
     }
+    
+    /**
+     * 产权管理
+     * @param entity
+     * @param pager
+     * @return
+     */
+    @PostMapping("/chanquanPager")
+	public ApiResponse<List<BizVehicle>> chanquanPager(BizVehicle entity, Page<BizVehicle> pager){
+		return getBaseService().pager(pager);
+	}
 }

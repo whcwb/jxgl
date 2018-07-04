@@ -28,8 +28,10 @@ import com.cwb.platform.biz.model.BizRepairInfo;
 import com.cwb.platform.biz.model.BizUsecar;
 import com.cwb.platform.biz.model.BizVehLog;
 import com.cwb.platform.biz.model.BizVehicle;
+import com.cwb.platform.biz.model.BizVehicleChange;
 import com.cwb.platform.biz.service.UsecarService;
 import com.cwb.platform.biz.service.VehLogService;
+import com.cwb.platform.biz.service.VehicleChangeService;
 import com.cwb.platform.biz.service.VehicleService;
 import com.cwb.platform.sys.base.BaseServiceImpl;
 import com.cwb.platform.sys.base.LimitedCondition;
@@ -64,6 +66,8 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
     private VehLogService vehLogService;
     @Autowired
     private ZdxmService zdxmService;
+    @Autowired
+    private VehicleChangeService vehChangeService;
     
 
     private static final String QZBF = "强制报废"; // 强制报废
@@ -333,6 +337,7 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
         entity.setCreateUser(getOperateUser());
         entity.setvId(genId());
         entity.setvNsrq(getNsrq(entity, 0));
+        entity.setYyzFlag(0);
         save(entity);
 
         // 初始化保养信息
@@ -356,6 +361,23 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
     public ApiResponse<String> validAndUpdate(BizVehicle entity){
     	valid(entity, true);
 
+    	//如果责任人和责任人联系电话发生了变更，则记录表更记录表中
+    	if (!StringUtils.isAnyEmpty(entity.getvZrr(), entity.getvZrrlxdh())){
+    		BizVehicle exist = this.findById(entity.getvId());
+    		if (!StringUtils.isAnyEmpty(exist.getvZrr(), exist.getvZrrlxdh()) && (!entity.getvZrr().equals(exist.getvZrr()) || !entity.getvZrrlxdh().equals(exist.getvZrrlxdh()))){
+    			BizVehicleChange change = new BizVehicleChange();
+    			change.setChgId(genId());
+    			change.setCreateTime(DateUtils.getNowTime());
+    			change.setCreateUser(getOperateUser());
+    			change.setChgOzrr(exist.getvZrr());
+    			change.setChgOzrrlxdh(exist.getvZrrlxdh());
+    			change.setChgNzrr(entity.getvZrr());
+    			change.setChgNzrrlxdh(entity.getvZrrlxdh());
+    			change.setvId(exist.getvId());
+    			change.setvHphm(exist.getvHphm());
+    			this.vehChangeService.save(change);
+    		}
+    	}
     	entity.setvNsrq(getNsrq(entity, 0));
     	entity.setvHphm(entity.getvHphm().toUpperCase());
         entity.setUpdateTime(DateUtils.getNowTime());
@@ -512,5 +534,10 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
 		}
 		
 		return ApiResponse.fail("短信发送失败");
+	}
+	
+	@Override
+	public ApiResponse<List<Map<String, String>>> reportZrr() {
+		return ApiResponse.success(this.entityMapper.reportZrr());
 	}
 }

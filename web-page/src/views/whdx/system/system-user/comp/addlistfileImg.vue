@@ -48,6 +48,8 @@
 										:headers="{'userid':curUser.userId, 'token':curUser.token}"
 										:show-upload-list="false"
 										:on-success="(res, file,fileList)=>{successCallback(res, file,'sfzzmFile')}"
+										:on-progress="progress"
+										:on-error="error"
 										:format="['jpg','jpeg','png']"
 										:max-size="2048"
 										:on-format-error="handleFormatError"
@@ -84,6 +86,8 @@
 										:headers="{'userid':curUser.userId, 'token':curUser.token}"
 										:show-upload-list="false"
 										:on-success="(res, file,fileList)=>{successCallback(res, file,'sfzfmFile')}"
+										:on-progress="progress"
+										:on-error="error"
 										:format="['jpg','jpeg','png']"
 										:max-size="2048"
 										:on-format-error="handleFormatError"
@@ -120,6 +124,8 @@
 										:show-upload-list="false"
 										:headers="{'userid':curUser.userId, 'token':curUser.token}"
 										:on-success="(res, file,fileList)=>{successCallback(res, file,'jlzzmFile')}"
+										:on-progress="progress"
+										:on-error="error"
 										:format="['jpg','jpeg','png']"
 										:max-size="2048"
 										:on-format-error="handleFormatError"
@@ -162,6 +168,8 @@
 										:show-upload-list="false"
 										:headers="{'userid':curUser.userId, 'token':curUser.token}"
 										:on-success="(res, file,fileList)=>{successCallback(res, file,'jszzmFile')}"
+										:on-progress="progress"
+										:on-error="error"
 										:format="['jpg','jpeg','png']"
 										:max-size="2048"
 										:on-format-error="handleFormatError"
@@ -198,6 +206,8 @@
 										:show-upload-list="false"
 										:headers="{'userid':curUser.userId, 'token':curUser.token}"
 										:on-success="(res, file,fileList)=>{successCallback(res, file,'jszfmFile')}"
+										:on-progress="progress"
+										:on-error="error"
 										:format="['jpg','jpeg','png']"
 										:max-size="2048"
 										:on-format-error="handleFormatError"
@@ -229,6 +239,7 @@
 </template>
 <script>
     import Cookies from 'js-cookie';
+    import swal from 'sweetalert2'
     export default {
     	name:'',
         data () {
@@ -284,7 +295,8 @@
 			},
             colse(){
                 var v = this
-                v.$parent.compName = ''
+                v.$parent.compName = '';
+                v.$parent.getmess();
             },
         	dataList(){
         		let ArrList = this.urlList.split(',')
@@ -296,8 +308,15 @@
                 this.imgUrl = url;
                 this.visible = true;
             },
+            progress(){
+                swal.showLoading();
+			},
+            error(){
+                swal.close();
+            },
 			//文件上传成功后，回调该方法，进行后续处理
             successCallback (res, file, locDataName) {
+                swal.close();
         	    if (res.code == 200){
                     //拼接文件全路径url
                     file.url = this.apis.STATIC_PATH + res.message;
@@ -305,7 +324,6 @@
                     file.name = locDataName;
                     //将文件对象和data的属性进行绑定
                     this.$data[locDataName] = file;
-                    console.log(file);
 				}else{
                     this.$Message.error("文件上传失败："+res.message);
 				}

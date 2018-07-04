@@ -12,6 +12,8 @@ import util from './libs/util';
 import apis from './axios/api';
 import dictUtil from './libs/dictUtil';
 import session from './libs/session';
+import VueSignCanvas from 'vue-sign-canvas'
+Vue.component('VueSignCanvas', VueSignCanvas);
 
 Vue.use(VueI18n);
 Vue.use(iView);

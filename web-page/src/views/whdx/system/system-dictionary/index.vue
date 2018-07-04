@@ -96,6 +96,7 @@
 	import addmess from './comp/addmess.vue'
 	import addmessList from './comp/addmessList.vue'
 	import mess from './comp/mess.vue'
+    import swal from 'sweetalert2'
 	export default {
 		name: 'char',
 		mixins: [mixins],
@@ -180,14 +181,14 @@
 			},
 			removeDcList(item, items) {
 				var v = this
-				swal({
-				  title: "是删除数据?",
-				  text: "",
-				  icon: "warning",
-				  buttons:['取消','确认'],
-				})
-				.then((willDelete) => {
-				  if (willDelete) {
+                swal({
+                    text: "是否删除数据?",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: '确认',
+                    cancelButtonText: '取消'
+                }).then((isConfirm) => {
+                    if (isConfirm.value) {
 					v.$http.post(this.apis.DICTIONARY_LIST.DELE, {'ids': [items.zdId]}).then((res) =>{
 						if(res.code===200){
 							this.$Message.success(res.message);

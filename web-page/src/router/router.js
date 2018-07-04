@@ -142,6 +142,20 @@ export let appRouter = [
                 name: 'vehicle-usecar',
                 meta: { title: '出车管理' },
                 component: () => import('@/views/whdx/vehicle/vehicle-usecar')
+            },
+            {
+                path: 'vehicle-chanquan',
+                icon: 'android-clipboard',
+                name: 'vehicle-chanquan',
+                meta: { title: '产权管理' },
+                component: () => import('@/views/whdx/vehicle/vehicle-chanquan')
+            },
+            {
+                path: 'vehicle-dangan',
+                icon: 'android-clipboard',
+                name: 'vehicle-dangan',
+                meta: { title: '档案留存及打印' },
+                component: () => import('@/views/whdx/vehicle/vehicle-dangan')
             }
         ]
     },
@@ -179,6 +193,22 @@ export let appRouter = [
                 name: 'vehbaoxian-baoyang',
                 meta: { title: '保养管理' },
                 component: () => import('@/views/whdx/vehbaoxian/vehbaoxian-baoyang')
+            }
+        ]
+    },
+    {
+        path: '/report',
+        icon: 'connection-bars',
+        name: 'report',
+        meta: { title: '统计报表' },
+        component: Main,
+        children: [
+            {
+                path: 'report-zrr',
+                icon: 'ios-people',
+                name: 'report-zrr',
+                meta: { title: '责任人统计' },
+                component: () => import('@/views/whdx/report/zrr')
             }
         ]
     },

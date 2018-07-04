@@ -54,7 +54,7 @@ public class AiApis {
 		JSONObject result = null;
 		// 传入可选参数调用接口
 	    HashMap<String, String> options = new HashMap<String, String>();
-	    options.put("accuracy", "normal");
+	    options.put("detect_direction", "true");
 	    try{
 	    	JSONObject tmp = client.drivingLicense(images, options);
 	    	result = tmp.getJSONObject("words_result");
@@ -76,12 +76,13 @@ public class AiApis {
 		JSONObject result = null;
 		// 传入可选参数调用接口
 	    HashMap<String, String> options = new HashMap<String, String>();
-	    options.put("accuracy", "normal");
+	    options.put("detect_direction", "true");
+	    options.put("detect_risk", "false");
 	    try{
 	    	JSONObject tmp = client.idcard(images, cardside, options);
 	    	result = tmp.getJSONObject("words_result");
 	    }catch (Exception e) {
-			
+			e.printStackTrace();
 		}
 	    
 	    return result;

@@ -82,6 +82,18 @@
 									</FormItem>
 								</Col>
 							</Row>
+							<Row>
+								<Col span="12">
+									<FormItem  label="责任人">
+										<Input v-model="formItem.vZrr" readonly ></Input>
+									</FormItem>
+								</Col>
+								<Col span="12">
+									<FormItem  label="责任人联系电话">
+										<Input v-model="formItem.vZrrlxdh" readonly ></Input>
+									</FormItem>
+								</Col>
+							</Row>
 						</Form>
 					</Tab-pane>
 					<Tab-pane label="违法记录" icon="ios-download-outline">
@@ -89,6 +101,9 @@
 					</Tab-pane>
 					<Tab-pane label="年审记录" icon="ios-download-outline">
 						<clxq-nsxx-page :vehcile="formItem"></clxq-nsxx-page>
+					</Tab-pane>
+					<Tab-pane label="责任人变更记录" icon="ios-download-outline">
+						<clxq-zrr-page :vehcile="formItem"></clxq-zrr-page>
 					</Tab-pane>
 				</Tabs>
 			</div>
@@ -104,9 +119,11 @@
     import clxqWfxxPage from './clxqWfxxPage.vue'
     //年审信息
     import clxqNsxxPage from './clxqNsxxPage.vue'
+    //责任人信息
+    import clxqZrrPage from './clxqZrrPage.vue'
 	export default {
 		name: 'usecarForm',
-		components:{clxqNsxxPage, clxqWfxxPage},
+		components:{clxqNsxxPage, clxqWfxxPage, clxqZrrPage},
 		data() {
 			return {
 			    v:this,

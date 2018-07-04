@@ -23,7 +23,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.cwb.platform.biz.baidu.AiApis;
 import com.cwb.platform.biz.model.BizFiles;
+import com.cwb.platform.biz.model.BizVehicle;
 import com.cwb.platform.biz.service.FilesService;
+import com.cwb.platform.biz.service.VehicleService;
 import com.cwb.platform.sys.base.BaseController;
 import com.cwb.platform.sys.base.BaseService;
 import com.cwb.platform.sys.model.SysYh;
@@ -46,6 +48,9 @@ public class FilesController extends BaseController<BizFiles, String> {
 	private Executor mThreads = Executors.newFixedThreadPool(2);
 	@Autowired
 	private YhService userService;
+	@Autowired
+	private VehicleService vehicleService; 
+	
 	@Override
 	protected BaseService<BizFiles, String> getBaseService() {
 		return filesService;
@@ -110,61 +115,75 @@ public class FilesController extends BaseController<BizFiles, String> {
 		this.filesService.saveEntity(files, batch);
 		
 		//如果是以下两种证件类型，则做数据自动提取
-    	/*if ("sfzzmFile".equals(vfDamc)){
+    	if ("sfzzmFile".equals(vfDamc)){
     		SysYh user = this.userService.findById(pId);
     		//身份证正面内容识别
-    		mThreads.execute(()->{
-				try {
-					JSONObject words = AiApis.idcardFromImageBytes(file.getBytes(), "front");
-					words.keySet().parallelStream().forEach(key -> {
-	    				String value = words.getJSONObject(key.toString()).getString("words");
-	    				if (key.equals("住址")){
-	    					//
-	    				}
-	    			});
-				} catch (IOException e) {
-				}
-    			
-    		});
+    		try {
+				JSONObject words = AiApis.idcardFromImageBytes(file.getBytes(), "front");
+				words.keySet().parallelStream().forEach(key -> {
+    				String value = words.getJSONObject(key.toString()).getString("words");
+    				if (key.equals("住址")){
+    					user.setSfzdz(value);
+    				}else if (key.equals("姓名")){
+    					user.setXm(value);
+    				}
+    				
+    				userService.update(user);
+    			});
+			} catch (Exception e) {
+				return ApiResponse.fail("身份证信息提取失败");
+			}
     	}else if ("sfzfmFile".equals(vfDamc)){
     		SysYh user = this.userService.findById(pId);
     		//身份证正面内容识别
-    		mThreads.execute(()->{
-				try {
-					JSONObject words = AiApis.idcardFromImageBytes(file.getBytes(), "back");
-					words.keySet().parallelStream().forEach(key -> {
-	    				String value = words.getJSONObject(key.toString()).getString("words");
-	    				if (key.equals("有效期限")){
-	    					//
-	    				}
-	    			});
-				} catch (IOException e) {
-				}
-    			
-    		});
+    		try {
+				JSONObject words = AiApis.idcardFromImageBytes(file.getBytes(), "back");
+				words.keySet().parallelStream().forEach(key -> {
+    				String value = words.getJSONObject(key.toString()).getString("words");
+    				if (key.equals("失效日期")){
+    					//
+    					user.setZjhmexp(value);
+    					
+    					this.userService.update(user);
+    				}
+    			});
+			} catch (IOException e) {
+			}
     	}else if ("jszzmFile".equals(vfDamc)){
     		SysYh user = this.userService.findById(pId);
     		//驾驶证正面
-    		mThreads.execute(()->{
-				try {
-					JSONObject words = AiApis.drivingLicense(file.getBytes());
-					words.keySet().parallelStream().forEach(key -> {
-	    				String value = words.getJSONObject(key.toString()).getString("words");
-	    				if (key.equals("初次领证日期")){
-	    					//
-	    				}else if (key.equals("住址")){
-	    					//
-	    				}else if (key.equals("有效期限")){
-	    					//
-	    				}else if (key.equals("准驾车型")){
-	    					//
-	    				}
-	    			});
-				} catch (IOException e) {
-				}
-    			
-    		});
-    	}*/
+    		try {
+				JSONObject words = AiApis.drivingLicense(file.getBytes());
+				words.keySet().parallelStream().forEach(key -> {
+    				String value = words.getJSONObject(key.toString()).getString("words");
+    				if (key.equals("初次领证日期")){
+    					//
+    					user.setJszclrq(value);
+    				}else if (key.equals("住址")){
+    					//
+    					user.setJszdz(value);
+    				}else if (key.equals("有效期限")){
+    					//
+    					user.setJszjzrq(value);
+    				}else if (key.equals("准驾车型")){
+    					//
+    					user.setZjcx(value);
+    				}else if (key.equals("档案编号")){
+    					//
+    					user.setDabh(value);
+    				}
+    				
+    				this.userService.update(user);
+    			});
+			} catch (IOException e) {
+			}
+    	}else if ("yyzFile".equals(vfDamc)){
+    		BizVehicle vehicle = this.vehicleService.findById(pId);
+    		vehicle.setYyzFlag(1);
+    		
+    		this.vehicleService.update(vehicle);
+    	}
+    	
 		return ApiResponse.success(path);
 	}
 }

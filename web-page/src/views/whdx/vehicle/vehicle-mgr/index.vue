@@ -147,29 +147,27 @@
                             return true;
                         }
                     },
-                    {title: '运营证', width: 120,render:(h, params)=>{
-                        let lxr = params.row.vLxr;
+                    {title: '运营证', width: 120,key:'yyzFlag',render:(h, params)=>{
+                        let flag = params.row.yyzFlag;
+                        if (flag){
+                            return h('Tag', {
+                                props: {
+                                    type: 'dot',
+                                    color: 'green'
+                                }
+                            }, '已传');
+                        }
 
                         return h('Tag', {
                             props: {
-                                type: 'dot',
-                                color: 'success'
+                                type: 'dot'
                             }
-                        }, '暂无');
+                        }, '未传');
                     }},
                     {title: '责任人', width: 120,key:'vZrr'},
                     {title: '责任人电话', width: 120,key:'vZrrlxdh'},
-                    {title: '所有人', width: 180,key:'vSyl'},
-                    /*{title: '使用性质',key:'vSyxz',render:(h, params)=>{
-                        let val = $.map(this.dicts.syxz.items, item => {
-                            if(item.key == params.row.vSyxz) {
-                                return item.val;
-                            }
-                        });
-                        return val;
-                    }},*/
-                    /*{title: '发动机号',key:'vFdjh'},*/
-                    {title: '使用人', width: 160,key:'vLxr',render:(h, params)=>{
+                    {title: '所有人',key:'vSyl'},
+                    {title: '使用人',key:'vLxr',render:(h, params)=>{
                         let lxr = params.row.vLxr;
 
                         if (lxr){
@@ -182,8 +180,9 @@
                     {
                         title: '操作',
                         key: 'action',
-                        fixed: 'right',
-                    	width: 300,
+						fixed:'right',
+						width:280,
+                        align: 'center',
                         render: (h, params) => {
                             return h('div', [
                                 this.util.buildEditButton(this,h,params),

@@ -21,7 +21,7 @@ module.exports = {
     //文件控制
     FILE:{
         FINDBYPID:'/api/files/findByPId',//根据主ID查询文件信息
-        UPLOAD:BASE_URL + '/api/files/upload',//根据主ID查询文件信息
+        UPLOAD:BASE_URL + ':8180/api/files/upload',//根据主ID查询文件信息
     },
     USER:{
         QUERY:'/api/yh/pager',//用户管理
@@ -109,6 +109,8 @@ module.exports = {
         SENDSMS:'/api/car/sendSms/',
         PRINT:'/api/car/print/',
         SCANFILE:'/api/car/scanXszFile',
+        CHGPAGER:'/api/car/zrrChangePager',
+        CHANQUANPAGER:'/api/car/chanquanPager',
     },
     illegal:{
         QUERY:'api/illegal/pager',//违法管理
@@ -159,5 +161,8 @@ module.exports = {
         ADD:'/api/oilRecord/save',
         CHANGE:'/api/oilRecord/update',
         DELE:'/api/oilRecord/removeIds',
+    },
+    report:{
+        zrr:'/api/report/zrr',//保险管理
     },
 }
