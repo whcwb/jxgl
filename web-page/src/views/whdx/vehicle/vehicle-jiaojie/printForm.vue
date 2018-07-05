@@ -2,11 +2,19 @@
     @import '../../../../styles/common.less';
 </style>
 <style>
-    table, table tr th, table tr td {
+    #printDiv table {
         border: 1px solid #000;
     }
 
-    table {
+    #printDiv table tr th {
+        border: 1px solid #000;
+    }
+
+    #printDiv table tr td {
+        border: 1px solid #000;
+    }
+
+    #printDiv table {
         width: 800px;
         min-height: 28px;
         line-height: 28px;
@@ -14,37 +22,45 @@
         border-collapse: collapse;
         padding: 2px;
     }
-    table td{
+
+    #printDiv table td {
         padding-left: 10px;
     }
-    table .title{
+
+    #printDiv table .title {
         text-align: center
     }
-    table .check{
+
+    #printDiv table .check {
         width: 50px;
         text-align: center;
     }
-    .width100{
+
+    #printDiv .width100 {
         width: 400px;
     }
-    .width2{
+
+    #printDiv .width2 {
         width: 100px;
     }
-    .width3{
+
+    #printDiv .width3 {
         width: 200px;
     }
-    .width4{
+
+    #printDiv .width4 {
         width: 150px;
     }
+
 </style>
 
 <template>
-    <div>
+    <div id="tabS">
         <Modal v-model="showModal" width='900' :closable='false'
                :mask-closable="false" title="单据打印">
             <div id="printDiv" ref="printDiv" style="left:0;top:0;z-index: 10">
                 <table>
-                    <caption>车辆交接确认书</caption>
+                    <caption><h4>车辆交接确认书</h4></caption>
                     <tbody>
                     <tr>
                         <td class="width4">车辆车牌号</td>
@@ -230,7 +246,7 @@
                 readonly: false,
                 formItem: {},
                 ruleInline: {},
-                cph:''
+                cph: ''
             }
         },
         created() {

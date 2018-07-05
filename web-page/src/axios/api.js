@@ -131,6 +131,12 @@ module.exports = {
         CHANGE:'/api/maintainInfo/update',
         DELE:'/api/maintainInfo/removeIds',
     },
+    useCarApply:{
+        QUERY:'api/useCarApply/pager',//用车申请管理
+        ADD:'/api/useCarApply/save',
+        CHANGE:'/api/useCarApply/update',
+        DELE:'/api/useCarApply/removeIds',
+    },
     insurance:{
         QUERY:'api/insurance/pager',//保险管理
         ADD:'/api/insurance/save',

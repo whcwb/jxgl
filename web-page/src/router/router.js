@@ -164,6 +164,13 @@ export let appRouter = [
                 meta: { title: '保管交接管理' },
                 component: () => import('@/views/whdx/vehicle/vehicle-jiaojie')
             },
+            {
+                path: 'vehicle-useCarApply',
+                icon: 'android-clipboard',
+                name: 'vehicle-useCarApply',
+                meta: { title: '用车申请' },
+                component: () => import('@/views/whdx/vehicle/useCarApply')
+            },
             // {
             //     path: 'vehicle-chanquan',
             //     icon: 'android-clipboard',
@@ -217,22 +224,22 @@ export let appRouter = [
             }
         ]
     },
-    {
-        path: '/report',
-        icon: 'connection-bars',
-        name: 'report',
-        meta: { title: '统计报表' },
-        component: Main,
-        children: [
-            // {
-            //     path: 'report-zrr',
-            //     icon: 'ios-people',
-            //     name: 'report-zrr',
-            //     meta: { title: '责任人统计' },
-            //     component: () => import('@/views/whdx/report/zrr')
-            // }
-        ]
-    },
+    // {
+    //     path: '/report',
+    //     icon: 'connection-bars',
+    //     name: 'report',
+    //     meta: { title: '统计报表' },
+    //     component: Main,
+    //     children: [
+    //         {
+    //             path: 'report-zrr',
+    //             icon: 'ios-people',
+    //             name: 'report-zrr',
+    //             meta: { title: '责任人统计' },
+    //             component: () => import('@/views/whdx/report/zrr')
+    //         }
+    //     ]
+    // },
     {
     	path: '/',
     	meta: {
