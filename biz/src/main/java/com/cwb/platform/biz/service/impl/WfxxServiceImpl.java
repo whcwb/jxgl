@@ -2,7 +2,10 @@ package com.cwb.platform.biz.service.impl;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.cwb.platform.util.commonUtil.HttpUtil;
+import com.google.common.collect.Maps;
 import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -22,6 +25,8 @@ import com.cwb.platform.util.exception.RuntimeCheck;
 
 import tk.mybatis.mapper.common.Mapper;
 
+import java.util.Map;
+
 @Service
 public class WfxxServiceImpl extends BaseServiceImpl<BizWfxx,String> implements WfxxService{
     @Autowired
@@ -40,7 +45,7 @@ public class WfxxServiceImpl extends BaseServiceImpl<BizWfxx,String> implements 
     protected Class<?> getEntityCls(){
         return BizWfxx.class;
     }
-    
+
     public BizWfxx validEntity(BizWfxx entity){
     	RuntimeCheck.ifBlank(entity.getvId(), "请先选择车辆");
     	RuntimeCheck.ifBlank(entity.getWfId(), "请先输入违法编号");
@@ -49,7 +54,7 @@ public class WfxxServiceImpl extends BaseServiceImpl<BizWfxx,String> implements 
     	//查看车辆信息是否存在
     	BizVehicle vehicle = this.vehicleService.findById(entity.getvId());
     	RuntimeCheck.ifNull(vehicle, "选择的车辆信息不存在");
-    	
+
     	entity.setvId(vehicle.getvId());
     	entity.setvHphm(vehicle.getvHphm());
     	//
@@ -65,34 +70,69 @@ public class WfxxServiceImpl extends BaseServiceImpl<BizWfxx,String> implements 
     			file.setVfDamc("wfzp-"+i);
     			file.setpId(entity.getWfId());
     			file.setVfNetPath(photoArr[i]);
-    			
+
     			this.filesService.saveEntity(file, null);
     		}
     	}
-    	
+
     	return entity;
     }
 
     @Override
     public ApiResponse<String> validAndSave(BizWfxx entity) {
     	entity = validEntity(entity);
-    	
+
         entity.setCreateTime(DateUtils.getNowTime());
         entity.setCreateUser(getOperateUser());
         save(entity);
+        if ("true".equals(entity.getSendSms())){
+        	sendSms(entity);
+		}
         return ApiResponse.saveSuccess();
     }
-    
+
     @Override
     public ApiResponse<String> validAndUpdate(BizWfxx entity) {
     	RuntimeCheck.ifBlank(entity.getWfId(), "修改信息不存在");
     	BizWfxx exist = this.findById(entity.getWfId());
     	RuntimeCheck.ifNull(exist, "修改信息不存在");
     	entity = this.validEntity(entity);
-    	
+
     	entity.setUpdateTime(DateUtils.getNowTime());
         entity.setUpdateUser(getOperateUser());
         update(entity);
     	return ApiResponse.saveSuccess();
     }
+
+	@Override
+	public ApiResponse<String> sendSms(String wfId) {
+    	RuntimeCheck.ifBlank(wfId,"请选择违法信息");
+    	BizWfxx wfxx = findById(wfId);
+    	RuntimeCheck.ifNull(wfxx,"未找到违法信息");
+    	return sendSms(wfxx);
+	}
+
+	@Override
+	public ApiResponse<String> sendSms(BizWfxx wfxx) {
+		BizVehicle vehicle = vehicleService.findById(wfxx.getvId());
+		RuntimeCheck.ifNull(vehicle,"未找到车辆信息");
+
+		//发送短信是通知到车辆负责人，不是使用人
+		Map<String, String> params = Maps.newConcurrentMap();
+		DateTime date = DateTime.parse(wfxx.getWfWfsj().substring(0,10));
+		params.put("SpCode", "1011012028851");
+		params.put("LoginName", "wh_tmjx");
+		params.put("Password", "tmjx2017");
+		params.put("MessageContent", vehicle.getvHphm()+"车主，您好，您的爱车于"+date.toString("yyyy年MM月dd日")+"，有一条违章处罚待处理，请尽快前往交警大队进行处理。");
+		params.put("UserNumber", vehicle.getvZrrlxdh());
+		params.put("SerialNumber", String.valueOf(DateTime.now().getMillis()));
+		params.put("ScheduleTime", "");
+		params.put("f", "1");
+
+		String smsResult = HttpUtil.post("https://api.ums86.com:9600/sms/Api/Send.do", params, "gbk");
+		if (smsResult.contains("result=0")){
+			return ApiResponse.success("短信发送成功");
+		}
+		return ApiResponse.fail("短信发送失败");
+	}
 }

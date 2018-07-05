@@ -120,10 +120,10 @@
     //年审信息
     import clxqNsxxPage from './clxqNsxxPage.vue'
     //责任人信息
-    import clxqZrrPage from './clxqZrrPage.vue'
+    // import clxqZrrPage from './clxqZrrPage.vue'
 	export default {
 		name: 'usecarForm',
-		components:{clxqNsxxPage, clxqWfxxPage, clxqZrrPage},
+		components:{clxqNsxxPage, clxqWfxxPage},
 		data() {
 			return {
 			    v:this,

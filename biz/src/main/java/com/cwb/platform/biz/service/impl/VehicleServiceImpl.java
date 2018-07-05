@@ -28,10 +28,10 @@ import com.cwb.platform.biz.model.BizRepairInfo;
 import com.cwb.platform.biz.model.BizUsecar;
 import com.cwb.platform.biz.model.BizVehLog;
 import com.cwb.platform.biz.model.BizVehicle;
-import com.cwb.platform.biz.model.BizVehicleChange;
+//import com.cwb.platform.biz.model.BizVehicleChange;
 import com.cwb.platform.biz.service.UsecarService;
 import com.cwb.platform.biz.service.VehLogService;
-import com.cwb.platform.biz.service.VehicleChangeService;
+//import com.cwb.platform.biz.service.VehicleChangeService;
 import com.cwb.platform.biz.service.VehicleService;
 import com.cwb.platform.sys.base.BaseServiceImpl;
 import com.cwb.platform.sys.base.LimitedCondition;
@@ -66,9 +66,9 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
     private VehLogService vehLogService;
     @Autowired
     private ZdxmService zdxmService;
-    @Autowired
-    private VehicleChangeService vehChangeService;
-    
+//    @Autowired
+//    private VehicleChangeService vehChangeService;
+
 
     private static final String QZBF = "强制报废"; // 强制报废
 
@@ -228,7 +228,7 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
 			for (int i=1; i<=15; i++){
 				dateLists.add(ccdjrqDate.plusYears(i));
 			}
-			
+
 			//计算初登日期和当前时间相差多少年
 			int year = Years.yearsBetween(ccdjrqDate, DateTime.now()).getYears();
 			//年审检验步长
@@ -288,7 +288,7 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
 					step = -1;
 				}
 			}
-			
+
 			if (step == -1){
 				nsrq = QZBF;
 			}else{
@@ -312,13 +312,13 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
 					}
 				}
 			}
-			
+
 			entity.setvNsrq(nsrq);
 		}
 
 		return nsrq;
     }
-    
+
     public static void main(String[] args){
     	BizVehicle entity = new BizVehicle();
     	entity.setvSyxz("10");
@@ -338,6 +338,7 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
         entity.setvId(genId());
         entity.setvNsrq(getNsrq(entity, 0));
         entity.setYyzFlag(0);
+        entity.setvRkzt("in"); // 新增车辆时默认是入库状态
         save(entity);
 
         // 初始化保养信息
@@ -362,22 +363,22 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
     	valid(entity, true);
 
     	//如果责任人和责任人联系电话发生了变更，则记录表更记录表中
-    	if (!StringUtils.isAnyEmpty(entity.getvZrr(), entity.getvZrrlxdh())){
-    		BizVehicle exist = this.findById(entity.getvId());
-    		if (!StringUtils.isAnyEmpty(exist.getvZrr(), exist.getvZrrlxdh()) && (!entity.getvZrr().equals(exist.getvZrr()) || !entity.getvZrrlxdh().equals(exist.getvZrrlxdh()))){
-    			BizVehicleChange change = new BizVehicleChange();
-    			change.setChgId(genId());
-    			change.setCreateTime(DateUtils.getNowTime());
-    			change.setCreateUser(getOperateUser());
-    			change.setChgOzrr(exist.getvZrr());
-    			change.setChgOzrrlxdh(exist.getvZrrlxdh());
-    			change.setChgNzrr(entity.getvZrr());
-    			change.setChgNzrrlxdh(entity.getvZrrlxdh());
-    			change.setvId(exist.getvId());
-    			change.setvHphm(exist.getvHphm());
-    			this.vehChangeService.save(change);
-    		}
-    	}
+//    	if (!StringUtils.isAnyEmpty(entity.getvZrr(), entity.getvZrrlxdh())){
+//    		BizVehicle exist = this.findById(entity.getvId());
+//    		if (!StringUtils.isAnyEmpty(exist.getvZrr(), exist.getvZrrlxdh()) && (!entity.getvZrr().equals(exist.getvZrr()) || !entity.getvZrrlxdh().equals(exist.getvZrrlxdh()))){
+//    			BizVehicleChange change = new BizVehicleChange();
+//    			change.setChgId(genId());
+//    			change.setCreateTime(DateUtils.getNowTime());
+//    			change.setCreateUser(getOperateUser());
+//    			change.setChgOzrr(exist.getvZrr());
+//    			change.setChgOzrrlxdh(exist.getvZrrlxdh());
+//    			change.setChgNzrr(entity.getvZrr());
+//    			change.setChgNzrrlxdh(entity.getvZrrlxdh());
+//    			change.setvId(exist.getvId());
+//    			change.setvHphm(exist.getvHphm());
+//    			this.vehChangeService.save(change);
+//    		}
+//    	}
     	entity.setvNsrq(getNsrq(entity, 0));
     	entity.setvHphm(entity.getvHphm().toUpperCase());
         entity.setUpdateTime(DateUtils.getNowTime());
@@ -432,7 +433,7 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
         		BizUsecar item = usecars.get(i);
         		excludeCarIds.add(item.getvId());
         	}
-            
+
             //查询哪些车辆未被使用
             Example condition = new Example(BizVehicle.class);
             condition.and().andNotIn(BizVehicle.InnerColumn.vId.name(), excludeCarIds);
@@ -440,7 +441,7 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
         }else{
         	cars = findAll();
         }
-        
+
         return ApiResponse.success(cars);
     }
 
@@ -466,7 +467,7 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
             String nowStr = now.toString("yyyy-MM-dd");
             condition.lte(BizVehicle.InnerColumn.vNsrq,nowStr);
         }
-        
+
         return true;
     }
 
@@ -488,7 +489,7 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
 	@Override
 	public ApiResponse<String> clnsUpdate(BizVehLog entity) {
 		RuntimeCheck.ifBlank(entity.getVlXqsj(), "本次年审时间不能为空");
-		RuntimeCheck.ifBlank(entity.getVlText(), "年审内容不能为空");
+//		RuntimeCheck.ifBlank(entity.getVlText(), "年审内容不能为空");
 		RuntimeCheck.ifBlank(entity.getVlBz(), "下次年审时间不能为空");
 
 		BizVehicle exist = this.findById(entity.getvId());
@@ -504,10 +505,10 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
 		exist.setUpdateTime(DateTime.now().toString("yyyy-MM-dd HH:mm:ss"));
 		exist.setUpdateUser(getOperateUser());
 		update(exist);
-		
+
 		return ApiResponse.success("车辆年审更新成功");
 	}
-	
+
 	@Override
 	public ApiResponse<String> sendSms(String vehId) {
 		BizVehicle exist = this.findById(vehId);
@@ -515,7 +516,7 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
 		RuntimeCheck.ifNull(exist.getvZrrlxdh(), "请先维护责任人联系电话");
 		List<SysZdxm> nstels = this.zdxmService.findEq(SysZdxm.InnerColumn.zdlmdm.name(), "NSTEL");
 		RuntimeCheck.ifTrue(CollectionUtils.isEmpty(nstels), "请先在字典管理维护客服电话");
-		
+
 		//发送短信是通知到车辆负责人，不是使用人
 		Map<String, String> params = Maps.newConcurrentMap();
 		DateTime nsDate = DateTime.now().parse(exist.getvNsrq());
@@ -527,15 +528,15 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
 		params.put("SerialNumber", String.valueOf(DateTime.now().getMillis()));
 		params.put("ScheduleTime", "");
 		params.put("f", "1");
-		
+
 		String smsResult = HttpUtil.post("https://api.ums86.com:9600/sms/Api/Send.do", params, "gbk");
 		if (smsResult.indexOf("result=0") != -1){
 			return ApiResponse.success("短信发送成功");
 		}
-		
+
 		return ApiResponse.fail("短信发送失败");
 	}
-	
+
 	@Override
 	public ApiResponse<List<Map<String, String>>> reportZrr() {
 		return ApiResponse.success(this.entityMapper.reportZrr());

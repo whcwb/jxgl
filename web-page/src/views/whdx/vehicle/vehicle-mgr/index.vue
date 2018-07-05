@@ -187,11 +187,11 @@
                             return h('div', [
                                 this.util.buildEditButton(this,h,params),
                                 this.util.buildButton(this, h, 'info', 'ios-list-outline', '车辆详情', ()=>{this.showClxqPage(params)}),
-                                this.util.buildButton(this, h, 'info', 'calendar', '车辆年审', ()=>{this.showNsPage(params)}),
+                                // this.util.buildButton(this, h, 'info', 'calendar', '车辆年审', ()=>{this.showNsPage(params)}),
                                 this.util.buildButton(this, h, 'info', 'person', '车辆分配', ()=>{this.toPerson(params)}),
                                 this.util.buildButton(this, h, 'info', 'ios-eye', '证件照片', ()=>{this.showImgFile(params)}),
-                                this.util.buildButton(this, h, 'info', 'printer', '年审打印', ()=>{this.showNsdyPage(params)}),
-                                this.util.buildButton(this, h, 'info', 'email', '年审通知', ()=>{this.showDxtzPage(params)}),
+                                // this.util.buildButton(this, h, 'info', 'printer', '年审打印', ()=>{this.showNsdyPage(params)}),
+                                // this.util.buildButton(this, h, 'info', 'email', '年审通知', ()=>{this.showDxtzPage(params)}),
 
                                 this.util.buildDeleteButton(this,h,params.row.vId),
                             ]);
@@ -248,7 +248,6 @@
                 let v = this;
                 swal.showLoading();
                 v.$http.get(v.apis.FILE.FINDBYPID + '/' + param.row.vId).then((res) =>{
-
                     if (res.code === 200 && res.result != null && res.result.length > 0){
                         this.xszPrintImgs = res.result;
 

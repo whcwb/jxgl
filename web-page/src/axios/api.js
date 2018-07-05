@@ -1,5 +1,5 @@
 //网络请求地址前缀 "http://127.0.0.1";//
-let BASE_URL = 'http://127.0.0.1';
+let BASE_URL = 'http://127.0.0.1:8088';
 //let BASE_URL = 'http://119.97.172.181';
 module.exports = {
     //url: BASE_URL + ':8180',
@@ -117,6 +117,7 @@ module.exports = {
         ADD:'/api/illegal/save',
         CHANGE:'/api/illegal/update',
         DELE:'/api/illegal/removeIds',
+        SEND_SMS:'/api/illegal/sendSms',
     },
     maintain:{
         QUERY:'api/maintain/pager',//保养管理
