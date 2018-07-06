@@ -123,6 +123,20 @@ export let appRouter = [
                 component: () => import('@/views/whdx/vehicle/vehicle-mgr')
             },
             {
+                path: 'vehicle-driver',
+                icon: 'android-clipboard',
+                name: 'vehicle-driver',
+                meta: { title: '驾驶员管理' },
+                component: () => import('@/views/whdx/vehicle/vehicle-driver')
+            },
+            {
+                path: 'vehicle-notify',
+                icon: 'android-clipboard',
+                name: 'vehicle-notify',
+                meta: { title: '通知管理' },
+                component: () => import('@/views/whdx/vehicle/notify')
+            },
+            {
                 path: 'vehicle-cq',
                 icon: 'android-clipboard',
                 name: 'vehicle-cq',
