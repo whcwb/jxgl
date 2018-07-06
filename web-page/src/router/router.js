@@ -165,6 +165,13 @@ export let appRouter = [
                 component: () => import('@/views/whdx/vehicle/vehicle-jiaojie')
             },
             {
+                path: 'vehicle-jiaojie-log',
+                icon: 'android-clipboard',
+                name: 'vehicle-jiaojie-log',
+                meta: { title: '保管交接记录' },
+                component: () => import('@/views/whdx/vehicle/TransitionLog')
+            },
+            {
                 path: 'vehicle-useCarApply',
                 icon: 'android-clipboard',
                 name: 'vehicle-useCarApply',
@@ -177,6 +184,13 @@ export let appRouter = [
                 name: 'vehicle-useCarAudit',
                 meta: { title: '用车审核' },
                 component: () => import('@/views/whdx/vehicle/useCarApply/audit.vue')
+            },
+            {
+                path: 'vehicle-document',
+                icon: 'android-clipboard',
+                name: 'vehicle-document',
+                meta: { title: '档案拍照及打印' },
+                component: () => import('@/views/whdx/vehicle/document')
             },
             // {
             //     path: 'vehicle-chanquan',

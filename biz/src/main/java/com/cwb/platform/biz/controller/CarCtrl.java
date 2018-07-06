@@ -49,6 +49,15 @@ public class CarCtrl extends BaseController<BizVehicle,String> {
         return vehicleService;
     }
 
+    @RequestMapping("uploadInBill")
+	public ApiResponse<String> uploadInBill(String clId,String filePath){
+    	return vehicleService.uploadBill(clId,filePath,"in");
+	}
+    @RequestMapping("uploadOutBill")
+	public ApiResponse<String> uploadOutBill(String clId,String filePath){
+    	return vehicleService.uploadBill(clId,filePath,"out");
+	}
+
     /**
      * 给车辆分配人员信息
      */

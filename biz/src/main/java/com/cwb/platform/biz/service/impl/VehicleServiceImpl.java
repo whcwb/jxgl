@@ -1,37 +1,12 @@
 package com.cwb.platform.biz.service.impl;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.joda.time.DateTime;
-import org.joda.time.Years;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-
 import com.cwb.platform.biz.mapper.BizMaintainInfoMapper;
 import com.cwb.platform.biz.mapper.BizRepairInfoMapper;
 import com.cwb.platform.biz.mapper.BizVehicleMapper;
-import com.cwb.platform.biz.model.BizMaintainInfo;
-import com.cwb.platform.biz.model.BizOilRecord;
-import com.cwb.platform.biz.model.BizRepairInfo;
-import com.cwb.platform.biz.model.BizUsecar;
-import com.cwb.platform.biz.model.BizVehLog;
-import com.cwb.platform.biz.model.BizVehicle;
-//import com.cwb.platform.biz.model.BizVehicleChange;
+import com.cwb.platform.biz.model.*;
+import com.cwb.platform.biz.service.TransitionLogService;
 import com.cwb.platform.biz.service.UsecarService;
 import com.cwb.platform.biz.service.VehLogService;
-//import com.cwb.platform.biz.service.VehicleChangeService;
 import com.cwb.platform.biz.service.VehicleService;
 import com.cwb.platform.sys.base.BaseServiceImpl;
 import com.cwb.platform.sys.base.LimitedCondition;
@@ -46,9 +21,23 @@ import com.cwb.platform.util.commonUtil.HttpUtil;
 import com.cwb.platform.util.exception.RuntimeCheck;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
+import org.joda.time.Years;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import tk.mybatis.mapper.common.Mapper;
 import tk.mybatis.mapper.entity.Example;
+
+import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
+import java.util.*;
+
+//import com.cwb.platform.biz.model.BizVehicleChange;
+//import com.cwb.platform.biz.service.VehicleChangeService;
 
 @Service
 public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> implements VehicleService{
@@ -66,6 +55,8 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
     private VehLogService vehLogService;
     @Autowired
     private ZdxmService zdxmService;
+    @Autowired
+    private TransitionLogService transitionLogService;
 //    @Autowired
 //    private VehicleChangeService vehChangeService;
 
@@ -541,4 +532,21 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
 	public ApiResponse<List<Map<String, String>>> reportZrr() {
 		return ApiResponse.success(this.entityMapper.reportZrr());
 	}
+
+    @Override
+    public ApiResponse<String> uploadBill(String clId, String filePath, String type) {
+	    RuntimeCheck.ifBlank(clId,"请选择车辆");
+	    RuntimeCheck.ifBlank(filePath,"请上传文件");
+	    RuntimeCheck.ifBlank(type,"请选择单据类型");
+
+	    BizVehicle car = findById(clId);
+	    RuntimeCheck.ifNull(car,"车辆不存在");
+
+	    car.setvRkzt(type);
+	    update(car);
+
+	    // 记录出入库流水
+        transitionLogService.log(car,filePath,type);
+        return ApiResponse.success();
+    }
 }

@@ -163,6 +163,9 @@ module.exports = {
         CHANGE:'/api/repairInfo/update',
         DELE:'/api/repairInfo/removeIds',
     },
+    jiaojie_log:{
+        QUERY:'api/transitionLog/pager',//维修管理
+    },
     oilRecord:{
         QUERY:'api/oilRecord/pager',//油料管理
         list:'/api/oilRecord/list',
