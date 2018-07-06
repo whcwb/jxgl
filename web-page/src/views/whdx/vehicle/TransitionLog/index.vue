@@ -32,8 +32,8 @@
                     {title:'车牌号',key:'cph'},
                     {title:'创建时间',key:'createTime'},
                     {title:'创建人姓名',key:'createUserName'},
-                    {title:'操作类型',key:'type'},
-                    {title:'文件路径',key:'filePath'},
+                    {title:'操作类型',key:'type',dict:'rkzt'},
+                    // {title:'文件路径',key:'filePath'},
                     // {
                     //     title: '操作',
                     //     key: 'action',

@@ -36,8 +36,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.util.*;
 
-//import com.cwb.platform.biz.model.BizVehicleChange;
-//import com.cwb.platform.biz.service.VehicleChangeService;
+import com.cwb.platform.biz.model.BizVehicleChange;
+import com.cwb.platform.biz.service.VehicleChangeService;
 
 @Service
 public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> implements VehicleService{
@@ -57,8 +57,8 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
     private ZdxmService zdxmService;
     @Autowired
     private TransitionLogService transitionLogService;
-//    @Autowired
-//    private VehicleChangeService vehChangeService;
+    @Autowired
+    private VehicleChangeService vehChangeService;
 
 
     private static final String QZBF = "强制报废"; // 强制报废
@@ -354,22 +354,22 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
     	valid(entity, true);
 
     	//如果责任人和责任人联系电话发生了变更，则记录表更记录表中
-//    	if (!StringUtils.isAnyEmpty(entity.getvZrr(), entity.getvZrrlxdh())){
-//    		BizVehicle exist = this.findById(entity.getvId());
-//    		if (!StringUtils.isAnyEmpty(exist.getvZrr(), exist.getvZrrlxdh()) && (!entity.getvZrr().equals(exist.getvZrr()) || !entity.getvZrrlxdh().equals(exist.getvZrrlxdh()))){
-//    			BizVehicleChange change = new BizVehicleChange();
-//    			change.setChgId(genId());
-//    			change.setCreateTime(DateUtils.getNowTime());
-//    			change.setCreateUser(getOperateUser());
-//    			change.setChgOzrr(exist.getvZrr());
-//    			change.setChgOzrrlxdh(exist.getvZrrlxdh());
-//    			change.setChgNzrr(entity.getvZrr());
-//    			change.setChgNzrrlxdh(entity.getvZrrlxdh());
-//    			change.setvId(exist.getvId());
-//    			change.setvHphm(exist.getvHphm());
-//    			this.vehChangeService.save(change);
-//    		}
-//    	}
+    	if (!StringUtils.isAnyEmpty(entity.getvZrr(), entity.getvZrrlxdh())){
+    		BizVehicle exist = this.findById(entity.getvId());
+    		if (!StringUtils.isAnyEmpty(exist.getvZrr(), exist.getvZrrlxdh()) && (!entity.getvZrr().equals(exist.getvZrr()) || !entity.getvZrrlxdh().equals(exist.getvZrrlxdh()))){
+    			BizVehicleChange change = new BizVehicleChange();
+    			change.setChgId(genId());
+    			change.setCreateTime(DateUtils.getNowTime());
+    			change.setCreateUser(getOperateUser());
+    			change.setChgOzrr(exist.getvZrr());
+    			change.setChgOzrrlxdh(exist.getvZrrlxdh());
+    			change.setChgNzrr(entity.getvZrr());
+    			change.setChgNzrrlxdh(entity.getvZrrlxdh());
+    			change.setvId(exist.getvId());
+    			change.setvHphm(exist.getvHphm());
+    			this.vehChangeService.save(change);
+    		}
+    	}
     	entity.setvNsrq(getNsrq(entity, 0));
     	entity.setvHphm(entity.getvHphm().toUpperCase());
         entity.setUpdateTime(DateUtils.getNowTime());

@@ -9,6 +9,13 @@ module.exports = {
     //STATIC_PATH: BASE_URL + '/image/',
     STATIC_PATH: BASE_URL + ':8765/server/',
     VIDEO_PATH:'',
+    //文件控制
+    FILE:{
+        FINDBYPID:'/api/files/findByPId',//根据主ID查询文件信息
+        // todo UPLOAD
+        // UPLOAD:BASE_URL + ':8180/api/files/upload',//根据主ID查询文件信息
+        UPLOAD:BASE_URL + '/api/files/upload',//根据主ID查询文件信息
+    },
     USERROOT:{
         GET_MENU_LIST:'/api/gn/getUserFunctions',
         GET_MENU_TREE:'/api/gn/getMenuTree',
@@ -17,11 +24,6 @@ module.exports = {
     },
     LOGIN:{
         QUERY:'login'
-    },
-    //文件控制
-    FILE:{
-        FINDBYPID:'/api/files/findByPId',//根据主ID查询文件信息
-        UPLOAD:BASE_URL + ':8180/api/files/upload',//根据主ID查询文件信息
     },
     USER:{
         QUERY:'/api/yh/pager',//用户管理
@@ -111,6 +113,7 @@ module.exports = {
         SCANFILE:'/api/car/scanXszFile',
         CHGPAGER:'/api/car/zrrChangePager',
         CHANQUANPAGER:'/api/car/chanquanPager',
+        uploadBill:'/api/car/uploadBill',
     },
     illegal:{
         QUERY:'api/illegal/pager',//违法管理
@@ -118,6 +121,12 @@ module.exports = {
         CHANGE:'/api/illegal/update',
         DELE:'/api/illegal/removeIds',
         SEND_SMS:'/api/illegal/sendSms',
+    },
+    vehicleChange:{
+        QUERY:'api/vehicleChange/pager',//违法管理
+        ADD:'/api/vehicleChange/save',
+        CHANGE:'/api/vehicleChange/update',
+        DELE:'/api/vehicleChange/removeIds',
     },
     maintain:{
         QUERY:'api/maintain/pager',//保养管理

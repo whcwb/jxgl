@@ -123,6 +123,13 @@ export let appRouter = [
                 component: () => import('@/views/whdx/vehicle/vehicle-mgr')
             },
             {
+                path: 'vehicle-cq',
+                icon: 'android-clipboard',
+                name: 'vehicle-cq',
+                meta: { title: '产权管理' },
+                component: () => import('@/views/whdx/vehicle/vehicleChange')
+            },
+            {
                 path: 'vehicle-baoxian',
                 icon: 'android-clipboard',
                 name: 'vehicle-baoxian',

@@ -3,13 +3,12 @@ package com.cwb.platform.biz.model;
 import java.io.Serializable;
 import javax.persistence.*;
 
-@Table(name = "biz_ transition_log")
+@Table(name = "biz_transition_log")
 public class BizTransitionLog implements Serializable {
     /**
      * id
      */
     @Id
-    @GeneratedValue(generator = "JDBC")
     private String id;
 
     /**

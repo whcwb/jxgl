@@ -34,6 +34,7 @@ public class TransitionLogServiceImpl extends BaseServiceImpl<BizTransitionLog, 
 		log.setCreateUserName(user.getXm());
 		log.setFilePath(filePath);
 		log.setType(type);
+		log.setId(genId());
 		save(log);
 		return ApiResponse.success();
 	}

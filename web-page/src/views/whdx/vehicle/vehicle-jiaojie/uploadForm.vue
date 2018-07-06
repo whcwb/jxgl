@@ -91,17 +91,29 @@
                 ruleInline: {},
                 uploadFile: null,
                 curUser: {},
+                filePath:''
             }
         },
         created() {
             this.curUser = JSON.parse(Cookies.get('result')).accessToken;
+            this.formItem.vId = this.$parent.choosedRow.vId;
         },
         methods: {
             confirm(){
                 let p = {
-                    type:'',
-
+                    clId:this.formItem.vId,
+                    type:this.fileType,
+                    filePath:this.filePath,
                 }
+                this.$http.post(this.apis.CAR.uploadBill,p).then((res)=>{
+                    if (res.code === 200){
+                        this.$Message.success(res.message);
+                        this.util.getPageData(this.$parent)
+                        this.$parent.componentName = ''
+                    }else{
+                        this.$Message.error(res.message);
+                    }
+                })
             },
             typeChange(o) {
                 console.log(o);
@@ -110,6 +122,7 @@
             successCallback(res, file, locDataName) {
                 if (res.code == 200) {
                     //拼接文件全路径url
+                    this.filePath = res.message;
                     file.url = this.apis.STATIC_PATH + res.message;
                     //重新给name赋值，以便预览图片和删除文件时使用
                     file.name = locDataName;
