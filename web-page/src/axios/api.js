@@ -136,6 +136,7 @@ module.exports = {
         ADD:'/api/useCarApply/save',
         CHANGE:'/api/useCarApply/update',
         DELE:'/api/useCarApply/removeIds',
+        AUDIT:'/api/useCarApply/audit',
     },
     insurance:{
         QUERY:'api/insurance/pager',//保险管理

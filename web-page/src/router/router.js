@@ -171,6 +171,13 @@ export let appRouter = [
                 meta: { title: '用车申请' },
                 component: () => import('@/views/whdx/vehicle/useCarApply')
             },
+            {
+                path: 'vehicle-useCarAudit',
+                icon: 'android-clipboard',
+                name: 'vehicle-useCarAudit',
+                meta: { title: '用车审核' },
+                component: () => import('@/views/whdx/vehicle/useCarApply/audit.vue')
+            },
             // {
             //     path: 'vehicle-chanquan',
             //     icon: 'android-clipboard',

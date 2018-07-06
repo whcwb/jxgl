@@ -52,7 +52,8 @@ public class BizUsecarApply implements Serializable {
     /**
      * 审核人
      */
-    private String shr;
+    @Column(name = "shr_id")
+    private String shrId;
 
     /**
      * 审核时间
@@ -65,6 +66,15 @@ public class BizUsecarApply implements Serializable {
     private String bhyy;
 
     private static final long serialVersionUID = 1L;
+
+
+    public String getShrId() {
+        return shrId;
+    }
+
+    public void setShrId(String shrId) {
+        this.shrId = shrId;
+    }
 
     /**
      * 获取id
@@ -211,24 +221,6 @@ public class BizUsecarApply implements Serializable {
     }
 
     /**
-     * 获取审核人
-     *
-     * @return shr - 审核人
-     */
-    public String getShr() {
-        return shr;
-    }
-
-    /**
-     * 设置审核人
-     *
-     * @param shr 审核人
-     */
-    public void setShr(String shr) {
-        this.shr = shr;
-    }
-
-    /**
      * 获取审核时间
      *
      * @return shsj - 审核时间
@@ -273,7 +265,7 @@ public class BizUsecarApply implements Serializable {
         sqrxm("sqrxm"),
         createTime("create_time"),
         zt("zt"),
-        shr("shr"),
+        shrId("shr_id"),
         shsj("shsj"),
         bhyy("bhyy");
 

@@ -37,8 +37,6 @@
                 tableColumns: [
                     {title: "#", width: 60, type: 'index'},
                     {title:'车牌号',key:'cph',searchKey:'cphLike'},
-                    {title:'车辆id',key:'clId'},
-                    {title:'申请人id',key:'sqrId'},
                     {title:'申请原因',key:'sqyy'},
                     {title:'申请人姓名',key:'sqrxm'},
                     {title:'申请时间',key:'createTime'},
@@ -46,18 +44,18 @@
                     {title:'审核人',key:'shr'},
                     {title:'审核时间',key:'shsj'},
                     {title:'驳回原因',key:'bhyy'},
-                    {
-                        title: '操作',
-                        key: 'action',
-                        width: 120,
-                        fixed: 'right',
-                        render: (h, params) => {
-                            return h('div', [
-                                this.util.buildEditButton(this,h,params),
-                                this.util.buildDeleteButton(this,h,params.row.id),
-                            ]);
-                        }
-                    }
+                    // {
+                    //     title: '操作',
+                    //     key: 'action',
+                    //     width: 120,
+                    //     fixed: 'right',
+                    //     render: (h, params) => {
+                    //         return h('div', [
+                    //             this.util.buildEditButton(this,h,params),
+                    //             this.util.buildDeleteButton(this,h,params.row.id),
+                    //         ]);
+                    //     }
+                    // }
                 ],
                 pageData: [],
                 form: {
