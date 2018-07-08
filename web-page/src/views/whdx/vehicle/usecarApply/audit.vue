@@ -134,8 +134,9 @@
                 }
                 this.$http.post(this.apis.useCarApply.AUDIT,param).then((res) =>{
                     if (res.code === 200){
+                        this.componentName = ''
                         this.$Message.success(res.message);
-                        this.findMessList();
+                        this.util.getPageData(this);
                     }else{
                         this.$Message.error(res.message);
                     }

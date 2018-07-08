@@ -20,13 +20,6 @@
 								</Input>
 							</FormItem>
 						</Col>
-						<Col span="12" v-if="showPsd">
-							<FormItem prop="mm" label='密码：'>
-								<Input type="password" v-model="addmess.mm" placeholder="请设置用户密码">
-								</Input>
-								<span>*默认：123456</span>
-							</FormItem>
-						</Col>
 						<Col span="12">
 							<FormItem prop="xm" label='姓名：'>
 								<Input type="text" v-model="addmess.xm" placeholder="请输入姓名">

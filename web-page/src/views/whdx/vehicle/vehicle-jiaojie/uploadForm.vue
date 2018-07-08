@@ -31,7 +31,7 @@
                                     :on-format-error="handleFormatError"
                                     :on-exceeded-size="handleMaxSize"
                                     type="drag"
-                                    :action="uploadUrl+'/'+formItem.vId+'/20/uploadFile?targetPath=ckdFile'"
+                                    :action="uploadUrl+'/'+formItem.vId+'/20/rkdFile?targetPath=rkdFile'"
                                     style="display: inline-block;width:180px;height:180px">
                                 <div style="width: 180px;height:180px;line-height: 200px;">
                                     <Icon type="ios-cloud-upload" size="80" style="color: #3399ff"></Icon>
@@ -54,7 +54,7 @@
                                     :on-format-error="handleFormatError"
                                     :on-exceeded-size="handleMaxSize"
                                     type="drag"
-                                    :action="uploadUrl+'/'+formItem.vId+'/20/uploadFile?targetPath=rkdFile'"
+                                    :action="uploadUrl+'/'+formItem.vId+'/20/ckdFile?targetPath=ckdFile'"
                                     style="display: inline-block;width:180px;height:180px">
                                 <div style="width: 180px;height:180px;line-height: 200px;">
                                     <Icon type="ios-cloud-upload" size="80" style="color: #3399ff"></Icon>

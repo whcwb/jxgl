@@ -69,6 +69,6 @@ public class UsecarApplyServiceImpl extends BaseServiceImpl<BizUsecarApply, Stri
 		apply.setShrId(user.getYhid()+"-"+user.getXm());
 		apply.setShsj(DateUtils.getNowTime());
 		update(apply);
-		return null;
+		return ApiResponse.success();
 	}
 }

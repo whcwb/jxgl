@@ -20,14 +20,14 @@
         <Row v-if="showFiles" style="padding-bottom: 15px">
             <Card dis-hover>
                 <Row>
-                    <Col v-for="(item,index) in  files" span="6" :key="index">
+                    <Col v-for="(item,key) in  files" span="6" :key="key">
                         <div style="text-align:center;margin-top: 16px">
                             <div class="demo-upload-list" v-if="item.uploadFile != null">
                                 <template v-if="item.uploadFile.status === 'finished'">
                                     <img :src="staticPath + item.uploadFile.url">
                                     <div class="demo-upload-list-cover">
-                                        <Icon type="ios-eye-outline" size="32" :id="'img_'+index"
-                                              @click.native="handlePrint('img_'+index)"></Icon>
+                                        <Icon type="ios-printer-outline" size="32" :id="'img_'+key"
+                                              @click.native="handlePrint('img_'+key)"></Icon>
                                         &nbsp;&nbsp;&nbsp;&nbsp;
                                         <Icon type="ios-eye-outline" size="32"
                                               @click.native="handleView(staticPath  + item.uploadFile.url)"></Icon>
@@ -37,7 +37,7 @@
                                     </div>
                                 </template>
                                 <template v-else>
-                                    <Progress v-if="item.uploadFile.showProgress" :percent="item.uploadFile.percentage"
+                                    <Progress :percent="item.uploadFile.percentage"
                                               hide-info></Progress>
                                 </template>
                             </div>
@@ -46,14 +46,14 @@
                                     ref="upload"
                                     :headers="{'userid':curUser.userId, 'token':curUser.token}"
                                     :show-upload-list="false"
-                                    :on-success="(res, file,fileList)=>{successCallback(res, file,index)}"
+                                    :on-success="(res, file,fileList)=>{successCallback(res, file,key)}"
                                     :on-error="errorCallback"
                                     :format="['jpg','jpeg','png']"
                                     :max-size="2048"
                                     :on-format-error="handleFormatError"
                                     :on-exceeded-size="handleMaxSize"
                                     type="drag"
-                                    :action="item.action"
+                                    :action="uplaodUrl+'/'+form.vId+'/20/'+key+'?targetPath='+key"
                                     style="display: inline-block;width:180px;height:180px">
                                 <div style="width: 180px;height:180px;line-height: 200px;">
                                     <Icon type="ios-cloud-upload" size="80" style="color: #3399ff"></Icon>
@@ -62,12 +62,18 @@
                             <h3>{{item.title}}</h3>
                         </div>
                     </Col>
+                    <Col span="6" >
+                        <div style="text-align:center;margin-top: 16px;width: 180px;height: 180px;">
+                            <Card  style="text-align:center;margin-top: 16px;width: 180px;height: 180px;">
+                                <div style="text-align:center">
+                                    <img src="../../../../../static/excel.jpg" style="width:100%">
+                                </div>
+                            </Card>
+                            <h3 style="margin-top: 10px;">车辆异动表下载</h3>
+                        </div>
+                    </Col>
                 </Row>
             </Card>
-
-            <Col>
-                <Button @click="componentName = 'printChange'">车辆异动</Button>
-            </Col>
         </Row>
         <component :is="componentName"></component>
     </div>
@@ -87,18 +93,19 @@
                 v: this,
                 showFiles: false,
                 componentName: '',
-                staticPath:this.apis.STATIC_PATH,
+                staticPath: this.apis.STATIC_PATH,
                 SpinShow: true,
                 form: {
                     vHphm: ''
                 },
+                uplaodUrl: this.apis.FILE.UPLOAD,
                 files: {
-                    xszzmFile: {title: '行车证', uploadFile: null, action: '', showProgress: true, percentage: true},
-                    djzsFile: {title: '登记证书', uploadFile: null, action: '', showProgress: true, percentage: true},
-                    bdFile: {title: '保单', uploadFile: null, action: '', showProgress: true, percentage: true},
-                    cqdjFile: {title: '内部车辆产权登记', uploadFile: null, action: '', showProgress: true, percentage: true},
-                    aqxyFile: {title: '车辆安全协议', uploadFile: null, action: '', showProgress: true, percentage: true},
-                    gzbFile: {title: '告知表', uploadFile: null, action: '', showProgress: true, percentage: true}
+                    xszzmFile: {title: '行车证', uploadFile: null},
+                    djzsFile: {title: '登记证书', uploadFile: null},
+                    bdFile: {title: '保单', uploadFile: null},
+                    cqdjFile: {title: '内部车辆产权登记', uploadFile: null},
+                    aqxyFile: {title: '车辆安全协议', uploadFile: null},
+                    gzbFile: {title: '告知表', uploadFile: null}
                 },
                 curUser: '',
                 car: '',
@@ -108,7 +115,7 @@
             this.curUser = JSON.parse(Cookies.get('result')).accessToken;
         },
         methods: {
-            getVid(){
+            getVid() {
                 if (this.form.vHphm === '') {
                     this.$Message.error('请输入车牌号');
                     return;
@@ -118,6 +125,8 @@
                 this.$http.get(this.apis.CAR.QUERY + '?vHphm=' + this.form.vHphm).then((res) => {
                     if (res.code === 200 && res.page && res.page.list && res.page.list.length > 0) {
                         this.car = res.page.list[0];
+                        console.log(this.car);
+                        this.form.vId = this.car.vId;
                         this.getData();
                     } else {
                         this.$Message.error('未找到车辆');
@@ -125,15 +134,19 @@
                 })
             },
             getData() {
+                for (let k in this.files){
+                    this.files[k].uploadFile = null;
+                }
                 this.$http.get(this.apis.FILE.FINDBYPID + '/' + this.car.vId).then((res) => {
-                    if (res.code === 200 && res.result) {
-                        for (let r of res.result){
-                            if (this.files[r.vfDamc]){
-                                this.files[r.vfDamc].uploadFile = {};
-                                this.files[r.vfDamc].uploadFile.url = r.vfNetPath;
+                    if (res.code === 200) {
+                        if (res.result){
+                            for (let r of res.result) {
+                                if (this.files[r.vfDamc]) {
+                                    this.files[r.vfDamc].uploadFile = {};
+                                    this.files[r.vfDamc].uploadFile.url = r.vfNetPath;
+                                }
                             }
                         }
-                        console.log(this.files);
                         this.showFiles = true;
                     } else {
                         this.$Message.error('未找到文件');
@@ -141,9 +154,9 @@
                     }
                 })
             },
-            handlePrint(o){
+            handlePrint(o) {
                 Print({
-                    printable: o,
+                    printable: 'img_'+o,
                     type: 'html',
                     // onLoadingStart: () => {
                     //     this.$refs.printDiv.style = "display:block";
@@ -165,7 +178,8 @@
                     //重新给name赋值，以便预览图片和删除文件时使用
                     file.name = locDataName;
                     //将文件对象和data的属性进行绑定
-                    this.$data[locDataName] = file;
+                    this.files[locDataName].uploadFile = file;
+                    // this.$data[locDataName] = file;
                     console.log(file);
                 } else {
                     this.$Message.error("文件上传失败：" + res.message);

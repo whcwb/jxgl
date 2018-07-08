@@ -37,7 +37,7 @@
 				formItem: {
 				},
                 formInputs:[
-                    {label:'车辆id',prop:'clId',type:'foreignKey'},
+                    {label:'车辆',prop:'clId',type:'foreignKey'},
                     {label:'申请原因',prop:'sqyy'},
                 ],
                 ruleInline:{

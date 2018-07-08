@@ -146,31 +146,6 @@
 										}
 									}
 								}),
-								h('Tooltip', {
-                                    props: {
-                                        placement: 'top',
-                                        content: '角色分配',
-                                    }
-                                },
-								[h('Button', {
-									props: {
-										type: 'primary',
-										icon: 'navicon-round',
-										shape: 'circle',
-										size: 'small'
-									},
-									style: {
-										cursor: "pointer",
-										margin: '0 8px 0 0'
-									},
-									on: {
-										click: () => {
-											this.RootShowF(params.row)
-
-										}
-									}
-								})
-								]),
                                 h('Tooltip', {
                                         props: {
                                             placement: 'top',

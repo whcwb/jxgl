@@ -40,12 +40,12 @@
                     {label:'类型',prop:'type',type:'dict',dict:'tzlx'},
                     {label:'通知时间',prop:'time',type:'datetime'},
                     {label:'内容',prop:'content'},
-                    {label:'车牌号',prop:'vId',type:'foreignKey'},
+                    {label:'车牌号',prop:'clId',type:'foreignKey'},
                 ],
                 ruleInline:{
 				},
                 foreignList:{
-                    vId:{url:this.apis.CAR.QUERY,key:'vId',val:'vHphm',items:[]},
+                    clId:{url:this.apis.CAR.QUERY,key:'vId',val:'vHphm',items:[]},
                 },
                 dicts:{
                     tzlx:{code:'tzlx',items:[]},
@@ -54,7 +54,7 @@
 		},
 		created(){
 		    this.util.initFormModal(this);
-		    this.util.initDict(this);
+            this.util.initDict(this);
 		},
 		methods: {
 		}

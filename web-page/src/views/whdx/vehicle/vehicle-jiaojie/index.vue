@@ -47,7 +47,7 @@
                     {
                         title: '操作',
                         key: 'action',
-                        width: 120,
+                        width: 150,
                         render: (h, params) => {
                             let buttons = [
                                 this.util.buildEditButton(this,h,params),
@@ -77,13 +77,11 @@
 			printForm(o){
                 this.choosedRow = o;
                 this.componentName = 'printForm';
-                console.log('print',o);
             },
 			uploadForm(o){
                 this.choosedRow = o;
                 this.componentName = 'uploadForm';
-                console.log('upload',o);
-			}
+			},
         }
     }
 </script>
