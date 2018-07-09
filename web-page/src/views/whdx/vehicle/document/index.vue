@@ -62,8 +62,8 @@
                             <h3>{{item.title}}</h3>
                         </div>
                     </Col>
-                    <Col span="6" >
-                        <div style="text-align:center;margin-top: 16px;width: 180px;height: 180px;">
+                    <Col span="6" style="text-align: center;">
+                        <div style="text-align:center;margin:16px auto 0 auto;width: 180px;height: 180px">
                             <Card  style="text-align:center;margin-top: 16px;width: 180px;height: 180px;">
                                 <div style="text-align:center">
                                     <img src="../../../../../static/excel.jpg" style="width:100%">
@@ -125,7 +125,6 @@
                 this.$http.get(this.apis.CAR.QUERY + '?vHphm=' + this.form.vHphm).then((res) => {
                     if (res.code === 200 && res.page && res.page.list && res.page.list.length > 0) {
                         this.car = res.page.list[0];
-                        console.log(this.car);
                         this.form.vId = this.car.vId;
                         this.getData();
                     } else {
@@ -152,6 +151,7 @@
                         this.$Message.error('未找到文件');
                         this.showFiles = false;
                     }
+                    console.log(this.files);
                 })
             },
             handlePrint(o) {

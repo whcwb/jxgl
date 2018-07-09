@@ -48,7 +48,6 @@
                     {
                         title: '操作',
                         key: 'action',
-                        width: 120,
                         fixed: 'right',
                         render: (h, params) => {
                             return h('div', [
