@@ -80,7 +80,7 @@
                         fixed: 'right',
                         render: (h, params) => {
                             return h('div', [
-                                this.util.buildEditButton(this,h,params),
+                                // this.util.buildEditButton(this,h,params),
                                 this.util.buildButton(this, h, 'info', 'ios-cloud-upload', '档案上传', ()=>{this.uploadFilePage(params)}),
                                 this.util.buildDeleteButton(this,h,params.row.inId),
                             ]);

@@ -123,11 +123,46 @@ export let appRouter = [
                 component: () => import('@/views/whdx/vehicle/vehicle-mgr')
             },
             {
+                path: 'vehicle-driver',
+                icon: 'android-clipboard',
+                name: 'vehicle-driver',
+                meta: { title: '驾驶员管理' },
+                component: () => import('@/views/whdx/vehicle/vehicle-driver')
+            },
+            {
+                path: 'vehicle-notify',
+                icon: 'android-clipboard',
+                name: 'vehicle-notify',
+                meta: { title: '通知管理' },
+                component: () => import('@/views/whdx/vehicle/notify')
+            },
+            {
+                path: 'vehicle-cq',
+                icon: 'android-clipboard',
+                name: 'vehicle-cq',
+                meta: { title: '产权管理' },
+                component: () => import('@/views/whdx/vehicle/vehicleChange')
+            },
+            {
+                path: 'vehicle-cq-log',
+                icon: 'android-clipboard',
+                name: 'vehicle-cq-log',
+                meta: { title: '产权变更记录' },
+                component: () => import('@/views/whdx/vehicle/vehicleChange/log.vue')
+            },
+            {
                 path: 'vehicle-baoxian',
                 icon: 'android-clipboard',
                 name: 'vehicle-baoxian',
                 meta: { title: '保险管理' },
                 component: () => import('@/views/whdx/vehicle/vehicle-baoxian')
+            },
+            {
+                path: 'vehicle-baoxian-history',
+                icon: 'android-clipboard',
+                name: 'vehicle-baoxian-history',
+                meta: { title: '保险历史' },
+                component: () => import('@/views/whdx/vehicle/vehicle-baoxian/history.vue')
             },
             {
                 path: 'vehicle-wfxx',
@@ -144,19 +179,68 @@ export let appRouter = [
                 component: () => import('@/views/whdx/vehicle/vehicle-usecar')
             },
             {
-                path: 'vehicle-chanquan',
+                path: 'vehicle-nianshen',
                 icon: 'android-clipboard',
-                name: 'vehicle-chanquan',
-                meta: { title: '产权管理' },
-                component: () => import('@/views/whdx/vehicle/vehicle-chanquan')
+                name: 'vehicle-nianshen',
+                meta: { title: '年审管理' },
+                component: () => import('@/views/whdx/vehicle/vehicle-nianshen')
             },
             {
-                path: 'vehicle-dangan',
+                path: 'vehicle-nianshen',
                 icon: 'android-clipboard',
-                name: 'vehicle-dangan',
-                meta: { title: '档案留存及打印' },
-                component: () => import('@/views/whdx/vehicle/vehicle-dangan')
-            }
+                name: 'vehicle-nianshen',
+                meta: { title: '档案拍照及打印' },
+                component: () => import('@/views/whdx/vehicle/vehicle-nianshen')
+            },
+            {
+                path: 'vehicle-jiaojie',
+                icon: 'android-clipboard',
+                name: 'vehicle-jiaojie',
+                meta: { title: '保管交接管理' },
+                component: () => import('@/views/whdx/vehicle/vehicle-jiaojie')
+            },
+            {
+                path: 'vehicle-jiaojie-log',
+                icon: 'android-clipboard',
+                name: 'vehicle-jiaojie-log',
+                meta: { title: '保管交接记录' },
+                component: () => import('@/views/whdx/vehicle/TransitionLog')
+            },
+            {
+                path: 'vehicle-useCarApply',
+                icon: 'android-clipboard',
+                name: 'vehicle-useCarApply',
+                meta: { title: '用车申请' },
+                component: () => import('@/views/whdx/vehicle/useCarApply')
+            },
+            {
+                path: 'vehicle-useCarAudit',
+                icon: 'android-clipboard',
+                name: 'vehicle-useCarAudit',
+                meta: { title: '用车审核' },
+                component: () => import('@/views/whdx/vehicle/useCarApply/audit.vue')
+            },
+            {
+                path: 'vehicle-document',
+                icon: 'android-clipboard',
+                name: 'vehicle-document',
+                meta: { title: '档案拍照及打印' },
+                component: () => import('@/views/whdx/vehicle/document')
+            },
+            // {
+            //     path: 'vehicle-chanquan',
+            //     icon: 'android-clipboard',
+            //     name: 'vehicle-chanquan',
+            //     meta: { title: '产权管理' },
+            //     component: () => import('@/views/whdx/vehicle/vehicle-chanquan')
+            // },
+            // {
+            //     path: 'vehicle-dangan',
+            //     icon: 'android-clipboard',
+            //     name: 'vehicle-dangan',
+            //     meta: { title: '档案留存及打印' },
+            //     component: () => import('@/views/whdx/vehicle/vehicle-dangan')
+            // }
         ]
     },
     {
@@ -196,22 +280,22 @@ export let appRouter = [
             }
         ]
     },
-    {
-        path: '/report',
-        icon: 'connection-bars',
-        name: 'report',
-        meta: { title: '统计报表' },
-        component: Main,
-        children: [
-            {
-                path: 'report-zrr',
-                icon: 'ios-people',
-                name: 'report-zrr',
-                meta: { title: '责任人统计' },
-                component: () => import('@/views/whdx/report/zrr')
-            }
-        ]
-    },
+    // {
+    //     path: '/report',
+    //     icon: 'connection-bars',
+    //     name: 'report',
+    //     meta: { title: '统计报表' },
+    //     component: Main,
+    //     children: [
+    //         {
+    //             path: 'report-zrr',
+    //             icon: 'ios-people',
+    //             name: 'report-zrr',
+    //             meta: { title: '责任人统计' },
+    //             component: () => import('@/views/whdx/report/zrr')
+    //         }
+    //     ]
+    // },
     {
     	path: '/',
     	meta: {

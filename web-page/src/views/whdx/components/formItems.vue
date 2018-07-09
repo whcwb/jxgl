@@ -46,6 +46,7 @@
         },
         data(){
           return{
+              v:this,
               readonly:false,
               foreignList:[],
               formInputs:[],

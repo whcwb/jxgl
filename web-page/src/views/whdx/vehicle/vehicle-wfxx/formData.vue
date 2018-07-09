@@ -43,6 +43,14 @@
 								<Input v-else type="text" v-model="formItem[i.prop]" :placeholder="'请填写'+i.label+'...'"></Input>
 							</FormItem>
 						</Col>
+						<Col span="12">
+							<FormItem  label='短信通知'>
+								<RadioGroup  v-model="formItem.sendSms">
+									<Radio label="true">是</Radio>
+									<Radio label="false">否</Radio>
+								</RadioGroup>
+							</FormItem>
+						</Col>
 					</Row>
 					<Row>
 						<Col span="24">
@@ -103,7 +111,8 @@
 				readonly: false,
 				formItem: {
                     wfWfzt:'01',
-                    wfWfjf:0
+                    wfWfjf:0,
+                    sendSms:'true'
 				},
                 formInputs:[
                     {label:'违法编号',prop:'wfId', required:true},
@@ -113,6 +122,7 @@
                     {label:'违法记分',prop:'wfWfjf'},
                     {label:'违法金额',prop:'wfWfje'},
                     {label:'违法状态',prop:'wfWfzt', type:'dict',dict:'WFZT'},
+                    {label:'短信通知',prop:'wfWfzt', type:'radio',dict:'WFZT'},
                 ],
                 ruleInline:{
                     vId: [

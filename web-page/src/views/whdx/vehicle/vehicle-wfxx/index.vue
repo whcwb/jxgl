@@ -45,7 +45,7 @@
 
 <script>
     import formData from './formData.vue'
-
+    import swal from 'sweetalert2'
     export default {
         name: 'wfxx',
         components: {formData},
@@ -87,6 +87,19 @@
                         fixed: 'right',
                         render: (h, params) => {
                             return h('div', [
+                                this.util.buildButton(this,h,'success','ios-email-outline','发送短信',()=>{
+                                    swal({
+                                        text: "是否发送短信通知?",
+                                        type: "warning",
+                                        showCancelButton: true,
+                                        confirmButtonText: '确认',
+                                        cancelButtonText: '取消'
+                                    }).then((isConfirm) => {
+                                        if (isConfirm.value) {
+                                            this.sendSms(params.row.wfId);
+                                        }
+                                    });
+                                }),
                                 this.util.buildEditButton(this,h,params),
                                 this.util.buildDeleteButton(this,h,params.row.id),
                             ]);
@@ -112,6 +125,11 @@
             pageChange(event) {
                 this.util.pageChange(this, event);
             },
+			sendSms(wfId){
+                this.$http.post(this.apis.illegal.SEND_SMS,{wfId:wfId}).then((res)=>{
+                    this.util.showResMessage(this,res);
+				})
+			}
         }
     }
 </script>

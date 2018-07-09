@@ -1,5 +1,5 @@
 //网络请求地址前缀 "http://127.0.0.1";//
-let BASE_URL = 'http://127.0.0.1';
+let BASE_URL = 'http://127.0.0.1:8088';
 //let BASE_URL = 'http://119.97.172.181';
 module.exports = {
     //url: BASE_URL + ':8180',
@@ -9,6 +9,13 @@ module.exports = {
     //STATIC_PATH: BASE_URL + '/image/',
     STATIC_PATH: BASE_URL + ':8765/server/',
     VIDEO_PATH:'',
+    //文件控制
+    FILE:{
+        FINDBYPID:'/api/files/findByPId',//根据主ID查询文件信息
+        // todo UPLOAD
+        // UPLOAD:BASE_URL + ':8180/api/files/upload',//根据主ID查询文件信息
+        UPLOAD:BASE_URL + '/api/files/upload',//根据主ID查询文件信息
+    },
     USERROOT:{
         GET_MENU_LIST:'/api/gn/getUserFunctions',
         GET_MENU_TREE:'/api/gn/getMenuTree',
@@ -17,11 +24,6 @@ module.exports = {
     },
     LOGIN:{
         QUERY:'login'
-    },
-    //文件控制
-    FILE:{
-        FINDBYPID:'/api/files/findByPId',//根据主ID查询文件信息
-        UPLOAD:BASE_URL + ':8180/api/files/upload',//根据主ID查询文件信息
     },
     USER:{
         QUERY:'/api/yh/pager',//用户管理
@@ -55,6 +57,12 @@ module.exports = {
         ADD:'/api/zd/save',// 新增字典
         CHANGE:'/api/zd/update',// 编辑字典
         DELE:'/api/zd/removeIds' // 删除字典
+    },
+    notify:{
+        QUERY:'/api/notify/pager',// 通知管理
+        ADD:'/api/notify/save',// 新增字典
+        CHANGE:'/api/notify/update',// 编辑字典
+        DELE:'/api/notify/removeIds' // 删除字典
     },
     DICTIONARY_LIST:{
         QUERY:'/api/zdxm/pager',//查询字典项
@@ -111,12 +119,20 @@ module.exports = {
         SCANFILE:'/api/car/scanXszFile',
         CHGPAGER:'/api/car/zrrChangePager',
         CHANQUANPAGER:'/api/car/chanquanPager',
+        uploadBill:'/api/car/uploadBill',
     },
     illegal:{
         QUERY:'api/illegal/pager',//违法管理
         ADD:'/api/illegal/save',
         CHANGE:'/api/illegal/update',
         DELE:'/api/illegal/removeIds',
+        SEND_SMS:'/api/illegal/sendSms',
+    },
+    vehicleChange:{
+        QUERY:'api/vehicleChange/pager',//违法管理
+        ADD:'/api/vehicleChange/save',
+        CHANGE:'/api/vehicleChange/update',
+        DELE:'/api/vehicleChange/removeIds',
     },
     maintain:{
         QUERY:'api/maintain/pager',//保养管理
@@ -130,11 +146,24 @@ module.exports = {
         CHANGE:'/api/maintainInfo/update',
         DELE:'/api/maintainInfo/removeIds',
     },
+    useCarApply:{
+        QUERY:'api/useCarApply/pager',//用车申请管理
+        ADD:'/api/useCarApply/save',
+        CHANGE:'/api/useCarApply/update',
+        DELE:'/api/useCarApply/removeIds',
+        AUDIT:'/api/useCarApply/audit',
+    },
     insurance:{
         QUERY:'api/insurance/pager',//保险管理
         ADD:'/api/insurance/save',
         CHANGE:'/api/insurance/update',
         DELE:'/api/insurance/removeIds',
+    },
+    insuranceHistory:{
+        QUERY:'api/insuranceHistory/pager',//保险管理
+        ADD:'/api/insuranceHistory/save',
+        CHANGE:'/api/insuranceHistory/update',
+        DELE:'/api/insuranceHistory/removeIds',
     },
     userCar:{
         QUERY:'api/userCar/pager',//出车管理
@@ -154,6 +183,9 @@ module.exports = {
         ADD:'/api/repairInfo/save',
         CHANGE:'/api/repairInfo/update',
         DELE:'/api/repairInfo/removeIds',
+    },
+    jiaojie_log:{
+        QUERY:'api/transitionLog/pager',//维修管理
     },
     oilRecord:{
         QUERY:'api/oilRecord/pager',//油料管理

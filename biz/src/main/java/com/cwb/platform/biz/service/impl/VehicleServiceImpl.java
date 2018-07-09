@@ -1,37 +1,12 @@
 package com.cwb.platform.biz.service.impl;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.joda.time.DateTime;
-import org.joda.time.Years;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-
 import com.cwb.platform.biz.mapper.BizMaintainInfoMapper;
 import com.cwb.platform.biz.mapper.BizRepairInfoMapper;
 import com.cwb.platform.biz.mapper.BizVehicleMapper;
-import com.cwb.platform.biz.model.BizMaintainInfo;
-import com.cwb.platform.biz.model.BizOilRecord;
-import com.cwb.platform.biz.model.BizRepairInfo;
-import com.cwb.platform.biz.model.BizUsecar;
-import com.cwb.platform.biz.model.BizVehLog;
-import com.cwb.platform.biz.model.BizVehicle;
-import com.cwb.platform.biz.model.BizVehicleChange;
+import com.cwb.platform.biz.model.*;
+import com.cwb.platform.biz.service.TransitionLogService;
 import com.cwb.platform.biz.service.UsecarService;
 import com.cwb.platform.biz.service.VehLogService;
-import com.cwb.platform.biz.service.VehicleChangeService;
 import com.cwb.platform.biz.service.VehicleService;
 import com.cwb.platform.sys.base.BaseServiceImpl;
 import com.cwb.platform.sys.base.LimitedCondition;
@@ -46,9 +21,23 @@ import com.cwb.platform.util.commonUtil.HttpUtil;
 import com.cwb.platform.util.exception.RuntimeCheck;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
+import org.joda.time.Years;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import tk.mybatis.mapper.common.Mapper;
 import tk.mybatis.mapper.entity.Example;
+
+import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
+import java.util.*;
+
+import com.cwb.platform.biz.model.BizVehicleChange;
+import com.cwb.platform.biz.service.VehicleChangeService;
 
 @Service
 public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> implements VehicleService{
@@ -67,8 +56,10 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
     @Autowired
     private ZdxmService zdxmService;
     @Autowired
+    private TransitionLogService transitionLogService;
+    @Autowired
     private VehicleChangeService vehChangeService;
-    
+
 
     private static final String QZBF = "强制报废"; // 强制报废
 
@@ -228,7 +219,7 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
 			for (int i=1; i<=15; i++){
 				dateLists.add(ccdjrqDate.plusYears(i));
 			}
-			
+
 			//计算初登日期和当前时间相差多少年
 			int year = Years.yearsBetween(ccdjrqDate, DateTime.now()).getYears();
 			//年审检验步长
@@ -288,7 +279,7 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
 					step = -1;
 				}
 			}
-			
+
 			if (step == -1){
 				nsrq = QZBF;
 			}else{
@@ -312,13 +303,13 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
 					}
 				}
 			}
-			
+
 			entity.setvNsrq(nsrq);
 		}
 
 		return nsrq;
     }
-    
+
     public static void main(String[] args){
     	BizVehicle entity = new BizVehicle();
     	entity.setvSyxz("10");
@@ -338,6 +329,7 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
         entity.setvId(genId());
         entity.setvNsrq(getNsrq(entity, 0));
         entity.setYyzFlag(0);
+        entity.setvRkzt("in"); // 新增车辆时默认是入库状态
         save(entity);
 
         // 初始化保养信息
@@ -432,7 +424,7 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
         		BizUsecar item = usecars.get(i);
         		excludeCarIds.add(item.getvId());
         	}
-            
+
             //查询哪些车辆未被使用
             Example condition = new Example(BizVehicle.class);
             condition.and().andNotIn(BizVehicle.InnerColumn.vId.name(), excludeCarIds);
@@ -440,7 +432,7 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
         }else{
         	cars = findAll();
         }
-        
+
         return ApiResponse.success(cars);
     }
 
@@ -466,7 +458,7 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
             String nowStr = now.toString("yyyy-MM-dd");
             condition.lte(BizVehicle.InnerColumn.vNsrq,nowStr);
         }
-        
+
         return true;
     }
 
@@ -488,7 +480,7 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
 	@Override
 	public ApiResponse<String> clnsUpdate(BizVehLog entity) {
 		RuntimeCheck.ifBlank(entity.getVlXqsj(), "本次年审时间不能为空");
-		RuntimeCheck.ifBlank(entity.getVlText(), "年审内容不能为空");
+//		RuntimeCheck.ifBlank(entity.getVlText(), "年审内容不能为空");
 		RuntimeCheck.ifBlank(entity.getVlBz(), "下次年审时间不能为空");
 
 		BizVehicle exist = this.findById(entity.getvId());
@@ -504,10 +496,10 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
 		exist.setUpdateTime(DateTime.now().toString("yyyy-MM-dd HH:mm:ss"));
 		exist.setUpdateUser(getOperateUser());
 		update(exist);
-		
+
 		return ApiResponse.success("车辆年审更新成功");
 	}
-	
+
 	@Override
 	public ApiResponse<String> sendSms(String vehId) {
 		BizVehicle exist = this.findById(vehId);
@@ -515,7 +507,7 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
 		RuntimeCheck.ifNull(exist.getvZrrlxdh(), "请先维护责任人联系电话");
 		List<SysZdxm> nstels = this.zdxmService.findEq(SysZdxm.InnerColumn.zdlmdm.name(), "NSTEL");
 		RuntimeCheck.ifTrue(CollectionUtils.isEmpty(nstels), "请先在字典管理维护客服电话");
-		
+
 		//发送短信是通知到车辆负责人，不是使用人
 		Map<String, String> params = Maps.newConcurrentMap();
 		DateTime nsDate = DateTime.now().parse(exist.getvNsrq());
@@ -527,17 +519,53 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
 		params.put("SerialNumber", String.valueOf(DateTime.now().getMillis()));
 		params.put("ScheduleTime", "");
 		params.put("f", "1");
-		
+
 		String smsResult = HttpUtil.post("https://api.ums86.com:9600/sms/Api/Send.do", params, "gbk");
 		if (smsResult.indexOf("result=0") != -1){
 			return ApiResponse.success("短信发送成功");
 		}
-		
+
 		return ApiResponse.fail("短信发送失败");
 	}
-	
+
 	@Override
 	public ApiResponse<List<Map<String, String>>> reportZrr() {
 		return ApiResponse.success(this.entityMapper.reportZrr());
 	}
+
+    @Override
+    public ApiResponse<String> uploadBill(String clId, String filePath, String type) {
+	    RuntimeCheck.ifBlank(clId,"请选择车辆");
+	    RuntimeCheck.ifBlank(filePath,"请上传文件");
+	    RuntimeCheck.ifBlank(type,"请选择单据类型");
+
+	    BizVehicle car = findById(clId);
+	    RuntimeCheck.ifNull(car,"车辆不存在");
+
+	    car.setvRkzt(type);
+	    update(car);
+
+	    // 记录出入库流水
+        transitionLogService.log(car,filePath,type);
+        return ApiResponse.success();
+    }
+
+    /**
+     * 产权变更
+     *
+     * @param change
+     */
+    @Override
+    public ApiResponse<String> cqChange(BizVehicleChange change) {
+        BizVehicle car = findById(change.getvId());
+        RuntimeCheck.ifNull(car,"车辆不存在");
+
+        car.setvZrr(change.getChgNzrr());
+        car.setvZrrlxdh(change.getChgNzrrlxdh());
+        car.setvWorth(change.getChgNjz());
+        car.setUpdateTime(DateUtils.getNowTime());
+        car.setUpdateUser(getOperateUser());
+        update(car);
+        return ApiResponse.success();
+    }
 }

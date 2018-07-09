@@ -22,4 +22,9 @@ public class IllegalCtrl extends BaseController<BizWfxx,String> {
     protected BaseService<BizWfxx, String> getBaseService() {
         return service;
     }
+
+    @RequestMapping("sendSms")
+    public ApiResponse<String> sendSms(String wfId){
+        return service.sendSms(wfId);
+    }
 }

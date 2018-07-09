@@ -5,6 +5,7 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Table(name = "biz_wfxx")
 public class BizWfxx implements Serializable {
@@ -87,7 +88,19 @@ public class BizWfxx implements Serializable {
     @Column(name = "update_time")
     private String updateTime;
 
+
+    @Transient
+    private String sendSms;
+
     private static final long serialVersionUID = 1L;
+
+    public String getSendSms() {
+        return sendSms;
+    }
+
+    public void setSendSms(String sendSms) {
+        this.sendSms = sendSms;
+    }
 
     /**
      * 获取违法编号

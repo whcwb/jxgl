@@ -38,6 +38,12 @@ public class BizVehicle implements Serializable {
     private String vCllx;
 
     /**
+     * 车辆价值
+     */
+    @Column(name = "v_worth")
+    private Integer vWorth;
+
+    /**
      * 注册登记日期
      */
     @Column(name = "v_ccdjrq")
@@ -102,7 +108,7 @@ public class BizVehicle implements Serializable {
      */
     @Column(name = "v_lxdh")
     private String vLxdh;
-    
+
     /**
      * 责任人
      */
@@ -160,12 +166,26 @@ public class BizVehicle implements Serializable {
      */
     @Column(name = "last_fuel_capacity")
     private Integer lastFuelCapacity;
-    
+
     /**
      * 是否上传运营证。0未上传；1已上传
      */
     @Column(name = "yyz_flag")
     private Integer yyzFlag;
+
+    /**
+     * 入库状态：（in:入库，out:出库）
+     */
+    @Column(name = "v_rkzt")
+    private String vRkzt;
+
+    public String getvRkzt() {
+        return vRkzt;
+    }
+
+    public void setvRkzt(String vRkzt) {
+        this.vRkzt = vRkzt;
+    }
 
     public Integer getYyzFlag() {
 		return yyzFlag;
@@ -179,7 +199,15 @@ public class BizVehicle implements Serializable {
 		return vZrr;
 	}
 
-	public void setvZrr(String vZrr) {
+    public Integer getvWorth() {
+        return vWorth;
+    }
+
+    public void setvWorth(Integer vWorth) {
+        this.vWorth = vWorth;
+    }
+
+    public void setvZrr(String vZrr) {
 		this.vZrr = vZrr;
 	}
 

@@ -1,33 +1,36 @@
 package com.cwb.platform.biz.service.impl;
 
-import java.util.List;
-
-import org.apache.commons.lang3.StringUtils;
-import org.joda.time.DateTime;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.cwb.platform.biz.mapper.BizInsuranceMapper;
 import com.cwb.platform.biz.model.BizInsurance;
+import com.cwb.platform.biz.model.BizInsuranceHistory;
 import com.cwb.platform.biz.model.BizVehicle;
+import com.cwb.platform.biz.service.InsuranceHistoryService;
 import com.cwb.platform.biz.service.InsuranceService;
 import com.cwb.platform.biz.service.VehicleService;
 import com.cwb.platform.sys.base.BaseServiceImpl;
 import com.cwb.platform.sys.base.LimitedCondition;
+import com.cwb.platform.sys.model.SysYh;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.commonUtil.DateUtils;
 import com.cwb.platform.util.exception.RuntimeCheck;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
-
+import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.common.Mapper;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Service
 public class InsuranceServiceImpl extends BaseServiceImpl<BizInsurance,String> implements InsuranceService{
     @Autowired
     private BizInsuranceMapper entityMapper;
+    @Autowired
+    private InsuranceHistoryService insuranceHistoryService;
     @Autowired
     private VehicleService vehicleService;
 
@@ -75,7 +78,7 @@ public class InsuranceServiceImpl extends BaseServiceImpl<BizInsurance,String> i
         result.setPage(resultPage);
         return result;
     }
-    
+
     public ApiResponse<List<BizInsurance>> pagerTotal(Page<BizInsurance> pager) {
     	ApiResponse<List<BizInsurance>> result = new ApiResponse<>();
         LimitedCondition condition = getQueryCondition();
@@ -114,7 +117,7 @@ public class InsuranceServiceImpl extends BaseServiceImpl<BizInsurance,String> i
         if (StringUtils.isBlank(bxlq)){
         	return true;
         }
-        
+
         DateTime minTime = new DateTime().minusDays(60);
         String minTimeStr = minTime.toString("yyyy-MM-dd");
         String nowStr = new DateTime().toString("yyyy-MM-dd");
@@ -132,7 +135,7 @@ public class InsuranceServiceImpl extends BaseServiceImpl<BizInsurance,String> i
                 condition.gte(BizInsurance.InnerColumn.inZbrq,nowStr);
                 break;
         }
-        
+
         return true;
     }
 
@@ -174,12 +177,29 @@ public class InsuranceServiceImpl extends BaseServiceImpl<BizInsurance,String> i
 
     @Override
     public ApiResponse<String> validAndSave(BizInsurance entity) {
+        SysYh user = getCurrentUser();
     	entity = this.validEntity(entity);
 
-        entity.setInId(genId());
-        entity.setCreateTime(DateUtils.getNowTime());
-        entity.setCreateUser(getOperateUser());
-        save(entity);
+        // 根据车辆id查找，如果有记录，则更新，如果没有则新增
+    	List<BizInsurance> insuranceList = findEq(BizInsurance.InnerColumn.vId,entity.getvId());
+    	if (insuranceList.size() > 0){
+    	    BizInsurance insurance = insuranceList.get(0);
+    	    entity.setInId(insurance.getInId());
+    	    update(entity);
+        }else{
+            entity.setInId(genId());
+            entity.setCreateTime(DateUtils.getNowTime());
+            entity.setCreateUser(getOperateUser());
+            save(entity);
+        }
+
+        // 记录历史表
+        BizInsuranceHistory insuranceHistory = new BizInsuranceHistory();
+        BeanUtils.copyProperties(entity,insuranceHistory,"inId","createTime","createUser");
+        insuranceHistory.setInId(genId());
+        insuranceHistory.setCreateTime(DateUtils.getNowTime());
+        insuranceHistory.setCreateUser(user.getYhid());
+        insuranceHistoryService.save(insuranceHistory);
         return ApiResponse.saveSuccess();
     }
 

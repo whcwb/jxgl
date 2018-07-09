@@ -59,17 +59,20 @@ public class BizVehicleChange implements Serializable {
      */
     @Column(name = "create_time")
     private String createTime;
+    
+    /**
+     * 新车辆价值
+     */
+    @Column(name = "chg_njz")
+    private Integer chgNjz;
+    
+    /**
+     * 旧车辆价值
+     */
+    @Column(name = "chg_ojz")
+    private Integer chgOjz;
 
     private static final long serialVersionUID = 1L;
-
-    /**
-     * 获取主键
-     *
-     * @return chg_id - 主键
-     */
-    public String getChgId() {
-        return chgId;
-    }
 
     /**
      * 设置主键
@@ -78,15 +81,6 @@ public class BizVehicleChange implements Serializable {
      */
     public void setChgId(String chgId) {
         this.chgId = chgId;
-    }
-
-    /**
-     * 获取车辆主键
-     *
-     * @return v_id - 车辆主键
-     */
-    public String getvId() {
-        return vId;
     }
 
     /**
@@ -120,10 +114,19 @@ public class BizVehicleChange implements Serializable {
      * 获取原车辆责任人
      *
      * @return chg_ozrr - 原车辆责任人
+     * @return create_time
      */
-    public String getChgOzrr() {
-        return chgOzrr;
+    public String getCreateTime() {
+        return createTime;
     }
+
+    /**
+     * @param createTime
+     */
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
+    }
+
 
     /**
      * 设置原车辆责任人
@@ -188,7 +191,35 @@ public class BizVehicleChange implements Serializable {
         this.chgNzrrlxdh = chgNzrrlxdh;
     }
 
-    /**
+    public Integer getChgNjz() {
+		return chgNjz;
+	}
+
+	public void setChgNjz(Integer chgNjz) {
+		this.chgNjz = chgNjz;
+	}
+
+	public Integer getChgOjz() {
+		return chgOjz;
+	}
+
+	public void setChgOjz(Integer chgOjz) {
+		this.chgOjz = chgOjz;
+	}
+
+	public String getChgId() {
+		return chgId;
+	}
+
+	public String getvId() {
+		return vId;
+	}
+
+	public String getChgOzrr() {
+		return chgOzrr;
+	}
+
+	/**
      * 获取操作人
      *
      * @return create_user - 操作人
@@ -206,34 +237,16 @@ public class BizVehicleChange implements Serializable {
         this.createUser = createUser;
     }
 
-    /**
-     * 获取创建时间
-     *
-     * @return create_time - 创建时间
-     */
-    public String getCreateTime() {
-        return createTime;
-    }
-
-    /**
-     * 设置创建时间
-     *
-     * @param createTime 创建时间
-     */
-    public void setCreateTime(String createTime) {
-        this.createTime = createTime;
-    }
-
     public enum InnerColumn {
         chgId("chg_id"),
-        vId("v_id"),
-        vHphm("v_hphm"),
         chgOzrr("chg_ozrr"),
         chgOzrrlxdh("chg_ozrrlxdh"),
         chgNzrr("chg_nzrr"),
         chgNzrrlxdh("chg_nzrrlxdh"),
         createUser("create_user"),
-        createTime("create_time");
+        createTime("create_time"),
+        vId("v_id"),
+        vHphm("v_hphm");
 
         private final String column;
 

@@ -18,9 +18,9 @@ import org.springframework.web.multipart.MultipartFile;
 import com.cwb.platform.biz.baidu.AiApis;
 import com.cwb.platform.biz.model.BizVehLog;
 import com.cwb.platform.biz.model.BizVehicle;
-import com.cwb.platform.biz.model.BizVehicleChange;
+//import com.cwb.platform.biz.model.BizVehicleChange;
 import com.cwb.platform.biz.service.VehLogService;
-import com.cwb.platform.biz.service.VehicleChangeService;
+//import com.cwb.platform.biz.service.VehicleChangeService;
 import com.cwb.platform.biz.service.VehicleService;
 import com.cwb.platform.sys.base.BaseController;
 import com.cwb.platform.sys.base.BaseService;
@@ -41,14 +41,19 @@ public class CarCtrl extends BaseController<BizVehicle,String> {
     private VehicleService vehicleService;
     @Autowired
     private VehLogService vehLogService;
-    @Autowired
-    private VehicleChangeService vehChangeService;
-    
+//    @Autowired
+//    private VehicleChangeService vehChangeService;
+
     @Override
     protected BaseService<BizVehicle, String> getBaseService() {
         return vehicleService;
     }
-    
+
+    @RequestMapping("uploadBill")
+	public ApiResponse<String> uploadBill(String clId,String filePath,String type){
+    	return vehicleService.uploadBill(clId,filePath,type);
+	}
+
     /**
      * 给车辆分配人员信息
      */
@@ -56,7 +61,7 @@ public class CarCtrl extends BaseController<BizVehicle,String> {
 	public ApiResponse<String> allocPerson(BizVehicle entity){
 		return this.vehicleService.allocPerson(entity);
 	}
-    
+
     /**
      * 发送年审通知短信
      * @param vehId
@@ -67,17 +72,17 @@ public class CarCtrl extends BaseController<BizVehicle,String> {
     	this.vehicleService.reportZrr();
 		return this.vehicleService.sendSms(vehId);
 	}
-    
+
     /**
      * 打印年审资料
      * @param vehId
      * @return
      */
     @GetMapping("/print/{vehId}")
-	public ApiResponse<String> print(@PathVariable("vehId") String vehId){    	
+	public ApiResponse<String> print(@PathVariable("vehId") String vehId){
 		return ApiResponse.success();
 	}
-    
+
     /**
      * 扫描行驶证自动提取证件内容
      * @param file
@@ -96,9 +101,9 @@ public class CarCtrl extends BaseController<BizVehicle,String> {
 				}else if (key.equals("品牌型号")){
 					scanResult.setvClph(value);
 				}else if (key.equals("发证日期")){
-					
+
 				}else if (key.equals("住址")){
-					
+
 				}else if (key.equals("车辆类型")){
 					if (value.indexOf("小型") != -1){
 						scanResult.setvHpzl("20");
@@ -117,25 +122,25 @@ public class CarCtrl extends BaseController<BizVehicle,String> {
 					scanResult.setvCcdjrq(value.substring(0, 4) + "-" + value.substring(4, 6) + "-" + value.substring(6));
 				}
 			});
-			
+
 			if (StringUtils.isEmpty(scanResult.getvHpzl())){
 				scanResult.setvHpzl("20");
 			}
 		} catch (Exception e) {
-			
+
 		}
 		return ApiResponse.success(scanResult);
 	}
-    
+
     @PostMapping(value="/clnsPager")
 	public ApiResponse<List<BizVehLog>> pager(BizVehLog entity, Page<BizVehLog> pager){
 		return this.vehLogService.pager(pager);
 	}
-    
-    @PostMapping(value="/zrrChangePager")
-	public ApiResponse<List<BizVehicleChange>> zrrChangePager(BizVehicleChange entity, Page<BizVehicleChange> pager){
-		return this.vehChangeService.pager(pager);
-	}
+
+//    @PostMapping(value="/zrrChangePager")
+//	public ApiResponse<List<BizVehicleChange>> zrrChangePager(BizVehicleChange entity, Page<BizVehicleChange> pager){
+//		return this.vehChangeService.pager(pager);
+//	}
 
     /**
      * 车辆年审更新
@@ -154,7 +159,7 @@ public class CarCtrl extends BaseController<BizVehicle,String> {
     public ApiResponse<List<BizVehicle>> notUseCarList(){
         return vehicleService.notUseCarList();
     }
-    
+
     /**
      * 产权管理
      * @param entity

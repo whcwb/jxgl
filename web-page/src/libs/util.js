@@ -8,6 +8,15 @@ util.title = function (title) {
     title = title || '车辆管理系统';
     window.document.title = title;
 };
+util.showResMessage = (v,res,successMsg,errorMsg)=>{
+    if (!successMsg)successMsg = res.message;
+    if (!errorMsg)errorMsg = res.message;
+    if (res.code === 200){
+        v.$Message.success(successMsg);
+    }else{
+        v.$Message.error(errMsg);
+    }
+}
 util.fillTableColumns = (v)=>{
     if (!v.tableColumns)return;
     for(let r of v.tableColumns){
