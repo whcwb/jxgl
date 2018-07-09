@@ -52,7 +52,7 @@
                             let buttons = [
                                 // this.util.buildEditButton(this,h,params),
                                 this.util.buildButton(this, h, 'info', 'printer', '单据打印', ()=>{this.printForm(params.row)}),
-                                this.util.buildButton(this, h, 'info', 'email', '单据回传', ()=>{this.uploadForm(params.row)}),
+                                this.util.buildButton(this, h, 'info', 'arrow-up-a', '单据回传', ()=>{this.uploadForm(params.row)}),
 							];
                             return h('div', buttons);
                         }

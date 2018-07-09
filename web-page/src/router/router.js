@@ -144,6 +144,13 @@ export let appRouter = [
                 component: () => import('@/views/whdx/vehicle/vehicleChange')
             },
             {
+                path: 'vehicle-cq-log',
+                icon: 'android-clipboard',
+                name: 'vehicle-cq-log',
+                meta: { title: '产权变更记录' },
+                component: () => import('@/views/whdx/vehicle/vehicleChange/log.vue')
+            },
+            {
                 path: 'vehicle-baoxian',
                 icon: 'android-clipboard',
                 name: 'vehicle-baoxian',

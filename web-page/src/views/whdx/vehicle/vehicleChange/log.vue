@@ -29,7 +29,7 @@
                 v:this,
                 dateRange:'',
                 SpinShow: true,
-                apiRoot:this.apis.CAR,
+                apiRoot:this.apis.vehicleChange,
                 today:'',
                 tableHeight: 220,
                 componentName: '',
@@ -37,20 +37,12 @@
                 tableColumns: [
                     {title: "序号", width: 70, type: 'index'},
                     {title:'车牌号码',key:'vHphm',searchKey:'vHphmLike'},
-                    {title:'责任人',key:'vZrr'},
-                    {title:'责任人联系电话',key:'vZrrlxdh'},
-                    {title:'价值',key:'vWorth'},
-                    {
-                        title: '操作',
-                        key: 'action',
-                        width: 150,
-                        render: (h, params) => {
-                            let buttons = [
-                                this.util.buildEditButton(this,h,params),
-                            ];
-                            return h('div', buttons);
-                        }
-                    }
+                    {title:'变更前责任人',key:'chgOzrr',disabled:true},
+                    {title:'变更前联系电话',key:'chgOzrrlxdh',disabled:true},
+                    {title:'变更前价值',key:'chgOjz',disabled:true},
+                    {title:'变更后责任人',key:'chgNzrr'},
+                    {title:'变更后联系电话',key:'chgNzrrlxdh'},
+                    {title:'变更后价值',key:'chgNjz'},
                 ],
                 pageData: [],
                 form: {

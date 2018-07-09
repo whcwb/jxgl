@@ -104,7 +104,6 @@
                 uplaodUrl: this.apis.FILE.UPLOAD,
                 files: {
                     sfzFile: {title: '身份证', uploadFile: null},
-                    jzFile: {title: '价值', uploadFile: null},
                     hkFile: {title: '户口', uploadFile: null},
                     claqxyFile: {title: '车辆安全协议', uploadFile: null},
                 },
