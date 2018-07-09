@@ -6,6 +6,7 @@ import java.util.Map;
 import com.cwb.platform.biz.model.BizOilRecord;
 import com.cwb.platform.biz.model.BizVehLog;
 import com.cwb.platform.biz.model.BizVehicle;
+import com.cwb.platform.biz.model.BizVehicleChange;
 import com.cwb.platform.sys.base.BaseService;
 import com.cwb.platform.util.bean.ApiResponse;
 
@@ -32,4 +33,10 @@ public interface VehicleService extends BaseService<BizVehicle,String>{
     public ApiResponse<List<Map<String, String>>> reportZrr();
 
     ApiResponse<String> uploadBill(String clId, String filePath, String in);
+
+    /**
+     * 产权变更
+     * @param change
+     */
+    ApiResponse<String> cqChange(BizVehicleChange change);
 }

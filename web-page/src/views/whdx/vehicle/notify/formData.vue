@@ -37,10 +37,10 @@
 				formItem: {
 				},
                 formInputs:[
+                    {label:'车牌号',prop:'clId',type:'foreignKey'},
                     {label:'类型',prop:'type',type:'dict',dict:'tzlx'},
                     {label:'通知时间',prop:'time',type:'datetime'},
                     {label:'内容',prop:'content'},
-                    {label:'车牌号',prop:'clId',type:'foreignKey'},
                 ],
                 ruleInline:{
 				},
@@ -55,6 +55,7 @@
 		created(){
 		    this.util.initFormModal(this);
             this.util.initDict(this);
+            this.formItem.time = new Date().format("yyyy-MM-dd HH:mm:SS");
 		},
 		methods: {
 		}

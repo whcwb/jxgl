@@ -10,7 +10,7 @@
         	<Table :height="tableHeight" :columns="tableColumns" :data="pageData"></Table>
         </Row>
         <Row class="margin-top-10 pageSty">
-			<pager :parent="v"></pager>
+            <Page :total=form.total :current=form.pageNum :page-size=form.pageSize show-total show-elevator @on-change='pageChange'></Page>
         </Row>
         <component :is="componentName"></component>
 	</div>
@@ -65,7 +65,10 @@
             showDoc(o){
                 this.choosedRow = o;
                 this.componentName = 'showDoc';
-            }
+            },
+            pageChange(event) {
+                this.util.pageChange(this, event);
+            },
         }
     }
 </script>

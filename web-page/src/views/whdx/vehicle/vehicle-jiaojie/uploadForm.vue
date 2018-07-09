@@ -4,11 +4,11 @@
 
 <template>
     <div>
-        <Modal v-model="showModal" width='900' :closable='false'
+        <Modal v-model="showModal" width='600' :closable='false'
                :mask-closable="false" title="单据回传">
-            <Row style="padding-bottom: 15px">
+            <Row style="padding-bottom: 15px;text-align: center">
                 <Row>
-                    <Col span="12">
+                    <Col span="24">
                         <label>单据类型</label>
                         <RadioGroup v-model="fileType">
                             <Radio label="in">入库</Radio>
@@ -16,8 +16,9 @@
                         </RadioGroup>
                     </Col>
                 </Row>
+                <br>
                 <Row>
-                    <Col span="6" v-show="fileType === 'in'">
+                    <Col span="24" v-show="fileType === 'in'">
                         <div style="text-align:center">
                             <Upload
                                     v-show="uploadFile == null"
@@ -40,7 +41,7 @@
                             <h3>入库单</h3>
                         </div>
                     </Col>
-                    <Col span="6" v-show="fileType === 'out'">
+                    <Col span="24" v-show="fileType === 'out'">
                         <div style="text-align:center">
                             <Upload
                                     v-show="uploadFile == null"

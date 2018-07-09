@@ -34,6 +34,11 @@ public class BizUsecarApply implements Serializable {
     private String sqyy;
 
     /**
+     * 申请时间
+     */
+    private String sqsj;
+
+    /**
      * 申请人姓名
      */
     private String sqrxm;
@@ -74,6 +79,14 @@ public class BizUsecarApply implements Serializable {
 
     public void setShrId(String shrId) {
         this.shrId = shrId;
+    }
+
+    public String getSqsj() {
+        return sqsj;
+    }
+
+    public void setSqsj(String sqsj) {
+        this.sqsj = sqsj;
     }
 
     /**

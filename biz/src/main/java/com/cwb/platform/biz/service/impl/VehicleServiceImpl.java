@@ -549,4 +549,23 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
         transitionLogService.log(car,filePath,type);
         return ApiResponse.success();
     }
+
+    /**
+     * 产权变更
+     *
+     * @param change
+     */
+    @Override
+    public ApiResponse<String> cqChange(BizVehicleChange change) {
+        BizVehicle car = findById(change.getvId());
+        RuntimeCheck.ifNull(car,"车辆不存在");
+
+        car.setvZrr(change.getChgNzrr());
+        car.setvZrrlxdh(change.getChgNzrrlxdh());
+        car.setvWorth(change.getChgNjz());
+        car.setUpdateTime(DateUtils.getNowTime());
+        car.setUpdateUser(getOperateUser());
+        update(car);
+        return ApiResponse.success();
+    }
 }

@@ -20,10 +20,11 @@
 
 <script>
     import searchItems from '../../components/searchItems'
+    import formData from './formData'
 
     export default {
         name: 'usecar',
-        components: {searchItems},
+        components: {searchItems,formData},
         data() {
             return {
                 v:this,
@@ -37,6 +38,20 @@
                 tableColumns: [
                     {title: "序号", width: 70, type: 'index'},
                     {title:'车牌号码',key:'vHphm',searchKey:'vHphmLike'},
+                    {title:'责任人',key:'vZrr'},
+                    {title:'责任人联系电话',key:'vZrrlxdh'},
+                    {title:'价值',key:'vWorth'},
+                    {
+                        title: '操作',
+                        key: 'action',
+                        width: 150,
+                        render: (h, params) => {
+                            let buttons = [
+                                this.util.buildEditButton(this,h,params),
+                            ];
+                            return h('div', buttons);
+                        }
+                    }
                 ],
                 pageData: [],
                 form: {
