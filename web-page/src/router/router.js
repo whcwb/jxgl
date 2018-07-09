@@ -158,6 +158,13 @@ export let appRouter = [
                 component: () => import('@/views/whdx/vehicle/vehicle-baoxian')
             },
             {
+                path: 'vehicle-baoxian-history',
+                icon: 'android-clipboard',
+                name: 'vehicle-baoxian-history',
+                meta: { title: '保险历史' },
+                component: () => import('@/views/whdx/vehicle/vehicle-baoxian/history.vue')
+            },
+            {
                 path: 'vehicle-wfxx',
                 icon: 'android-clipboard',
                 name: 'vehicle-wfxx',

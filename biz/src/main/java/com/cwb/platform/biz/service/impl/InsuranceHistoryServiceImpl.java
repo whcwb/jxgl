@@ -1,15 +1,13 @@
 package com.cwb.platform.biz.service.impl;
 
-import com.cwb.platform.biz.mapper.BizInsuranceMapper;
+import com.cwb.platform.biz.mapper.BizInsuranceHistoryMapper;
 import com.cwb.platform.biz.model.BizInsurance;
 import com.cwb.platform.biz.model.BizInsuranceHistory;
 import com.cwb.platform.biz.model.BizVehicle;
 import com.cwb.platform.biz.service.InsuranceHistoryService;
-import com.cwb.platform.biz.service.InsuranceService;
 import com.cwb.platform.biz.service.VehicleService;
 import com.cwb.platform.sys.base.BaseServiceImpl;
 import com.cwb.platform.sys.base.LimitedCondition;
-import com.cwb.platform.sys.model.SysYh;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.commonUtil.DateUtils;
 import com.cwb.platform.util.exception.RuntimeCheck;
@@ -17,7 +15,6 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.common.Mapper;
@@ -26,27 +23,25 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Service
-public class InsuranceServiceImpl extends BaseServiceImpl<BizInsurance,String> implements InsuranceService{
+public class InsuranceHistoryServiceImpl extends BaseServiceImpl<BizInsuranceHistory,String> implements InsuranceHistoryService{
     @Autowired
-    private BizInsuranceMapper entityMapper;
-    @Autowired
-    private InsuranceHistoryService insuranceHistoryService;
+    private BizInsuranceHistoryMapper entityMapper;
     @Autowired
     private VehicleService vehicleService;
 
     @Override
-    protected Mapper<BizInsurance> getBaseMapper() {
+    protected Mapper<BizInsuranceHistory> getBaseMapper() {
         return entityMapper;
     }
 
     @Override
     protected Class<?> getEntityCls(){
-        return BizInsurance.class;
+        return BizInsuranceHistory.class;
     }
 
     @Override
-    public ApiResponse<List<BizInsurance>> pager(Page<BizInsurance> pager) {
-    	ApiResponse<List<BizInsurance>> result = new ApiResponse<>();
+    public ApiResponse<List<BizInsuranceHistory>> pager(Page<BizInsuranceHistory> pager) {
+    	ApiResponse<List<BizInsuranceHistory>> result = new ApiResponse<>();
         LimitedCondition condition = getQueryCondition();
         condition.setOrderByClause("v_hphm asc,create_time desc");
         HttpServletRequest request = getRequest();
@@ -57,30 +52,30 @@ public class InsuranceServiceImpl extends BaseServiceImpl<BizInsurance,String> i
             String nowStr = new DateTime().toString("yyyy-MM-dd");
             switch(bxlq){
                 case "jqx":// 交强险
-                	condition.gte(BizInsurance.InnerColumn.inJqzbrq, nowStr);
-                    condition.lte(BizInsurance.InnerColumn.inJqzbrq, maxTimeStr);
+                	condition.gte(BizInsuranceHistory.InnerColumn.inJqzbrq, nowStr);
+                    condition.lte(BizInsuranceHistory.InnerColumn.inJqzbrq, maxTimeStr);
                     break;
                 case "syx": // 商业险
-                	condition.gte(BizInsurance.InnerColumn.inZbrq, nowStr);
-                    condition.lte(BizInsurance.InnerColumn.inZbrq, maxTimeStr);
+                	condition.gte(BizInsuranceHistory.InnerColumn.inZbrq, nowStr);
+                    condition.lte(BizInsuranceHistory.InnerColumn.inZbrq, maxTimeStr);
                     break;
                 case "jqxgb":
-                    condition.lte(BizInsurance.InnerColumn.inJqzbrq, nowStr);
+                    condition.lte(BizInsuranceHistory.InnerColumn.inJqzbrq, nowStr);
                     break;
                 case "syxgb":
-                    condition.lte(BizInsurance.InnerColumn.inZbrq, nowStr);
+                    condition.lte(BizInsuranceHistory.InnerColumn.inZbrq, nowStr);
                     break;
             }
         }
 
-        PageInfo<BizInsurance> resultPage = findPage(pager, condition);
+        PageInfo<BizInsuranceHistory> resultPage = findPage(pager, condition);
         afterPager(resultPage);
         result.setPage(resultPage);
         return result;
     }
 
-    public ApiResponse<List<BizInsurance>> pagerTotal(Page<BizInsurance> pager) {
-    	ApiResponse<List<BizInsurance>> result = new ApiResponse<>();
+    public ApiResponse<List<BizInsuranceHistory>> pagerTotal(Page<BizInsuranceHistory> pager) {
+    	ApiResponse<List<BizInsuranceHistory>> result = new ApiResponse<>();
         LimitedCondition condition = getQueryCondition();
         condition.setOrderByClause("v_hphm asc,create_time desc");
         HttpServletRequest request = getRequest();
@@ -105,7 +100,7 @@ public class InsuranceServiceImpl extends BaseServiceImpl<BizInsurance,String> i
             }
         }
 
-        PageInfo<BizInsurance> resultPage = findPage(pager, condition);
+        PageInfo<BizInsuranceHistory> resultPage = findPage(pager, condition);
         afterPager(resultPage);
         result.setPage(resultPage);
         return result;
@@ -144,7 +139,7 @@ public class InsuranceServiceImpl extends BaseServiceImpl<BizInsurance,String> i
      * @param entity
      * @return
      */
-    public BizInsurance validEntity(BizInsurance entity){
+    public BizInsuranceHistory validEntity(BizInsuranceHistory entity){
     	RuntimeCheck.ifBlank(entity.getvHphm(), "请先选择车辆");
     	RuntimeCheck.ifBlank(entity.getInBdh(), "请先输入保单号");
     	//查看车辆信息是否存在
@@ -176,37 +171,20 @@ public class InsuranceServiceImpl extends BaseServiceImpl<BizInsurance,String> i
     }
 
     @Override
-    public ApiResponse<String> validAndSave(BizInsurance entity) {
-        SysYh user = getCurrentUser();
+    public ApiResponse<String> validAndSave(BizInsuranceHistory entity) {
     	entity = this.validEntity(entity);
 
-        // 根据车辆id查找，如果有记录，则更新，如果没有则新增
-    	List<BizInsurance> insuranceList = findEq(BizInsurance.InnerColumn.vId,entity.getvId());
-    	if (insuranceList.size() > 0){
-    	    BizInsurance insurance = insuranceList.get(0);
-    	    entity.setInId(insurance.getInId());
-    	    update(entity);
-        }else{
-            entity.setInId(genId());
-            entity.setCreateTime(DateUtils.getNowTime());
-            entity.setCreateUser(getOperateUser());
-            save(entity);
-        }
-
-        // 记录历史表
-        BizInsuranceHistory insuranceHistory = new BizInsuranceHistory();
-        BeanUtils.copyProperties(entity,insuranceHistory,"inId","createTime","createUser");
-        insuranceHistory.setInId(genId());
-        insuranceHistory.setCreateTime(DateUtils.getNowTime());
-        insuranceHistory.setCreateUser(user.getYhid());
-        insuranceHistoryService.save(insuranceHistory);
+        entity.setInId(genId());
+        entity.setCreateTime(DateUtils.getNowTime());
+        entity.setCreateUser(getOperateUser());
+        save(entity);
         return ApiResponse.saveSuccess();
     }
 
     @Override
-    public ApiResponse<String> validAndUpdate(BizInsurance entity) {
+    public ApiResponse<String> validAndUpdate(BizInsuranceHistory entity) {
     	RuntimeCheck.ifBlank(entity.getInId(), "修改信息不存在");
-    	BizInsurance exist = this.findById(entity.getInId());
+        BizInsuranceHistory exist = this.findById(entity.getInId());
     	RuntimeCheck.ifNull(exist, "修改信息不存在");
     	entity = this.validEntity(entity);
 

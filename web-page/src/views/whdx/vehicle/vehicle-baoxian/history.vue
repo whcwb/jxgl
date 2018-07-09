@@ -19,9 +19,6 @@
 				<Button type="primary" @click="v.util.getPageData(v)">
 					<Icon type="search"></Icon>
 				</Button>
-				<Button type="primary" @click="v.util.add(v)">
-					<Icon type="plus-round"></Icon>
-				</Button>
 			</Col>
 		</Row>
 		</Form>
@@ -47,7 +44,7 @@
             return {
                 v:this,
                 SpinShow: true,
-                apiRoot:this.apis.insurance,
+                apiRoot:this.apis.insuranceHistory,
                 tableHeight: 220,
                 componentName: '',
                 choosedItem: null,
@@ -82,7 +79,7 @@
                             return h('div', [
                                 // this.util.buildEditButton(this,h,params),
                                 this.util.buildButton(this, h, 'info', 'ios-cloud-upload', '档案上传', ()=>{this.uploadFilePage(params)}),
-                                this.util.buildDeleteButton(this,h,params.row.inId),
+                                // this.util.buildDeleteButton(this,h,params.row.inId),
                             ]);
                         }
                     }

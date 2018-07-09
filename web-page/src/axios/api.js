@@ -159,6 +159,12 @@ module.exports = {
         CHANGE:'/api/insurance/update',
         DELE:'/api/insurance/removeIds',
     },
+    insuranceHistory:{
+        QUERY:'api/insuranceHistory/pager',//保险管理
+        ADD:'/api/insuranceHistory/save',
+        CHANGE:'/api/insuranceHistory/update',
+        DELE:'/api/insuranceHistory/removeIds',
+    },
     userCar:{
         QUERY:'api/userCar/pager',//出车管理
         ADD:'/api/userCar/save',
