@@ -41,7 +41,7 @@ public class BizVehicle implements Serializable {
      * 车辆价值
      */
     @Column(name = "v_worth")
-    private String vWorth;
+    private Integer vWorth;
 
     /**
      * 注册登记日期
@@ -199,11 +199,11 @@ public class BizVehicle implements Serializable {
 		return vZrr;
 	}
 
-    public String getvWorth() {
+    public Integer getvWorth() {
         return vWorth;
     }
 
-    public void setvWorth(String vWorth) {
+    public void setvWorth(Integer vWorth) {
         this.vWorth = vWorth;
     }
 

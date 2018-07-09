@@ -23,7 +23,7 @@ public class BizVehicleChange implements Serializable {
     private String chgOzrrlxdh;
 
     @Column(name = "chg_ojz")
-    private String chgOjz;
+    private Integer chgOjz;
 
     @Column(name = "chg_nzrr")
     private String chgNzrr;
@@ -32,7 +32,7 @@ public class BizVehicleChange implements Serializable {
     private String chgNzrrlxdh;
 
     @Column(name = "chg_njz")
-    private String chgNjz;
+    private Integer chgNjz;
 
     @Column(name = "v_id")
     private String vId;
@@ -43,19 +43,19 @@ public class BizVehicleChange implements Serializable {
     private static final long serialVersionUID = 1L;
 
 
-    public String getChgOjz() {
+    public Integer getChgOjz() {
         return chgOjz;
     }
 
-    public void setChgOjz(String chgOjz) {
+    public void setChgOjz(Integer chgOjz) {
         this.chgOjz = chgOjz;
     }
 
-    public String getChgNjz() {
+    public Integer getChgNjz() {
         return chgNjz;
     }
 
-    public void setChgNjz(String chgNjz) {
+    public void setChgNjz(Integer chgNjz) {
         this.chgNjz = chgNjz;
     }
 

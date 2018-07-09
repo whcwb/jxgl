@@ -41,7 +41,7 @@
                     {title:'申请人姓名',key:'sqrxm'},
                     {title:'申请时间',key:'createTime'},
                     {title:'状态',key:'zt',dict:'ycsqzt',searchType:'dict'},
-                    {title:'审核人',key:'shr'},
+                    {title:'审核人',key:'shrId'},
                     {title:'审核时间',key:'shsj'},
                     {title:'驳回原因',key:'bhyy'},
                     // {

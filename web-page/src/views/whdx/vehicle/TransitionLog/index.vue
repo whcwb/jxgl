@@ -5,6 +5,9 @@
 	<div class="boxbackborder">
 		<Row style="padding-bottom: 16px;">
             <search-items :parent="v" :showCreateButton="true"></search-items>
+            <Button type="primary" @click="v.util.getPageData(v)">
+                <Icon type="search"></Icon>
+            </Button>
         </Row>
         <Row style="position: relative;">
         	<Table :height="tableHeight" :columns="tableColumns" :data="pageData"></Table>
@@ -34,7 +37,7 @@
                 choosedItem: null,
                 tableColumns: [
                     {title: "#", width: 60, type: 'index'},
-                    {title:'车牌号',key:'cph'},
+                    {title:'车牌号',key:'cph',searchKey:'cphLike'},
                     {title:'创建时间',key:'createTime'},
                     {title:'创建人姓名',key:'createUserName'},
                     {title:'操作类型',key:'type',dict:'rkzt'},

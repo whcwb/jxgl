@@ -56,8 +56,8 @@
             this.curUser = JSON.parse(Cookies.get('result')).accessToken;
 		    this.util.initFormModal(this);
             this.formItem.sqrId = this.curUser.userId;
-            this.formItem.sqsj = new Date().format("yyyy-MM-dd HH:mm:SS");
-		},
+            this.formItem.sqsj = new Date().format("yyyy-MM-dd hh:mm:ss");
+        },
 		methods: {
 		}
 	}

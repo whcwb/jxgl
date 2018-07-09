@@ -61,7 +61,7 @@
         },
         created(){
             this.util.initFormModal(this);
-            this.formItem.vlXqsj = new Date().format("yyyy-MM-dd HH:mm:SS");
+            this.formItem.vlXqsj = new Date().format("yyyy-MM-dd hh:mm:ss");
         },
         methods: {
 

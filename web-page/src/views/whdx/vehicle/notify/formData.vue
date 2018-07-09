@@ -55,7 +55,7 @@
 		created(){
 		    this.util.initFormModal(this);
             this.util.initDict(this);
-            this.formItem.time = new Date().format("yyyy-MM-dd HH:mm:SS");
+            this.formItem.time = new Date().format("yyyy-MM-dd hh:mm:ss");
 		},
 		methods: {
 		}
