@@ -26,7 +26,7 @@
                                 <template v-if="item.uploadFile.status === 'finished'">
                                     <img :src="staticPath + item.uploadFile.url">
                                     <div class="demo-upload-list-cover">
-                                        <Icon type="ios-printer-outline" size="32" :id="'img_'+key"
+                                        <Icon type="ios-printer-outline" size="32"  ref="'img_'+key" :id="'img_'+key"
                                               @click.native="handlePrint('img_'+key)"></Icon>
                                         &nbsp;&nbsp;&nbsp;&nbsp;
                                         <Icon type="ios-eye-outline" size="32"
@@ -84,6 +84,7 @@
     import swal from 'sweetalert2'
     import printChange from './printChange'
     import Print from 'print-js'
+    import $ from 'jquery'
 
     export default {
         name: 'wfxx',
@@ -155,6 +156,7 @@
                 })
             },
             handlePrint(o) {
+                $("#"+o).css('z-index',10000);
                 Print({
                     printable: 'img_'+o,
                     type: 'html',
