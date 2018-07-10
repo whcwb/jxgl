@@ -73,15 +73,16 @@
                 hphmLabel:'',
 				showModal: true,
 				readonly: false,
+                visible:false,
 				formItem: {
 			        inXz:[],
 				},
                 formInputs:[
                     {label:'保单编号',prop:'inBdh', required:true},
-                    {label:'商业险保险公司',prop:'inBxgs', type:'dict', dict:'bxgsxx'},
+                    {label:'商业险保险公司',prop:'inBxgs'},
                     {label:'商业险起保时间',prop:'inQbrq', type:'date'},
                     {label:'商业险保险金额',prop:'inBxje'},
-                    {label:'商业险险种',prop:'inXz', type:'dict-multiple', dict:'bxsyxz', span:24},
+                    {label:'商业险险种',prop:'inXz', span:24},
                     {label:'交强险保单号',prop:'inJqbdh'},
                     {label:'交强险保险公司',prop:'inJqbxgs', type:'dict', dict:'bxgsxx'},
                     {label:'交强险起保时间',prop:'inJqqbrq', type:'date', placement:"top-start"},
