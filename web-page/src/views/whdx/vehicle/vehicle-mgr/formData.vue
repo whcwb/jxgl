@@ -16,7 +16,7 @@
 						:label-width="100"
 						:styles="{top: '20px'}">
 					<Row>
-						<Col span="12">
+						<Col span="8">
 							<FormItem prop='hphm' label="车牌号">
 								<Input v-model="formItem.hphm" placeholder="请填写车牌号" :maxlength="8">
 									<Select v-model="hphmPrefix" slot="prepend" style="width: 50px">
@@ -25,11 +25,19 @@
 								</Input>
 							</FormItem>
 						</Col>
-						<Col span="12">
+						<Col span="8">
 							<FormItem  label="车辆类型">
 								<Select filterable  v-model="formItem.vHpzl" placeholder="请选择车辆类型..." @on-change="changeHpzl">
 									<Option v-for = '(item,index) in dicts.hpzl.items' :value="item.key">{{item.val}}</Option>
 								</Select>
+							</FormItem>
+						</Col>
+						<Col span="8">
+							<FormItem  label="安装卡机">
+								<Switch v-model="formItem.vAzkj">
+									<span slot="open">已安装</span>
+									<span slot="close">未安装</span>
+								</Switch>
 							</FormItem>
 						</Col>
 					</Row>

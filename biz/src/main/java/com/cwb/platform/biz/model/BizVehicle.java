@@ -178,8 +178,22 @@ public class BizVehicle implements Serializable {
      */
     @Column(name = "v_rkzt")
     private String vRkzt;
+    
+    /**
+     * 是否安装卡机。0未安装；1已安装
+     */
+    @Column(name = "v_azkj")
+    private Integer vAzkj;
 
-    public String getvRkzt() {
+    public Integer getvAzkj() {
+		return vAzkj;
+	}
+
+	public void setvAzkj(Integer vAzkj) {
+		this.vAzkj = vAzkj;
+	}
+
+	public String getvRkzt() {
         return vRkzt;
     }
 
@@ -644,6 +658,7 @@ public class BizVehicle implements Serializable {
         vZrr("v_zrr"),
         vZrrlxdh("v_zrrlxdh"),
         vBdhm("v_bdhm"),
+        vAzkj("v_azkj"),
         createUser("create_user"),
         createTime("create_time"),
         updateUser("update_user"),

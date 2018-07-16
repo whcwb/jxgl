@@ -3,10 +3,25 @@
 </style>
 <template>
 	<div class="boxbackborder">
-		<Row style="padding-bottom: 16px;">
-			<search-items :parent="v"></search-items>
-			<Button type="primary" @click="v.util.getPageData(v)"><Icon type="search"></Icon></Button>
-		</Row>
+		<Form :label-width="100">
+			<Row  justify="space-between">
+				<Col span="5">
+					<FormItem label="车牌号">
+						<Input v-model="form.vHphmLike" placeholder="请输入车牌号" ></Input>
+					</FormItem>
+				</Col>
+				<Col span="5">
+					<FormItem label="年审日期">
+						<DatePicker :value="form.vNsrqLike" type="month" placement="top-start" placeholder="请选择日期" @on-change="(date)=>{form.vNsrqLike = date}"></DatePicker>
+					</FormItem>
+				</Col>
+				<Col span="4" offset="1">
+					<Button type="primary" @click="v.util.getPageData(v)">
+						<Icon type="search"></Icon>
+					</Button>
+				</Col>
+			</Row>
+		</Form>
 		<Row style="position: relative;">
 			<Table :height="tableHeight" :columns="tableColumns" :data="pageData"></Table>
 		</Row>

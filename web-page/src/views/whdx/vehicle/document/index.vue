@@ -49,7 +49,7 @@
                                     :on-success="(res, file,fileList)=>{successCallback(res, file,key)}"
                                     :on-error="errorCallback"
                                     :format="['jpg','jpeg','png']"
-                                    :max-size="2048"
+                                    :max-size="8192"
                                     :on-format-error="handleFormatError"
                                     :on-exceeded-size="handleMaxSize"
                                     type="drag"

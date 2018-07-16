@@ -34,6 +34,22 @@
 					<DatePicker :value="form.vNsrqLike" type="month" placement="top-start" placeholder="请选择日期" @on-change="(date)=>{form.vNsrqLike = date}"></DatePicker>
 				</FormItem>
 			</Col>
+			<Col span="5">
+				<FormItem label="运营证">
+					<Select clearable  v-model="form.yyzFlag" placeholder="请选择...">
+						<Option value="0">未上传</Option>
+						<Option value="1">已上传</Option>
+					</Select>
+				</FormItem>
+			</Col>
+			<Col span="5">
+				<FormItem label="卡机">
+					<Select clearable  v-model="form.vAzkj" placeholder="请选择...">
+						<Option value="0">未安装</Option>
+						<Option value="1">已安装</Option>
+					</Select>
+				</FormItem>
+			</Col>
 			<Col span="4" offset="1">
 				<Button type="primary" @click="v.util.getPageData(v)">
 					<Icon type="search"></Icon>
