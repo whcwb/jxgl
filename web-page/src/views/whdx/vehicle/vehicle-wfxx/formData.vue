@@ -115,7 +115,7 @@
                     sendSms:'true'
 				},
                 formInputs:[
-                    {label:'违法编号',prop:'wfId', required:true},
+                    {label:'违法编号',prop:'wfId'},
                     {label:'违法时间',prop:'wfWfsj', type:'datetime', placement:"top-start"},
                     {label:'违法地点',prop:'wfWfdz', span:'24'},
                     {label:'违法行为',prop:'wfWfxw', required:true},

@@ -45,16 +45,17 @@
 
 <script>
     import formData from './formData.vue'
+    import notifyList from './notifyList'
     import swal from 'sweetalert2'
     export default {
         name: 'wfxx',
-        components: {formData},
+        components: {formData,notifyList},
         data() {
             return {
                 v:this,
                 SpinShow: true,
                 apiRoot:this.apis.illegal,
-                tableHeight: 220,
+                tableHeight: 120,
                 componentName: '',
                 choosedItem: null,
                 tableColumns: [
@@ -66,6 +67,8 @@
                     {title:'违法行为',key:'wfWfxw'},
                     {title:'违法记分',key:'wfWfjf'},
                     {title:'违法金额',key:'wfWfje'},
+                    {title:'负责人',key:'fzr'},
+                    {title:'负责人联系方式',key:'fzrlxfs'},
                     {title:'违法状态',key:'wfWfzt',render:(h, params)=>{
                         let val = $.map(this.dicts.wfzt.items, item => {
                             if(item.key == params.row.wfWfzt) {
@@ -99,6 +102,10 @@
                                             this.sendSms(params.row.wfId);
                                         }
                                     });
+                                }),
+                                this.util.buildButton(this,h,'success','eye','联系记录',()=>{
+                                    this.choosedItem = params.row;
+                                    this.componentName = 'notifyList';
                                 }),
                                 this.util.buildEditButton(this,h,params),
                                 this.util.buildDeleteButton(this,h,params.row.id),

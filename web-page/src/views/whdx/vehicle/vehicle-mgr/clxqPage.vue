@@ -105,6 +105,18 @@
 					<Tab-pane label="责任人变更记录" icon="ios-download-outline">
 						<clxq-zrr-page :vehcile="formItem"></clxq-zrr-page>
 					</Tab-pane>
+					<Tab-pane label="联系记录" icon="ios-download-outline">
+						<notify-list :vehcile="formItem"></notify-list>
+					</Tab-pane>
+					<Tab-pane label="保险记录" icon="ios-download-outline">
+						<bxjl-page :vehcile="formItem"></bxjl-page>
+					</Tab-pane>
+					<Tab-pane label="维修记录" icon="ios-download-outline">
+						<wxjl-page :vehcile="formItem"></wxjl-page>
+					</Tab-pane>
+					<Tab-pane label="保养记录" icon="ios-download-outline">
+						<byjl-page :vehcile="formItem"></byjl-page>
+					</Tab-pane>
 				</Tabs>
 			</div>
 			<div slot='footer'>
@@ -119,11 +131,19 @@
     import clxqWfxxPage from './clxqWfxxPage.vue'
     //年审信息
     import clxqNsxxPage from './clxqNsxxPage.vue'
+	// 联系记录
+	import notifyList from './notifyList'
+    //保险记录
+    import bxjlPage from './bxjlPage.vue'
+    //维修记录
+    import wxjlPage from './wxjlPage.vue'
+    //保养记录
+    import byjlPage from './byjlPage.vue'
     //责任人信息
     // import clxqZrrPage from './clxqZrrPage.vue'
 	export default {
 		name: 'usecarForm',
-		components:{clxqNsxxPage, clxqWfxxPage},
+		components:{clxqNsxxPage, clxqWfxxPage,notifyList,bxjlPage,wxjlPage,byjlPage},
 		data() {
 			return {
 			    v:this,

@@ -4,6 +4,7 @@ import com.cwb.platform.biz.model.BizInsurance;
 import com.cwb.platform.biz.service.InsuranceService;
 import com.cwb.platform.sys.base.BaseController;
 import com.cwb.platform.sys.base.BaseService;
+import com.cwb.platform.util.bean.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,5 +20,11 @@ public class InsuranceCtrl extends BaseController<BizInsurance,String> {
     @Override
     protected BaseService<BizInsurance, String> getBaseService() {
         return service;
+    }
+
+
+    @RequestMapping("sendSms")
+    public ApiResponse<String> sendSms(String inId){
+        return service.sendSms(inId);
     }
 }

@@ -91,6 +91,26 @@ public class BizWfxx implements Serializable {
 
     @Transient
     private String sendSms;
+    @Transient
+    private String fzr;
+    @Transient
+    private String fzrlxfs;
+
+    public String getFzr() {
+        return fzr;
+    }
+
+    public void setFzr(String fzr) {
+        this.fzr = fzr;
+    }
+
+    public String getFzrlxfs() {
+        return fzrlxfs;
+    }
+
+    public void setFzrlxfs(String fzrlxfs) {
+        this.fzrlxfs = fzrlxfs;
+    }
 
     private static final long serialVersionUID = 1L;
 

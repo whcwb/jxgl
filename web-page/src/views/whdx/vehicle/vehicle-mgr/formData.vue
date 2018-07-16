@@ -33,11 +33,11 @@
 							</FormItem>
 						</Col>
 						<Col span="8">
-							<FormItem  label="安装卡机">
-								<Switch v-model="formItem.vAzkj">
-									<span slot="open">已安装</span>
-									<span slot="close">未安装</span>
-								</Switch>
+							<FormItem  label='安装卡机'>
+								<RadioGroup  v-model="formItem.vAzkj">
+									<Radio label="1">已安装</Radio>
+									<Radio label="0">未安装</Radio>
+								</RadioGroup>
 							</FormItem>
 						</Col>
 					</Row>

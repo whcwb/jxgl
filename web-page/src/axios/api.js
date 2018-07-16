@@ -1,5 +1,5 @@
 //网络请求地址前缀 "http://127.0.0.1";//
-let BASE_URL = 'http://127.0.0.1:8088';
+let BASE_URL = 'http://127.0.0.1';
 //let BASE_URL = 'http://119.97.172.181';
 module.exports = {
     //url: BASE_URL + ':8180',
@@ -158,6 +158,7 @@ module.exports = {
         ADD:'/api/insurance/save',
         CHANGE:'/api/insurance/update',
         DELE:'/api/insurance/removeIds',
+        SEND_SMS:'/api/illegal/sendSms',
     },
     insuranceHistory:{
         QUERY:'api/insuranceHistory/pager',//保险管理

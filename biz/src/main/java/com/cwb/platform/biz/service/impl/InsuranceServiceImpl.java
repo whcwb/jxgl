@@ -4,6 +4,7 @@ import com.cwb.platform.biz.mapper.BizInsuranceMapper;
 import com.cwb.platform.biz.model.BizInsurance;
 import com.cwb.platform.biz.model.BizInsuranceHistory;
 import com.cwb.platform.biz.model.BizVehicle;
+import com.cwb.platform.biz.model.BizWfxx;
 import com.cwb.platform.biz.service.InsuranceHistoryService;
 import com.cwb.platform.biz.service.InsuranceService;
 import com.cwb.platform.biz.service.VehicleService;
@@ -12,9 +13,11 @@ import com.cwb.platform.sys.base.LimitedCondition;
 import com.cwb.platform.sys.model.SysYh;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.commonUtil.DateUtils;
+import com.cwb.platform.util.commonUtil.HttpUtil;
 import com.cwb.platform.util.exception.RuntimeCheck;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Maps;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.BeanUtils;
@@ -24,6 +27,7 @@ import tk.mybatis.mapper.common.Mapper;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class InsuranceServiceImpl extends BaseServiceImpl<BizInsurance,String> implements InsuranceService{
@@ -212,5 +216,37 @@ public class InsuranceServiceImpl extends BaseServiceImpl<BizInsurance,String> i
 
         update(entity);
         return ApiResponse.saveSuccess();
+    }
+
+    @Override
+    public ApiResponse<String> sendSms(String wfId) {
+        RuntimeCheck.ifBlank(wfId,"请选择保险信息");
+        BizInsurance wfxx = findById(wfId);
+        RuntimeCheck.ifNull(wfxx,"未找到保险信息");
+        return sendSms(wfxx);
+    }
+
+    @Override
+    public ApiResponse<String> sendSms(BizInsurance wfxx) {
+        BizVehicle vehicle = vehicleService.findById(wfxx.getvId());
+        RuntimeCheck.ifNull(vehicle,"未找到车辆信息");
+
+        //发送短信是通知到车辆负责人，不是使用人
+        Map<String, String> params = Maps.newConcurrentMap();
+        DateTime date = DateTime.parse(wfxx.getInZbrq().substring(0,10));
+        params.put("SpCode", "1011012028946");
+        params.put("LoginName", "wh_tmjx");
+        params.put("Password", "tmjx2017");
+        params.put("MessageContent", vehicle.getvHphm()+"车主，您好，车主您好，您的爱车保险服务将于"+date.toString("yyyy年MM月dd日")+"到期，请注意续保。");
+        params.put("UserNumber", vehicle.getvZrrlxdh());
+        params.put("SerialNumber", String.valueOf(DateTime.now().getMillis()));
+        params.put("ScheduleTime", "");
+        params.put("f", "1");
+
+        String smsResult = HttpUtil.post("https://api.ums86.com:9600/sms/Api/Send.do", params, "gbk");
+        if (smsResult.contains("result=0")){
+            return ApiResponse.success("短信发送成功");
+        }
+        return ApiResponse.fail("短信发送失败");
     }
 }

@@ -6,11 +6,6 @@
 		<Form :label-width="100">
 		<Row justify="space-between">
 			<Col span="5">
-				<FormItem label="车牌号">
-					<Input v-model="form.vHphmLike" placeholder="请输入车牌号" ></Input>
-				</FormItem>
-			</Col>
-			<Col span="5">
 				<FormItem label="商业险保单编号">
 					<Input v-model="form.inBdh" placeholder="请输入商业险保单编号" ></Input>
 				</FormItem>
@@ -18,9 +13,6 @@
 			<Col span="4" offset="1">
 				<Button type="primary" @click="v.util.getPageData(v)">
 					<Icon type="search"></Icon>
-				</Button>
-				<Button type="primary" @click="v.util.add(v)">
-					<Icon type="plus-round"></Icon>
 				</Button>
 			</Col>
 		</Row>
@@ -37,12 +29,14 @@
 </template>
 
 <script>
-    import formData from './formData.vue'
-	//文件上传
-    import uploadFile from './uploadFile.vue'
     export default {
         name: 'insuranceTable',
-        components: {formData, uploadFile},
+        props:{
+            vehcile:{
+                type:Object,
+                default:{}
+            }
+        },
         data() {
             return {
                 v:this,
@@ -73,36 +67,6 @@
                     {title: '交强险起保时间',key:'inJqqbrq'},
                     {title: '交强险终保时间',key:'inJqzbrq'},
                     {title: '交强险保险金额',key:'inJqbxje'},
-                    {
-                        title: '操作',
-                        key: 'action',
-                        width: 200,
-                        render: (h, params) => {
-                            return h('div', [
-                                // this.util.buildEditButton(this,h,params),
-
-                                this.util.buildButton(this,h,'success','ios-email-outline','发送短信',()=>{
-                                    swal({
-                                        text: "是否发送短信通知?",
-                                        type: "warning",
-                                        showCancelButton: true,
-                                        confirmButtonText: '确认',
-                                        cancelButtonText: '取消'
-                                    }).then((isConfirm) => {
-                                        if (isConfirm.value) {
-                                            this.sendSms(params.row.inId);
-                                        }
-                                    });
-                                }),
-                                this.util.buildButton(this,h,'success','eye','联系记录',()=>{
-                                    this.choosedItem = params.row;
-                                    this.componentName = 'notifyList';
-                                }),
-                                this.util.buildButton(this, h, 'info', 'ios-cloud-upload', '档案上传', ()=>{this.uploadFilePage(params)}),
-                                this.util.buildDeleteButton(this,h,params.row.inId),
-                            ]);
-                        }
-                    }
                 ],
                 pageData: [],
                 form: {
@@ -116,6 +80,7 @@
             }
         },
         created() {
+            this.form.vId = this.vehcile.vId;
             this.util.initTable(this);
             this.util.initDict(this);
         },

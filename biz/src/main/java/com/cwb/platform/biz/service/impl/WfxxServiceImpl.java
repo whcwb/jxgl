@@ -3,6 +3,7 @@ package com.cwb.platform.biz.service.impl;
 import javax.servlet.http.HttpServletRequest;
 
 import com.cwb.platform.util.commonUtil.HttpUtil;
+import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Maps;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
@@ -25,7 +26,8 @@ import com.cwb.platform.util.exception.RuntimeCheck;
 
 import tk.mybatis.mapper.common.Mapper;
 
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class WfxxServiceImpl extends BaseServiceImpl<BizWfxx,String> implements WfxxService{
@@ -46,11 +48,31 @@ public class WfxxServiceImpl extends BaseServiceImpl<BizWfxx,String> implements 
         return BizWfxx.class;
     }
 
+    @Override
+	public void afterPager(PageInfo<BizWfxx> pageInfo){
+		Set<String> vIds = new HashSet<>();
+		for (BizWfxx wfxx : pageInfo.getList()) {
+			vIds.add(wfxx.getvId());
+		}
+		List<BizVehicle> carList = vehicleService.findIn(BizVehicle.InnerColumn.vId,vIds);
+		Map<String,BizVehicle> carMap = carList.stream().collect(Collectors.toMap(BizVehicle::getvId,p->p));
+		for (BizWfxx wfxx : pageInfo.getList()) {
+			String vId = wfxx.getvId();
+			if (StringUtils.isEmpty(vId))continue;
+			BizVehicle car = carMap.get(vId);
+			if (car == null)continue;
+			wfxx.setFzr(car.getvZrr());
+			wfxx.setFzrlxfs(car.getvZrrlxdh());
+		}
+	}
+
     public BizWfxx validEntity(BizWfxx entity){
     	RuntimeCheck.ifBlank(entity.getvId(), "请先选择车辆");
-    	RuntimeCheck.ifBlank(entity.getWfId(), "请先输入违法编号");
     	RuntimeCheck.ifNull(entity.getWfWfjf(), "请先输入违法记分");
     	RuntimeCheck.ifNull(entity.getWfWfje(), "请先输入违法金额");
+    	if (StringUtils.isEmpty(entity.getWfId())){
+    		entity.setWfId(genId());
+		}
     	//查看车辆信息是否存在
     	BizVehicle vehicle = this.vehicleService.findById(entity.getvId());
     	RuntimeCheck.ifNull(vehicle, "选择的车辆信息不存在");
