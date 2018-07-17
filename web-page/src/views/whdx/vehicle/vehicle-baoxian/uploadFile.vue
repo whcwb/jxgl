@@ -82,7 +82,7 @@
 												:default-file-list="defaultList"
 												:on-success="handleSuccess"
 												:format="['jpg','jpeg','png']"
-												:max-size="2048"
+												:max-size="8196"
 												:on-format-error="handleFormatError"
 												:on-exceeded-size="handleMaxSize"
 												multiple
@@ -114,7 +114,7 @@
 												:default-file-list="defaultList"
 												:on-success="handleSuccess"
 												:format="['jpg','jpeg','png']"
-												:max-size="2048"
+												:max-size="8196"
 												:on-format-error="handleFormatError"
 												:on-exceeded-size="handleMaxSize"
 												multiple

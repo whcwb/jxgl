@@ -24,13 +24,13 @@
                         <div style="text-align:center;margin-top: 16px">
                             <div class="demo-upload-list" v-if="item.uploadFile != null">
                                 <template v-if="item.uploadFile.status === 'finished'">
-                                    <img :src="staticPath + item.uploadFile.url">
+                                    <img :src="item.uploadFile.url">
                                     <div class="demo-upload-list-cover">
                                         <Icon type="ios-printer-outline" size="32"  ref="'img_'+key" :id="'img_'+key"
-                                              @click.native="handlePrint('img_'+key)"></Icon>
+                                              @click.native="handlePrint(item.uploadFile.url)"></Icon>
                                         &nbsp;&nbsp;&nbsp;&nbsp;
                                         <Icon type="ios-eye-outline" size="32"
-                                              @click.native="handleView(staticPath  + item.uploadFile.url)"></Icon>
+                                              @click.native="handleView(item.uploadFile.url)"></Icon>
                                         &nbsp;&nbsp;&nbsp;&nbsp;
                                         <Icon type="refresh" size="32"
                                               @click.native="handleRemove(item.uploadFile)"></Icon>
@@ -76,6 +76,10 @@
             </Card>
         </Row>
         <component :is="componentName"></component>
+        <Modal title="图片预览" v-model="visible" >
+            <img :src="imgUrl" v-if="visible" style="width: 100%">
+            <div slot="footer"></div>
+        </Modal>
     </div>
 </template>
 
@@ -102,14 +106,16 @@
                 uplaodUrl: this.apis.FILE.UPLOAD,
                 files: {
                     xszzmFile: {title: '行车证', uploadFile: null},
-                    djzsFile: {title: '登记证书', uploadFile: null},
+                    cqdjzFile: {title: '登记证书', uploadFile: null},
                     bdFile: {title: '保单', uploadFile: null},
                     cqdjFile: {title: '内部车辆产权登记', uploadFile: null},
-                    aqxyFile: {title: '车辆安全协议', uploadFile: null},
+                    claqxyFile: {title: '车辆安全协议', uploadFile: null},
                     gzbFile: {title: '告知表', uploadFile: null}
                 },
                 curUser: '',
                 car: '',
+                visible:false,
+                imgUrl:'',
             }
         },
         created() {
@@ -141,9 +147,14 @@
                     if (res.code === 200) {
                         if (res.result){
                             for (let r of res.result) {
-                                if (this.files[r.vfDamc]) {
-                                    this.files[r.vfDamc].uploadFile = {};
-                                    this.files[r.vfDamc].uploadFile.url = r.vfNetPath;
+                                try{
+                                    this.files[r.vfDamc].uploadFile = {
+                                        name:r.vfDamc,
+                                        status:'finished',
+                                        url:this.apis.STATIC_PATH + r.vfNetPath + '?d='+new Date().getTime()
+                                    };
+                                }catch (e){
+
                                 }
                             }
                         }
@@ -155,18 +166,13 @@
                     console.log(this.files);
                 })
             },
-            handlePrint(o) {
-                $("#"+o).css('z-index',10000);
-                Print({
-                    printable: 'img_'+o,
-                    type: 'html',
-                    // onLoadingStart: () => {
-                    //     this.$refs.printDiv.style = "display:block";
-                    // },
-                    // onLoadingEnd: () => {
-                    //     this.$refs.printDiv.style = "display:none";
-                    // }
-                });
+            handlePrint(url) {
+                setTimeout(()=>{
+                    Print({
+                        printable: url,
+                        type: 'image',
+                    });
+                }, 500);
             },
             handleView(url) {
                 this.imgUrl = url;
@@ -182,7 +188,6 @@
                     //将文件对象和data的属性进行绑定
                     this.files[locDataName].uploadFile = file;
                     // this.$data[locDataName] = file;
-                    console.log(file);
                 } else {
                     this.$Message.error("文件上传失败：" + res.message);
                 }
@@ -192,7 +197,7 @@
                 this.$Message.error("文件上传失败，请稍后重试！");
             },
             handleRemove(file) {
-                this.$data[file.name] = null;
+                this.files[file.name].uploadFile = null;
             },
             handleFormatError(file) {
                 this.$Notice.warning({
@@ -209,3 +214,42 @@
         }
     }
 </script>
+<style scoped>
+    .demo-upload-list{
+        display: inline-block;
+        width: 260px;
+        height: 180px;
+        text-align: center;
+        line-height: 60px;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        overflow: hidden;
+        background: #fff;
+        position: relative;
+        box-shadow: 0 1px 1px rgba(0,0,0,.2);
+        margin-right: 4px;
+    }
+    .demo-upload-list img{
+        width: 100%;
+        height: 100%;
+    }
+    .demo-upload-list-cover{
+        display: none;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: rgba(0,0,0,.6);
+    }
+    .demo-upload-list:hover .demo-upload-list-cover{
+        padding-top: 60px;
+        display: block;
+    }
+    .demo-upload-list-cover i{
+        color: #fff;
+        font-size: 20px;
+        cursor: pointer;
+        margin: 0 2px;
+    }
+</style>

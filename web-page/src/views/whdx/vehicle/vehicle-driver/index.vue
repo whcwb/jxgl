@@ -35,15 +35,15 @@
 			:usermesType="userMesType"
 			@listF='listF'></component>
 		<!-- 资质审验单打印 -->
-		<div v-if="printImgs.length > 0" id="printDiv" ref="printDiv" style="position: absolute;left:0;top:0;z-index: -10">
+		<div id="printDiv" ref="printDiv" style="position: absolute;left:0;top:0;z-index: -10">
 			<ul>
 				<li>
 					<img v-for="img in printImgs" v-if="img.vfDamc == 'sfzzmFile'" :src="apis.STATIC_PATH + img.vfNetPath + '?d='+new Date().getTime()" width="240">
 					<img v-for="img in printImgs" v-if="img.vfDamc == 'sfzfmFile'" :src="apis.STATIC_PATH + img.vfNetPath + '?d='+new Date().getTime()" width="240">
 				</li>
 				<li>
-					<img v-for="img in printImgs" v-if="img.vfDamc == 'jszzmFile'" :src="apis.STATIC_PATH + img.vfNetPath + '?d='+new Date().getTime()" width="240">
-					<img v-for="img in printImgs" v-if="img.vfDamc == 'jszfmFile'" :src="apis.STATIC_PATH + img.vfNetPath + '?d='+new Date().getTime()" width="240">
+					<img v-for="img in printImgs" v-if="img.vfDamc == 'jszzmFile'" :src="apis.STATIC_PATH + img.vfNetPath + '?d='+new Date().getTime()" width="680">
+					<!--<img v-for="img in printImgs" v-if="img.vfDamc == 'jszfmFile'" :src="apis.STATIC_PATH + img.vfNetPath + '?d='+new Date().getTime()" width="240">-->
 				</li>
 				<li>
 					<img v-for="img in printImgs" v-if="img.vfDamc == 'jlzzmFile'" :src="apis.STATIC_PATH + img.vfNetPath + '?d='+new Date().getTime()" width="240">
@@ -315,13 +315,7 @@
                         setTimeout(()=>{
                             Print({
                                 printable: 'printDiv',
-                                type: 'html',
-                                onLoadingStart:()=>{
-                                    this.$refs.printDiv.style = "display:block";
-                                },
-                                onLoadingEnd:()=>{
-                                    this.$refs.printDiv.style = "display:none";
-                                }
+                                type: 'html'
                             });
 						}, 500);
                     }else{

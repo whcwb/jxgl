@@ -61,7 +61,6 @@
                 tableColumns: [
                     {title: "序号", width: 60, type: 'index'},
                     {title:'车牌号码',key:'vHphm'},
-                    {title:'违法编号',key:'wfId'},
                     {title:'违法时间',key:'wfWfsj'},
                     {title:'违法地点',key:'wfWfdz'},
                     {title:'违法行为',key:'wfWfxw'},
@@ -86,7 +85,7 @@
                     {
                         title: '操作',
                         key: 'action',
-                        width: 120,
+                        width: 160,
                         fixed: 'right',
                         render: (h, params) => {
                             return h('div', [

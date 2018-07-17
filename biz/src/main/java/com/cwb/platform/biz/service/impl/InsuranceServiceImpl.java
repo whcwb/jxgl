@@ -165,7 +165,7 @@ public class InsuranceServiceImpl extends BaseServiceImpl<BizInsurance,String> i
     		entity.setInJqzbrq(DateTime.parse(entity.getInJqqbrq()).plusYears(1).minusDays(1).toString("yyyy-MM-dd"));
     	}
 
-    	if (StringUtils.isNotBlank(entity.getInBxgs())){
+    	/*if (StringUtils.isNotBlank(entity.getInBxgs())){
     		String[] bxgs = entity.getInBxgs().split("-");
     		entity.setInBxdh(bxgs[0]);
     		entity.setInBxgs(bxgs[1]);
@@ -174,7 +174,7 @@ public class InsuranceServiceImpl extends BaseServiceImpl<BizInsurance,String> i
     		String[] bxgs = entity.getInJqbxgs().split("-");
     		entity.setInJqbxdh(bxgs[0]);
     		entity.setInJqbxgs(bxgs[1]);
-    	}
+    	}*/
 
     	return entity;
     }

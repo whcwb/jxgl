@@ -1,53 +1,51 @@
 <style lang="less">
-    @import '../../../../styles/common.less';
+	@import '../../../../styles/common.less';
+</style>
+<style type="text/css">
+
 </style>
 <template>
-    <Modal v-model="showModal" width='900' :closable='false'
-           :mask-closable="false" title="联系记录">
-        <div style="overflow: auto;height: 500px;">
-            <div class="boxbackborder">
-                <Row style="padding-bottom: 16px;">
-                    <search-items :parent="v" :showCreateButton="true"></search-items>
-                    <div style="display: inline-block">
-                        <Button type="primary" @click="v.util.getPageData(v)">
-                            <Icon type="search"></Icon>
-                        </Button>
-                        <Button type="primary" @click="v.util.add(v)">
-                            <Icon type="plus-round"></Icon>
-                        </Button>
-                    </div>
-                </Row>
-                <Row style="position: relative;">
-                    <Table :height="tableHeight" :columns="tableColumns" :data="pageData"></Table>
-                </Row>
-                <Row class="margin-top-10 pageSty">
-                    <Page :total=form.total :current=form.pageNum :page-size=form.pageSize show-total show-elevator @on-change='pageChange'></Page>
-                </Row>
-                <component :is="componentName"></component>
-            </div>
-        </div>
-        <div slot='footer'>
-            <Button type="ghost" @click="v.util.closeDialog(v)">取消</Button>
-        </div>
-    </Modal>
-
+	<div>
+		<Modal v-model="showModal" width='900' :closable='false'
+			:mask-closable="false" :title="operate+''">
+			<div style="overflow: auto;height: 500px;">
+				<div class="boxbackborder">
+					<Row style="padding-bottom: 16px;">
+						<search-items :parent="v" :showCreateButton="true"></search-items>
+						<div style="display: inline-block">
+							<Button type="primary" @click="v.util.getPageData(v)">
+								<Icon type="search"></Icon>
+							</Button>
+						</div>
+					</Row>
+					<Row style="position: relative;">
+						<Table :height="tableHeight" :columns="tableColumns" :data="pageData"></Table>
+					</Row>
+					<Row class="margin-top-10 pageSty">
+						<Page :total=form.total :current=form.pageNum :page-size=form.pageSize show-total show-elevator @on-change='pageChange'></Page>
+					</Row>
+				</div>
+			</div>
+			<div slot='footer'>
+				<Button type="ghost" @click="v.util.closeDialog(v)">取消</Button>
+			</div>
+		</Modal>
+	</div>
 </template>
 
 <script>
     import searchItems from '../../components/searchItems'
-
-    export default {
+	export default {
         name: 'notify',
         components: {searchItems},
-        data() {
-            return {
-                v:this,
-                showModal:true,
-                SpinShow: true,
+		data() {
+			return {
+			    v:this,
+                operate:'联系记录',
+				showModal: true,
+				readonly: false,
+                tableHeight: 320,
                 apiRoot:this.apis.notify,
-                tableHeight: 220,
-                componentName: '',
-                choosedItem: null,
                 tableColumns: [
                     {title: "#", width: 60, type: 'index'},
                     {title:'通知时间',key:'time',searchType:'daterange'},
@@ -61,17 +59,57 @@
                     pageNum: 1,
                     pageSize: 8,
                 },
-            }
-        },
-        created() {
+			}
+		},
+		created(){
             this.form.clId = this.$parent.choosedItem.vId;
             this.util.initTable(this)
-        },
+		},
         methods: {
             pageChange(event) {
                 var v = this
                 v.util.getPageData(v);
             },
         }
-    }
+	}
 </script>
+
+<style scoped>
+	.demo-upload-list{
+		display: inline-block;
+		width: 60px;
+		height: 60px;
+		text-align: center;
+		line-height: 60px;
+		border: 1px solid transparent;
+		border-radius: 4px;
+		overflow: hidden;
+		background: #fff;
+		position: relative;
+		box-shadow: 0 1px 1px rgba(0,0,0,.2);
+		margin-right: 4px;
+	}
+	.demo-upload-list img{
+		width: 100%;
+		height: 100%;
+	}
+	.demo-upload-list-cover{
+		display: none;
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		background: rgba(0,0,0,.6);
+	}
+	.demo-upload-list:hover .demo-upload-list-cover{
+		display: block;
+	}
+	.demo-upload-list-cover i{
+		color: #fff;
+		font-size: 20px;
+		cursor: pointer;
+		margin: 0 2px;
+	}
+</style>
+

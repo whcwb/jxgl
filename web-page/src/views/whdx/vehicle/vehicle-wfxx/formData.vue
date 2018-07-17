@@ -122,7 +122,6 @@
                     {label:'违法记分',prop:'wfWfjf'},
                     {label:'违法金额',prop:'wfWfje'},
                     {label:'违法状态',prop:'wfWfzt', type:'dict',dict:'WFZT'},
-                    {label:'短信通知',prop:'wfWfzt', type:'radio',dict:'WFZT'},
                 ],
                 ruleInline:{
                     vId: [
@@ -178,7 +177,7 @@
             loadPhoto(){
                 if (this.$parent.choosedItem){
                     this.$http.get(this.apis.FILE.FINDBYPID + "/" + this.formItem.wfId).then((res) =>{
-                        if (res.code == 200){
+                        if (res.code == 200 && res.result != null){
                             for (let item of res.result){
                                 this.uploadList.push({
                                     name:item.vfDamc,

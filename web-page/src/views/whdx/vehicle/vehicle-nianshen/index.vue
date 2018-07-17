@@ -31,12 +31,12 @@
 		<div id="printDiv" ref="printDiv" style="position: absolute;left:0;top:0;z-index: -10">
 			<ul>
 				<li>
-					<img v-for="img in jszPrintImgs" v-if="img.vfDamc == 'jszzmFile'" :src="apis.STATIC_PATH + img.vfNetPath + '?d='+new Date().getTime()" width="240">
-					<img v-for="img in jszPrintImgs" v-if="img.vfDamc == 'jszfmFile'" :src="apis.STATIC_PATH + img.vfNetPath + '?d='+new Date().getTime()" width="240">
+					<img v-for="img in jszPrintImgs" v-if="img.vfDamc == 'jszzmFile'" :src="apis.STATIC_PATH + img.vfNetPath + '?d='+new Date().getTime()" width="680">
+					<!--<img v-for="img in jszPrintImgs" v-if="img.vfDamc == 'jszfmFile'" :src="apis.STATIC_PATH + img.vfNetPath + '?d='+new Date().getTime()" width="340">-->
 				</li>
 				<li>
-					<img v-for="img in xszPrintImgs" v-if="img.vfDamc == 'xszzmFile'" :src="apis.STATIC_PATH + img.vfNetPath + '?d='+new Date().getTime()" width="240">
-					<img v-for="img in xszPrintImgs" v-if="img.vfDamc == 'xszfmFile'" :src="apis.STATIC_PATH + img.vfNetPath + '?d='+new Date().getTime()" width="240">
+					<img v-for="img in xszPrintImgs" v-if="img.vfDamc == 'xszzmFile'" :src="apis.STATIC_PATH + img.vfNetPath + '?d='+new Date().getTime()" width="680">
+					<!--<img v-for="img in xszPrintImgs" v-if="img.vfDamc == 'xszzmFile'" :src="apis.STATIC_PATH + img.vfNetPath + '?d='+new Date().getTime()" width="240">-->
 				</li>
 			</ul>
 		</div>
@@ -152,16 +152,12 @@
                             swal.close();
 
                             this.jszPrintImgs = res.result;
-                            Print({
-                                printable: 'printDiv',
-                                type: 'html',
-                                onLoadingStart:()=>{
-                                    this.$refs.printDiv.style = "display:block";
-                                },
-                                onLoadingEnd:()=>{
-                                    this.$refs.printDiv.style = "display:none";
-                                }
-                            });
+                            setTimeout(()=>{
+                                Print({
+                                    printable: 'printDiv',
+                                    type: 'html'
+                                });
+							}, 800);
                         }, (error)=>{
                             swal({
                                 text: '网络异常',

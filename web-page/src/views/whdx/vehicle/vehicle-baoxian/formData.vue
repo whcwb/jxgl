@@ -84,7 +84,7 @@
                     {label:'商业险保险金额',prop:'inBxje'},
                     {label:'商业险险种',prop:'inXz', span:24},
                     {label:'交强险保单号',prop:'inJqbdh'},
-                    {label:'交强险保险公司',prop:'inJqbxgs', type:'dict', dict:'bxgsxx'},
+                    {label:'交强险保险公司',prop:'inJqbxgs'},
                     {label:'交强险起保时间',prop:'inJqqbrq', type:'date', placement:"top-start"},
                     {label:'交强险保险金额',prop:'inJqbxje'},
                 ],
