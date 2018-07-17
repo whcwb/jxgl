@@ -47,6 +47,16 @@
 							</FormItem>
 						</Col>
 					</Row>
+					<Row>
+						<Col>
+							<FormItem label="商业险险种">
+								<Input type="text" v-model="formItem.inXz" placeholder="'请填写商业险险种"></Input>
+								<CheckboxGroup v-model="formItem.inXz" @on-change="xzChange">
+									<Checkbox v-for="(item,key) in dicts.bxsyxz.items" :label="item.val"></Checkbox>
+								</CheckboxGroup>
+							</FormItem>
+						</Col>
+					</Row>
 				</Form>
 			</div>
 			<div slot='footer'>
@@ -82,7 +92,6 @@
                     {label:'商业险保险公司',prop:'inBxgs'},
                     {label:'商业险起保时间',prop:'inQbrq', type:'date'},
                     {label:'商业险保险金额',prop:'inBxje'},
-                    {label:'商业险险种',prop:'inXz', span:24},
                     {label:'交强险保单号',prop:'inJqbdh'},
                     {label:'交强险保险公司',prop:'inJqbxgs'},
                     {label:'交强险起保时间',prop:'inJqqbrq', type:'date', placement:"top-start"},
@@ -97,6 +106,7 @@
                     bxsyxz:{code:'BXSYXZ',items:[]},
                     bxgsxx:{code:'BXGSXX',items:[]}
                 },
+				syxxz:[]
 			}
 		},
 		created(){
@@ -108,6 +118,9 @@
 
         },
 		methods: {
+            xzChange(o){
+                console.log(this.syxxz);
+            },
             //查看已存在的信息详情。修改时加载显示
             loadDetail(){
                 if (this.formItem.vHphm){

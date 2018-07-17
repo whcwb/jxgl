@@ -94,41 +94,7 @@
 											</div>
 										</Upload>
 									</Col>
-									<Col span="12">
-										<div class="demo-upload-list" v-for="item in uploadList">
-											<template v-if="item.status === 'finished'">
-												<img :src="item.url">
-												<div class="demo-upload-list-cover">
-													<Icon type="ios-eye-outline" size="20" @click.native="handleView(item.url)"></Icon>
-													<Icon type="ios-trash-outline" size="20" @click.native="handleRemove(item)"></Icon>
-												</div>
-											</template>
-											<template v-else>
-												<Progress v-if="item.showProgress" :percent="item.percentage" hide-info></Progress>
-											</template>
-										</div>
-										<Upload
-												ref="upload"
-												:headers="{'userid':curUser.userId, 'token':curUser.token}"
-												:show-upload-list="false"
-												:default-file-list="defaultList"
-												:on-success="handleSuccess"
-												:format="['jpg','jpeg','png']"
-												:max-size="8196"
-												:on-format-error="handleFormatError"
-												:on-exceeded-size="handleMaxSize"
-												multiple
-												type="drag"
-												:action="uploadUrl+'/'+formItem.inId+'/30/insuranceFile?targetPath=insuranceFile&batch=true'"
-												style="display: inline-block;width:58px;">
-											<div style="width:58px;height:58px;line-height: 58px;">
-												<Icon type="camera"></Icon>
-											</div>
-										</Upload>
-									</Col>
 								</Row>
-
-
 							</Card>
 						</Col>
 					</Row>

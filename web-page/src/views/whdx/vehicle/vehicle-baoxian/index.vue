@@ -38,11 +38,13 @@
 
 <script>
     import formData from './formData.vue'
+    import notifyList from './notifyList.vue'
+    import swal from 'sweetalert2'
 	//文件上传
     import uploadFile from './uploadFile.vue'
     export default {
         name: 'insuranceTable',
-        components: {formData, uploadFile},
+        components: {formData, uploadFile,notifyList},
         data() {
             return {
                 v:this,
@@ -79,7 +81,7 @@
                         width: 200,
                         render: (h, params) => {
                             return h('div', [
-                                // this.util.buildEditButton(this,h,params),
+                                this.util.buildEditButton(this,h,params),
 
                                 this.util.buildButton(this,h,'success','ios-email-outline','发送短信',()=>{
                                     swal({

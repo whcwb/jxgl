@@ -140,10 +140,10 @@
     //保养记录
     import byjlPage from './byjlPage.vue'
     //责任人信息
-    // import clxqZrrPage from './clxqZrrPage.vue'
+    import clxqZrrPage from './clxqZrrPage.vue'
 	export default {
 		name: 'usecarForm',
-		components:{clxqNsxxPage, clxqWfxxPage,notifyList,bxjlPage,wxjlPage,byjlPage},
+		components:{clxqNsxxPage, clxqWfxxPage,clxqZrrPage,notifyList,bxjlPage,wxjlPage,byjlPage},
 		data() {
 			return {
 			    v:this,

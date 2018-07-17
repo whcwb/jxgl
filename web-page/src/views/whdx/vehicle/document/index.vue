@@ -63,7 +63,7 @@
                         </div>
                     </Col>
                     <Col span="6" style="text-align: center;">
-                        <div style="text-align:center;margin:16px auto 0 auto;width: 180px;height: 180px">
+                        <div style="text-align:center;margin:16px auto 0 auto;width: 180px;height: 180px" @click="componentName = 'printChange'">
                             <Card  style="text-align:center;margin-top: 16px;width: 180px;height: 180px;">
                                 <div style="text-align:center">
                                     <img src="../../../../../static/excel.jpg" style="width:100%">
@@ -71,6 +71,52 @@
                             </Card>
                             <h3 style="margin-top: 10px;">车辆异动表下载</h3>
                         </div>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col span="24">
+
+                    </Col>
+                </Row>
+            </Card>
+        </Row>
+        <Row v-if="showFiles">
+            <Card>
+                <p slot="title">
+                    [{{form.vHphm}}]保险档案文件
+                </p>
+                <Row>
+                    <Col span="12">
+                        <div class="demo-upload-list" v-for="item in uploadList">
+                            <template v-if="item.status === 'finished'">
+                                <img :src="item.url">
+                                <div class="demo-upload-list-cover">
+                                    <Icon type="ios-eye-outline" size="20" @click.native="handleView(item.url)"></Icon>
+                                    <Icon type="ios-trash-outline" size="20" @click.native="handleRemove(item)"></Icon>
+                                </div>
+                            </template>
+                            <template v-else>
+                                <Progress :percent="item.percentage" hide-info></Progress>
+                            </template>
+                        </div>
+                        <Upload
+                                ref="upload"
+                                :headers="{'userid':curUser.userId, 'token':curUser.token}"
+                                :show-upload-list="false"
+                                :default-file-list="defaultList"
+                                :on-success="handleSuccess"
+                                :format="['jpg','jpeg','png']"
+                                :max-size="8196"
+                                :on-format-error="handleFormatError"
+                                :on-exceeded-size="handleMaxSize"
+                                multiple
+                                type="drag"
+                                :action="uploadUrl+'/'+form.inId+'/30/insuranceFile?targetPath=insuranceFile&batch=true'"
+                                style="display: inline-block;width:58px;">
+                            <div style="width:58px;height:58px;line-height: 58px;">
+                                <Icon type="camera"></Icon>
+                            </div>
+                        </Upload>
                     </Col>
                 </Row>
             </Card>
@@ -107,15 +153,20 @@
                 files: {
                     xszzmFile: {title: '行车证', uploadFile: null},
                     cqdjzFile: {title: '登记证书', uploadFile: null},
-                    bdFile: {title: '保单', uploadFile: null},
+                    // bdFile: {title: '保单', uploadFile: null},
                     cqdjFile: {title: '内部车辆产权登记', uploadFile: null},
                     claqxyFile: {title: '车辆安全协议', uploadFile: null},
                     gzbFile: {title: '告知表', uploadFile: null}
                 },
                 curUser: '',
                 car: '',
+                insurance:'',
                 visible:false,
-                imgUrl:'',
+                imgUrl: '',
+                uploadUrl:this.apis.FILE.UPLOAD,
+                defaultList: [],
+                imgName: '',
+                uploadList: []
             }
         },
         created() {
@@ -132,10 +183,20 @@
                 this.$http.get(this.apis.CAR.QUERY + '?vHphm=' + this.form.vHphm).then((res) => {
                     if (res.code === 200 && res.page && res.page.list && res.page.list.length > 0) {
                         this.car = res.page.list[0];
+                        this.getInsuranceData();
                         this.form.vId = this.car.vId;
                         this.getData();
                     } else {
                         this.$Message.error('未找到车辆');
+                    }
+                })
+            },
+            getInsuranceData(){
+                if (!this.car.inId)return;
+                this.$http.get(this.apis.insurance.GET_BY_ID+this.car.inId).then((res)=>{
+                    if (res.code == 200){
+                        this.insurance = res.result;
+                        console.log(this.insurance);
                     }
                 })
             },
@@ -190,6 +251,14 @@
                     // this.$data[locDataName] = file;
                 } else {
                     this.$Message.error("文件上传失败：" + res.message);
+                }
+            },
+            handleSuccess (res, file, fileList) {
+                if (res.code == 200){
+                    //拼接文件全路径url
+                    file.url = this.apis.STATIC_PATH + res.message;
+                }else{
+                    this.$Message.error("文件上传失败："+res.message);
                 }
             },
             //文件上传成功后，回调该方法，进行后续处理
