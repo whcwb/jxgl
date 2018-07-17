@@ -231,7 +231,7 @@
                         printable: url,
                         type: 'image',
                     });
-                }, 500);
+                }, 1000);
             },
             handleView(url) {
                 this.imgUrl = url;
