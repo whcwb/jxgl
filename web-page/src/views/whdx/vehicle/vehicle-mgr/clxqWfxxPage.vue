@@ -35,12 +35,9 @@
             }
         },
         created() {
-            this.util.initTable(this);
+            // this.util.initTable(this);
         },
         methods: {
-            pageChange(event) {
-                this.util.pageChange(this, event);
-            },
         }
     }
 </script>

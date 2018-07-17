@@ -99,24 +99,6 @@
                                 <Progress :percent="item.percentage" hide-info></Progress>
                             </template>
                         </div>
-                        <Upload
-                                ref="upload"
-                                :headers="{'userid':curUser.userId, 'token':curUser.token}"
-                                :show-upload-list="false"
-                                :default-file-list="defaultList"
-                                :on-success="handleSuccess"
-                                :format="['jpg','jpeg','png']"
-                                :max-size="8196"
-                                :on-format-error="handleFormatError"
-                                :on-exceeded-size="handleMaxSize"
-                                multiple
-                                type="drag"
-                                :action="uploadUrl+'/'+form.inId+'/30/insuranceFile?targetPath=insuranceFile&batch=true'"
-                                style="display: inline-block;width:58px;">
-                            <div style="width:58px;height:58px;line-height: 58px;">
-                                <Icon type="camera"></Icon>
-                            </div>
-                        </Upload>
                     </Col>
                 </Row>
             </Card>
@@ -193,11 +175,27 @@
             },
             getInsuranceData(){
                 if (!this.car.inId)return;
-                this.$http.get(this.apis.insurance.GET_BY_ID+this.car.inId).then((res)=>{
-                    if (res.code == 200){
-                        this.insurance = res.result;
-                        console.log(this.insurance);
+                this.$http.get(this.apis.FILE.FINDBYPID + '/' + this.car.inId).then((res) => {
+                    if (res.code === 200) {
+                        if (res.result){
+                            for (let r of res.result) {
+                                try{
+                                    this.uploadList.push({
+                                        name:r.vfDamc,
+                                        status:'finished',
+                                        url:this.apis.STATIC_PATH + r.vfNetPath + '?d='+new Date().getTime()
+                                    })
+                                }catch (e){
+
+                                }
+                            }
+                        }
+                        this.showFiles = true;
+                    } else {
+                        this.$Message.error('未找到文件');
+                        this.showFiles = false;
                     }
+                    console.log(this.uploadList);
                 })
             },
             getData() {

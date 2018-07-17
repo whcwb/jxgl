@@ -162,7 +162,7 @@
             //加载已经上传的档案
             loadPhoto(){
                 this.$http.get(this.apis.FILE.FINDBYPID + "/" + this.formItem.inId + "/insuranceFile").then((res) =>{
-                    if (res.code == 200){
+                    if (res.code == 200 && res.result){
                         for (let item of res.result){
                             this.uploadList.push({
                                 name:item.vfDamc,

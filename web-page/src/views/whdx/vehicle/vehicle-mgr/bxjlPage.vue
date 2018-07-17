@@ -13,7 +13,7 @@
 				<Col span="12">
 					<Card>
 						<p slot="title">
-							[{{formItem.vHphm}}]商业险
+							[{{hphm}}]商业险
 						</p>
 						<FormItem label='保单编号'>
 							<Input type="text" :value="formItem.inBdh" disabled></Input>
@@ -32,7 +32,7 @@
 				<Col span="12">
 					<Card>
 						<p slot="title">
-							[{{formItem.vHphm}}]交强险
+							[{{hphm}}]交强险
 						</p>
 						<FormItem label='保单编号'>
 							<Input type="text" :value="formItem.inJqbdh" disabled></Input>
@@ -53,7 +53,7 @@
 				<Col span="24">
 					<Card>
 						<p slot="title">
-							[{{formItem.vHphm}}]保险档案文件
+							[{{hphm}}]保险档案文件
 						</p>
 						<Row>
 							<Col span="12">
@@ -86,6 +86,12 @@
     import Cookies from 'js-cookie';
     export default {
         name: 'insuranceForm',
+        props:{
+            vehcile:{
+                type:Object,
+                default:{}
+            }
+        },
         data() {
             return {
                 v:this,
@@ -93,6 +99,7 @@
                 readonly: false,
                 formItem: {
                     inXz:[],
+                    vHphm:''
                 },
                 formInputs:[
                     {label:'商业险保单编号',prop:'inBdh', required:true},
@@ -118,10 +125,13 @@
                 imgUrl: '',
                 defaultList: [],
                 imgName: '',
-                uploadList: []
+                uploadList: [],
+				hphm:''
             }
         },
         created(){
+            this.formItem.vId = this.vehcile.vId;
+            this.hphm = this.vehcile.vHphm;
             this.getBxData();
         },
         mounted(){
@@ -141,7 +151,7 @@
             //加载已经上传的档案
             loadPhoto(){
                 this.$http.get(this.apis.FILE.FINDBYPID + "/" + this.formItem.inId + "/insuranceFile").then((res) =>{
-                    if (res.code == 200){
+                    if (res.code == 200 && res.result){
                         for (let item of res.result){
                             this.uploadList.push({
                                 name:item.vfDamc,
@@ -152,7 +162,7 @@
                     }
                 })
 
-                this.uploadList = this.$refs.upload.fileList;
+                // this.uploadList = this.$refs.upload.fileList;
             },
             handleView (url) {
                 this.imgUrl = url;

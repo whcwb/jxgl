@@ -156,7 +156,8 @@
                 dicts:{
                     hpzl:{code:'HPZL',items:[]},
                     syxz:{code:'SYXZ',items:[]}
-                }
+                },
+                ruleInline:{}
 			}
 		},
 		created(){

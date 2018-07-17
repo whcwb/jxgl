@@ -156,8 +156,8 @@ module.exports = {
         ADD:'/api/insurance/save',
         CHANGE:'/api/insurance/update',
         DELE:'/api/insurance/removeIds',
-        SEND_SMS:'/api/illegal/sendSms',
-        GET_BY_ID:'/api/illegal/',
+        SEND_SMS:'/api/insurance/sendSms',
+        GET_BY_ID:'/api/insurance/',
     },
     insuranceHistory:{
         QUERY:'api/insuranceHistory/pager',//保险管理
