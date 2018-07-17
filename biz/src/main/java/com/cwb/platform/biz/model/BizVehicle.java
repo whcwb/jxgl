@@ -13,6 +13,10 @@ public class BizVehicle implements Serializable {
     @Column(name = "v_id")
     private String vId;
 
+    @Column(name = "in_id")
+    private String inId;
+
+
     /**
      * 车牌号
      */
@@ -184,6 +188,14 @@ public class BizVehicle implements Serializable {
      */
     @Column(name = "v_azkj")
     private Integer vAzkj;
+
+    public String getInId() {
+        return inId;
+    }
+
+    public void setInId(String inId) {
+        this.inId = inId;
+    }
 
     public Integer getvAzkj() {
 		return vAzkj;
@@ -656,6 +668,7 @@ public class BizVehicle implements Serializable {
         vLxr("v_lxr"),
         vLxdh("v_lxdh"),
         vZrr("v_zrr"),
+        inId("in_id"),
         vZrrlxdh("v_zrrlxdh"),
         vBdhm("v_bdhm"),
         vAzkj("v_azkj"),

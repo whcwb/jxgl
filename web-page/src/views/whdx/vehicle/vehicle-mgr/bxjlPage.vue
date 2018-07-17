@@ -3,101 +3,225 @@
 </style>
 <template>
 	<div class="boxbackborder">
-		<Form :label-width="100">
-		<Row justify="space-between">
-			<Col span="5">
-				<FormItem label="商业险保单编号">
-					<Input v-model="form.inBdh" placeholder="请输入商业险保单编号" ></Input>
-				</FormItem>
-			</Col>
-			<Col span="4" offset="1">
-				<Button type="primary" @click="v.util.getPageData(v)">
-					<Icon type="search"></Icon>
-				</Button>
-			</Col>
-		</Row>
+		<Form
+				ref="form"
+				:model="formItem"
+				:rules="ruleInline"
+				:label-width="100"
+				:styles="{top: '20px'}">
+			<Row>
+				<Col span="12">
+					<Card>
+						<p slot="title">
+							[{{formItem.vHphm}}]商业险
+						</p>
+						<FormItem label='保单编号'>
+							<Input type="text" :value="formItem.inBdh" disabled></Input>
+						</FormItem>
+						<FormItem label='承保公司'>
+							<Input type="text" :value="formItem.inBxgs" disabled></Input>
+						</FormItem>
+						<FormItem label='保险有效期'>
+							<Input type="text" :value="formItem.inQbrq+'至'+formItem.inZbrq" disabled></Input>
+						</FormItem>
+						<FormItem label='保险金额'>
+							<Input type="text" :value="formItem.inBxje" disabled></Input>
+						</FormItem>
+					</Card>
+				</Col>
+				<Col span="12">
+					<Card>
+						<p slot="title">
+							[{{formItem.vHphm}}]交强险
+						</p>
+						<FormItem label='保单编号'>
+							<Input type="text" :value="formItem.inJqbdh" disabled></Input>
+						</FormItem>
+						<FormItem label='承保公司'>
+							<Input type="text" :value="formItem.inJqbxgs" disabled></Input>
+						</FormItem>
+						<FormItem label='保险有效期'>
+							<Input type="text" :value="formItem.inJqqbrq+'至'+formItem.inJqzbrq" disabled></Input>
+						</FormItem>
+						<FormItem label='保险金额'>
+							<Input type="text" :value="formItem.inJqbxje" disabled></Input>
+						</FormItem>
+					</Card>
+				</Col>
+			</Row>
+			<Row>
+				<Col span="24">
+					<Card>
+						<p slot="title">
+							[{{formItem.vHphm}}]保险档案文件
+						</p>
+						<Row>
+							<Col span="12">
+								<div class="demo-upload-list" v-for="item in uploadList">
+									<template v-if="item.status === 'finished'">
+										<img :src="item.url">
+										<div class="demo-upload-list-cover">
+											<Icon type="ios-eye-outline" size="20" @click.native="handleView(item.url)"></Icon>
+											<Icon type="ios-trash-outline" size="20" @click.native="handleRemove(item)"></Icon>
+										</div>
+									</template>
+									<template v-else>
+										<Progress v-if="item.showProgress" :percent="item.percentage" hide-info></Progress>
+									</template>
+								</div>
+							</Col>
+						</Row>
+					</Card>
+				</Col>
+			</Row>
 		</Form>
-		<Row style="position: relative;">
-			<Table :height="tableHeight" :columns="tableColumns" :data="pageData"></Table>
-		</Row>
-		<Row class="margin-top-10 pageSty">
-			<Page :total=form.total :current=form.pageNum :page-size=form.pageSize show-total show-elevator
-				  @on-change='pageChange'></Page>
-		</Row>
-		<component :is="componentName"></component>
+
+		<Modal title="图片预览" v-model="visible">
+			<img :src="imgUrl" v-if="visible" style="width: 100%">
+			<div slot="footer"></div>
+		</Modal>
 	</div>
 </template>
-
 <script>
+    import Cookies from 'js-cookie';
     export default {
-        name: 'insuranceTable',
-        props:{
-            vehcile:{
-                type:Object,
-                default:{}
-            }
-        },
+        name: 'insuranceForm',
         data() {
             return {
                 v:this,
-                SpinShow: true,
-                apiRoot:this.apis.insurance,
-                tableHeight: 220,
-                componentName: '',
-                choosedItem: null,
-                tableColumns: [
-                    {title: "序号", width: 60, type: 'index'},
-                    {title: '车牌号码',key:'vHphm'},
-                    {title: '商业险保单号', width: 120,key:'inBdh'},
-                    {title: '商业险保险公司',key:'inBxgs'},
-                    {title: '商业险起保时间',key:'inQbrq'},
-                    {title: '商业险终保时间',key:'inZbrq'},
-                    {title: '商业险保险金额',key:'inBxje'},
-                    {title: '商业险险种',key:'inXz',render:(h, params)=>{
-                        let val = $.map(this.dicts.bxsyxz.items, item => {
-                            if(params.row.inXz.indexOf(item.key) != -1) {
-                                return item.val + ',';
-                            }
-                        });
-
-                        return val;
-                    }},
-                    {title: '交强险保单号', width: 120,key:'inJqbdh'},
-                    {title: '交强险保险公司',key:'inJqbxgs'},
-                    {title: '交强险起保时间',key:'inJqqbrq'},
-                    {title: '交强险终保时间',key:'inJqzbrq'},
-                    {title: '交强险保险金额',key:'inJqbxje'},
+                showModal: true,
+                readonly: false,
+                formItem: {
+                    inXz:[],
+                },
+                formInputs:[
+                    {label:'商业险保单编号',prop:'inBdh', required:true},
+                    {label:'商业险保险公司',prop:'inBxgs', type:'dict', dict:'bxgsxx'},
+                    {label:'商业险起保时间',prop:'inQbrq', type:'date'},
+                    {label:'交强险保单号',prop:'inJqbdh'},
+                    {label:'交强险保险公司',prop:'inJqbxgs', type:'dict', dict:'bxgsxx'},
+                    {label:'交强险起保时间',prop:'inJqqbrq', type:'date', placement:"top-start"},
                 ],
-                pageData: [],
-                form: {
-                    total: 0,
-                    pageNum: 1,
-                    pageSize: 8,
+                ruleInline:{
+                    vHphm: [
+                        { required: true, message: '请填写车牌号', trigger: 'blur' },
+                    ],
                 },
                 dicts:{
                     bxsyxz:{code:'BXSYXZ',items:[]},
-				}
+                    bxgsxx:{code:'BXGSXX',items:[]}
+                },
+                //图片上传属性
+                curUser:{},
+                visible:false,
+                uploadUrl:this.apis.FILE.UPLOAD,
+                imgUrl: '',
+                defaultList: [],
+                imgName: '',
+                uploadList: []
             }
         },
-        created() {
-            this.form.vId = this.vehcile.vId;
-            this.util.initTable(this);
-            this.util.initDict(this);
+        created(){
+            this.getBxData();
+        },
+        mounted(){
+            this.curUser = JSON.parse(Cookies.get('result')).accessToken;
+            this.loadPhoto();
         },
         methods: {
-            pageChange(event) {
-                this.util.pageChange(this, event);
-            },
-			//档案上传
-            uploadFilePage(param){
-				this.choosedItem = param.row;
-				this.componentName = 'uploadFile';
+            getBxData(){
+                this.$http.get(this.apis.insurance.QUERY,{params:{vId:this.formItem.vId}}).then((res)=>{
+                    if (res.code == 200 && res.page.list){
+                        this.formItem = res.page.list[0];
+                        this.util.initFormModal(this);
+                        this.util.initDict(this);
+					}
+				})
 			},
-            sendSms(id){
-                this.$http.post(this.apis.insurance.SEND_SMS,{inId:id}).then((res)=>{
-                    this.util.showResMessage(this,res);
+            //加载已经上传的档案
+            loadPhoto(){
+                this.$http.get(this.apis.FILE.FINDBYPID + "/" + this.formItem.inId + "/insuranceFile").then((res) =>{
+                    if (res.code == 200){
+                        for (let item of res.result){
+                            this.uploadList.push({
+                                name:item.vfDamc,
+                                status:'finished',
+                                url:this.apis.STATIC_PATH + item.vfNetPath
+                            });
+                        }
+                    }
                 })
+
+                this.uploadList = this.$refs.upload.fileList;
+            },
+            handleView (url) {
+                this.imgUrl = url;
+                this.visible = true;
+            },
+            //文件上传成功后，回调该方法，进行后续处理
+            handleSuccess (res, file, fileList) {
+                if (res.code == 200){
+                    //拼接文件全路径url
+                    file.url = this.apis.STATIC_PATH + res.message;
+                }else{
+                    this.$Message.error("文件上传失败："+res.message);
+                }
+            },
+            handleRemove (file) {
+                const fileList = this.$refs.upload.fileList;
+                this.$refs.upload.fileList.splice(fileList.indexOf(file), 1);
+            },
+            handleFormatError (file) {
+                this.$Notice.warning({
+                    title: '文件格式错误',
+                    desc: '图片仅支持 jpg、jpeg、png'
+                });
+            },
+            handleMaxSize (file) {
+                this.$Notice.warning({
+                    title: '文件太大了',
+                    desc: '文件不能超过18M'
+                });
             }
         }
     }
 </script>
+
+<style scoped>
+	.demo-upload-list{
+		display: inline-block;
+		width: 120px;
+		height: 100px;
+		text-align: center;
+		line-height: 100px;
+		border: 1px solid transparent;
+		border-radius: 4px;
+		overflow: hidden;
+		background: #fff;
+		position: relative;
+		box-shadow: 0 1px 1px rgba(0,0,0,.2);
+		margin-right: 4px;
+	}
+	.demo-upload-list img{
+		width: 100%;
+		height: 100%;
+	}
+	.demo-upload-list-cover{
+		display: none;
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		background: rgba(0,0,0,.6);
+	}
+	.demo-upload-list:hover .demo-upload-list-cover{
+		display: block;
+	}
+	.demo-upload-list-cover i{
+		color: #fff;
+		font-size: 20px;
+		cursor: pointer;
+		margin: 0 8px;
+	}
+</style>

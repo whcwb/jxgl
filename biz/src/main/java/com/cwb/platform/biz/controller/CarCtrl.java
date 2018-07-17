@@ -3,6 +3,8 @@ package com.cwb.platform.biz.controller;
 
 import java.util.List;
 
+import com.cwb.platform.biz.model.BizVehicleChange;
+import com.cwb.platform.biz.service.VehicleChangeService;
 import org.apache.commons.lang.StringUtils;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,8 +43,8 @@ public class CarCtrl extends BaseController<BizVehicle,String> {
     private VehicleService vehicleService;
     @Autowired
     private VehLogService vehLogService;
-//    @Autowired
-//    private VehicleChangeService vehChangeService;
+    @Autowired
+    private VehicleChangeService vehChangeService;
 
     @Override
     protected BaseService<BizVehicle, String> getBaseService() {
@@ -137,10 +139,10 @@ public class CarCtrl extends BaseController<BizVehicle,String> {
 		return this.vehLogService.pager(pager);
 	}
 
-//    @PostMapping(value="/zrrChangePager")
-//	public ApiResponse<List<BizVehicleChange>> zrrChangePager(BizVehicleChange entity, Page<BizVehicleChange> pager){
-//		return this.vehChangeService.pager(pager);
-//	}
+    @PostMapping(value="/zrrChangePager")
+	public ApiResponse<List<BizVehicleChange>> zrrChangePager(BizVehicleChange entity, Page<BizVehicleChange> pager){
+		return this.vehChangeService.pager(pager);
+	}
 
     /**
      * 车辆年审更新

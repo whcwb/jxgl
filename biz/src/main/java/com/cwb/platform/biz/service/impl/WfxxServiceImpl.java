@@ -54,15 +54,17 @@ public class WfxxServiceImpl extends BaseServiceImpl<BizWfxx,String> implements 
 		for (BizWfxx wfxx : pageInfo.getList()) {
 			vIds.add(wfxx.getvId());
 		}
-		List<BizVehicle> carList = vehicleService.findIn(BizVehicle.InnerColumn.vId,vIds);
-		Map<String,BizVehicle> carMap = carList.stream().collect(Collectors.toMap(BizVehicle::getvId,p->p));
-		for (BizWfxx wfxx : pageInfo.getList()) {
-			String vId = wfxx.getvId();
-			if (StringUtils.isEmpty(vId))continue;
-			BizVehicle car = carMap.get(vId);
-			if (car == null)continue;
-			wfxx.setFzr(car.getvZrr());
-			wfxx.setFzrlxfs(car.getvZrrlxdh());
+		if (vIds.size() != 0){
+			List<BizVehicle> carList = vehicleService.findIn(BizVehicle.InnerColumn.vId,vIds);
+			Map<String,BizVehicle> carMap = carList.stream().collect(Collectors.toMap(BizVehicle::getvId,p->p));
+			for (BizWfxx wfxx : pageInfo.getList()) {
+				String vId = wfxx.getvId();
+				if (StringUtils.isEmpty(vId))continue;
+				BizVehicle car = carMap.get(vId);
+				if (car == null)continue;
+				wfxx.setFzr(car.getvZrr());
+				wfxx.setFzrlxfs(car.getvZrrlxdh());
+			}
 		}
 	}
 

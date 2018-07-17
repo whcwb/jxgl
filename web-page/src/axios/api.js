@@ -1,20 +1,18 @@
 //网络请求地址前缀 "http://127.0.0.1";//
-let BASE_URL = 'http://127.0.0.1';
-//let BASE_URL = 'http://119.97.172.181';
+let BASE_URL = 'http://119.97.172.181:8080';
+//let BASE_URL = 'http://119.97.172.181'';
 module.exports = {
     //url: BASE_URL + ':8180',
     url: BASE_URL,
     //图片上传地址
-    UPLOAD: BASE_URL + '/upload',
+    UPLOAD: 'http://119.97.172.181:8080' + '/upload',
     //STATIC_PATH: BASE_URL + '/image/',
-    STATIC_PATH: BASE_URL + ':8765/server/',
+    STATIC_PATH: 'http://119.97.172.181' + ':9001/',
     VIDEO_PATH:'',
     //文件控制
     FILE:{
-        FINDBYPID:'/api/files/findByPId',//根据主ID查询文件信息
-        // todo UPLOAD
-        // UPLOAD:BASE_URL + ':8180/api/files/upload',//根据主ID查询文件信息
-        UPLOAD:BASE_URL + '/api/files/upload',//根据主ID查询文件信息
+        FINDBYPID:BASE_URL+'/api/files/findByPId',//根据主ID查询文件信息
+        UPLOAD:BASE_URL+ '/api/files/upload',//根据主ID查询文件信息
     },
     USERROOT:{
         GET_MENU_LIST:'/api/gn/getUserFunctions',
@@ -159,6 +157,7 @@ module.exports = {
         CHANGE:'/api/insurance/update',
         DELE:'/api/insurance/removeIds',
         SEND_SMS:'/api/illegal/sendSms',
+        GET_BY_ID:'/api/illegal/',
     },
     insuranceHistory:{
         QUERY:'api/insuranceHistory/pager',//保险管理

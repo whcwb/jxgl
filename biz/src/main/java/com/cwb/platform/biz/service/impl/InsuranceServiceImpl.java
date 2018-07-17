@@ -184,18 +184,24 @@ public class InsuranceServiceImpl extends BaseServiceImpl<BizInsurance,String> i
         SysYh user = getCurrentUser();
     	entity = this.validEntity(entity);
 
-        // 根据车辆id查找，如果有记录，则更新，如果没有则新增
+    	BizVehicle car = vehicleService.findById(entity.getvId());
+    	RuntimeCheck.ifNull(car,"车辆不存在");
+
+    	// 删除当前记录，插入新的记录，因为保单是和保险id关联
     	List<BizInsurance> insuranceList = findEq(BizInsurance.InnerColumn.vId,entity.getvId());
     	if (insuranceList.size() > 0){
     	    BizInsurance insurance = insuranceList.get(0);
-    	    entity.setInId(insurance.getInId());
-    	    update(entity);
-        }else{
-            entity.setInId(genId());
-            entity.setCreateTime(DateUtils.getNowTime());
-            entity.setCreateUser(getOperateUser());
-            save(entity);
+    	    remove(insurance.getInId());
         }
+
+        entity.setInId(genId());
+        entity.setCreateTime(DateUtils.getNowTime());
+        entity.setCreateUser(getOperateUser());
+        save(entity);
+
+        // 更新车辆表，记录最新保单id
+        car.setInId(entity.getInId());
+        vehicleService.update(car);
 
         // 记录历史表
         BizInsuranceHistory insuranceHistory = new BizInsuranceHistory();
