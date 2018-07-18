@@ -11,6 +11,11 @@
 					</FormItem>
 				</Col>
 				<Col span="5">
+					<FormItem label="所有人">
+						<Input v-model="form.vSylLike" placeholder="请输入所有人" ></Input>
+					</FormItem>
+				</Col>
+				<Col span="5">
 					<FormItem label="年审日期">
 						<DatePicker :value="form.vNsrqLike" type="month" placement="top-start" placeholder="请选择日期" @on-change="(date)=>{form.vNsrqLike = date}"></DatePicker>
 					</FormItem>
@@ -46,12 +51,13 @@
 
 <script>
     import formData from './formData.vue'
+    import notifyList from './notifyList'
 	import searchItems from '../../components/searchItems'
     import swal from 'sweetalert2'
     import Print from 'print-js'
     export default {
         name: 'usecar',
-        components: {formData,searchItems},
+        components: {formData,searchItems,notifyList},
         data() {
             return {
                 v:this,
@@ -67,6 +73,7 @@
                 tableColumns: [
                     {title: "序号", width: 70, type: 'index'},
                     {title:'车牌号码',key:'vHphm',searchKey:'vHphmLike'},
+                    {title:'所有人',key:'vSyl',searchKey:'vSylLike'},
                     {title: '初登日期',key:'vCcdjrq'},
                     {title: '年审日期',key:'vNsrq',render:(h, params)=>{
                             let today = new Date().format("yyyy-MM-dd");
@@ -116,6 +123,10 @@
                         width: 120,
                         render: (h, params) => {
                             let buttons = [
+                                this.util.buildButton(this,h,'success','eye','联系记录',()=>{
+                                    this.choosedItem = params.row;
+                                    this.componentName = 'notifyList';
+                                }),
                                 this.util.buildEditButton(this,h,params),
                                 this.util.buildButton(this, h, 'info', 'printer', '年审打印', ()=>{this.showNsdyPage(params)}),
                                 this.util.buildButton(this, h, 'info', 'email', '年审通知', ()=>{this.showDxtzPage(params)}),
@@ -126,6 +137,7 @@
                 ],
                 pageData: [],
                 form: {
+                    vSylLike:'',
                     total: 0,
                     pageNum: 1,
                     pageSize: 8,

@@ -49,7 +49,7 @@ public class UsecarServiceImpl extends BaseServiceImpl<BizUsecar,String> impleme
     protected Class<?> getEntityCls(){
         return BizUsecar.class;
     }
-    
+
     @Override
     public ApiResponse<List<BizUsecar>> pager(Page<BizUsecar> pager) {
     	ApiResponse<List<BizUsecar>> result = new ApiResponse<>();
@@ -61,7 +61,7 @@ public class UsecarServiceImpl extends BaseServiceImpl<BizUsecar,String> impleme
         result.setPage(resultPage);
         return result;
     }
-    
+
     public BizUsecar validEntity(BizUsecar entity){
     	RuntimeCheck.ifBlank(entity.getvId(),"请选择车辆");
         BizVehicle car = vehicleMapper.selectByPrimaryKey(entity.getvId());
@@ -70,10 +70,10 @@ public class UsecarServiceImpl extends BaseServiceImpl<BizUsecar,String> impleme
         RuntimeCheck.ifBlank(entity.getUcJyrid(),"请选择借用人");
         SysYh user = ptyhMapper.selectByPrimaryKey(entity.getUcJyrid());
         RuntimeCheck.ifNull(user,"借用人不存在");
-        
+
         entity.setUcJyr(user.getXm());
         entity.setvHphm(car.getvHphm());
-        
+
         return entity;
     }
 
@@ -86,21 +86,21 @@ public class UsecarServiceImpl extends BaseServiceImpl<BizUsecar,String> impleme
     	condition.and().andIsNull(BizUsecar.InnerColumn.unHclcs.name());
     	List<BizUsecar> existList = this.findByConditionParam(condition);
     	RuntimeCheck.ifFalse(CollectionUtils.isEmpty(existList), "当前车辆有未还车记录，不允许再次申请");
-        
+
         entity.setUcId(genId());
         entity.setCreateTime(DateUtils.getNowTime());
         entity.setCreateUser(getOperateUser());
         save(entity);
         return ApiResponse.saveSuccess();
     }
-    
+
     @Override
     public ApiResponse<String> validAndUpdate(BizUsecar entity) {
-    	RuntimeCheck.ifTrue((entity.getUnHclcs() == null || entity.getUnHclcs().intValue() == 0), "还车里程数不能为空");
+//    	RuntimeCheck.ifTrue((entity.getUnHclcs() == null || entity.getUnHclcs().intValue() == 0), "还车里程数不能为空");
     	BizUsecar exist = this.findById(entity.getUcId());
         RuntimeCheck.ifNull(exist,"出车单信息不存在");
     	entity = validEntity(entity);
-        
+
         entity.setUpdateTime(DateTime.now().toString("yyyy-MM-dd HH:mm:ss"));
         entity.setUpdateUser(getOperateUser());
         update(entity);

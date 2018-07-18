@@ -52,10 +52,11 @@
                         	return h('div',{style:{color:'red'}},p.row.ucYjhcsj)
 						}
 					},
-                    {title:'借用人',key:'ucJyr'},
+                    {title:'驾驶员',key:'ucJyr'},
                     {title:'出车前里程数',key:'ucCclcs'},
                     {title:'还车里程数',key:'unHclcs'},
                     {title:'出车事由',key:'ucCcsy'},
+                    {title:'备注',key:'ucBz'},
                     {title:'状态',render:(h,p)=>{
                         if (p.row.unHclcs != ''){
                             return h('Tag', {
@@ -88,6 +89,7 @@
                         width: 120,
                         render: (h, params) => {
                             let buttons = [];
+                            buttons.push(this.util.buildEditButton(this,h,params));
                             if (params.row.unHclcs === ''){
                                 buttons.push(this.util.buildButton(this, h, 'info', 'ios-download-outline', '还车', ()=> {
                                     this.choosedItem = params.row;

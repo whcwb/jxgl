@@ -53,11 +53,11 @@
                 formInputs:[
                     {label:'车牌',prop:'vId', span:24, type:'foreignKey', disabled:true},
                     {label:'出车时间',prop:'ucCcsj',type:'date'},
-                    {label:'预计还车时间',prop:'ucYjhcsj',type:'date'},
+                    {label:'还车时间',prop:'ucYjhcsj',type:'date'},
                     {label:'出车事由',prop:'ucCcsy', span:24},
                     {label:'借用人',prop:'ucJyrid',type:'foreignKey', disabled:true},
-                    {label:'出车前里程数',prop:'ucCclcs'},
-                    {label:'还车里程数',prop:'unHclcs'},
+                    {label:'还车里程数',prop:'unHclcs',required:true},
+                    {label:'备注',prop:'ucBz'},
                 ],
                 foreignList:{
                     vId:{url:this.apis.CAR.QUERY,key:'vId',val:'vHphm',items:[]},

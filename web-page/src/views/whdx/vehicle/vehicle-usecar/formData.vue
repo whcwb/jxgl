@@ -45,9 +45,9 @@
                 formInputs:[
                     {label:'车辆',prop:'vId',type:'foreignKey', span:24, required:true},
                     {label:'出车时间',prop:'ucCcsj',type:'date',required:true},
-                    {label:'还车时间',prop:'ucYjhcsj',type:'date',required:true},
+                    {label:'预计还车时间',prop:'ucYjhcsj',type:'date',required:true},
                     {label:'出车事由',prop:'ucCcsy',required:true, span:24},
-                    {label:'借用人',prop:'ucJyrid',type:'foreignKey',required:true},
+                    {label:'驾驶员',prop:'ucJyrid',type:'foreignKey',required:true},
                     {label:'出车前里程数',prop:'ucCclcs'},
                 ],
                 foreignList:{
@@ -55,7 +55,7 @@
                     ucJyrid:{url:this.apis.USER.QUERY,key:'yhid',val:'xm',items:[]},
                 },
                 ruleInline:{
-				}
+				},
 			}
 		},
 		computed:{
@@ -69,6 +69,9 @@
 			}
 		},
 		created(){
+		    if (this.$parent.choosedItem){
+		        this.foreignList.vId.url = this.apis.CAR.QUERY;
+			}
 		    this.util.initFormModal(this);
 		},
 		methods: {
