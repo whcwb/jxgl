@@ -96,6 +96,12 @@ public class BizUsecar implements Serializable {
     @Column(name = "uc_bz")
     private String ucBz;
 
+    /**
+     * 状态
+     */
+    @Column(name = "uc_zt")
+    private String ucZt;
+
     private static final long serialVersionUID = 1L;
 
     /**
@@ -368,6 +374,14 @@ public class BizUsecar implements Serializable {
         this.ucBz = ucBz;
     }
 
+    public String getUcZt() {
+        return ucZt;
+    }
+
+    public void setUcZt(String ucZt) {
+        this.ucZt = ucZt;
+    }
+
     public enum InnerColumn {
         ucId("uc_id"),
         vId("v_id"),
@@ -383,6 +397,7 @@ public class BizUsecar implements Serializable {
         createTime("create_time"),
         updateUser("update_user"),
         updateTime("update_time"),
+        ucZt("uc_zt"),
         ucBz("uc_bz");
 
         private final String column;
