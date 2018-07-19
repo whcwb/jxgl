@@ -9,11 +9,11 @@
             <Row style="padding-bottom: 15px">
                 <Col span="12">
                     <label>入库单</label>
-                    <img v-if="showRkd" :src="rkdPath" style="width: 100%"></img>
+                    <img v-if="showRkd" :src="'/image/'+rkdPath" style="width: 100%"></img>
                 </Col>
                 <Col span="12">
                     <label>出库单</label>
-                    <img v-if="showCkd" :src="ckdPath" style="width: 100%"></img>
+                    <img v-if="showCkd" :src="'/image/'+ckdPath" style="width: 100%"></img>
                 </Col>
             </Row>
             <div slot='footer'>
@@ -44,11 +44,12 @@
         },
         created() {
             this.item = this.$parent.choosedRow;
+            console.log(this.item);
             this.getData();
         },
         methods: {
             getData(){
-                this.$http.get(this.apis.FILE.FINDBYPID+'/'+this.item.vId).then((res)=>{
+                this.$http.get(this.apis.FILE.FINDBYPID+'/'+this.item.clId).then((res)=>{
                     if (res.code === 200 && res.result){
                         for (let r of res.result){
                             if (r.vfDamc === 'rkdFile'){
