@@ -4,8 +4,7 @@
 <template>
 	<div class="boxbackborder">
 		<Row style="padding-bottom: 16px;">
-			<search-items :parent="v"></search-items>
-			<Button type="primary" @click="v.util.getPageData(v)"><Icon type="search"></Icon></Button>
+			<search-items :parent="v" :showSearchButton="true"></search-items>
 		</Row>
 		<Row style="position: relative;">
 			<Table :height="tableHeight" :columns="tableColumns" :data="pageData"></Table>
@@ -41,6 +40,7 @@
                     {title: "序号", width: 70, type: 'index'},
                     {title:'车牌号码',key:'vHphm',searchKey:'vHphmLike'},
                     {title:'车辆类型',key:'vHpzl',searchType:'dict',dict:'HPZL'},
+                    {title:'责任人',key:'vZrr',searchKey:'vZrrLike'},
                     {title:'使用人',key:'vLxr',searchKey:'vLxrLike'},
                     {title:'使用人联系电话',key:'vLxdh',searchKey:'vLxdhLike'},
                     {title:'出入库状态',key:'vRkzt',dict:'rkzt',searchType:'dict'},
@@ -58,6 +58,10 @@
                         }
                     }
                 ],
+                dicts:{
+                    rkzt:{code:'rkzt',items:[]},
+                    HPZL:{code:'HPZL',items:[]}
+                },
                 pageData: [],
                 form: {
                     total: 0,
