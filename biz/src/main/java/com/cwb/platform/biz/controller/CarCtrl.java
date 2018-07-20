@@ -52,8 +52,8 @@ public class CarCtrl extends BaseController<BizVehicle,String> {
     }
 
     @RequestMapping("uploadBill")
-	public ApiResponse<String> uploadBill(String clId,String filePath,String type){
-    	return vehicleService.uploadBill(clId,filePath,type);
+	public ApiResponse<String> uploadBill(String clId,String filePath,String type,String otherFiles){
+    	return vehicleService.uploadBill(clId,filePath,type, otherFiles);
 	}
 
     /**

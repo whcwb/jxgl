@@ -24,7 +24,7 @@ public class TransitionLogServiceImpl extends BaseServiceImpl<BizTransitionLog, 
 	}
 
 	@Override
-	public ApiResponse<String> log(BizVehicle vehicle, String filePath, String type) {
+	public ApiResponse<String> log(BizVehicle vehicle, String filePath, String type,String otherFiles) {
 		SysYh user = getCurrentUser();
 		BizTransitionLog log = new BizTransitionLog();
 		log.setClId(vehicle.getvId());
@@ -33,6 +33,7 @@ public class TransitionLogServiceImpl extends BaseServiceImpl<BizTransitionLog, 
 		log.setCreateUserId(user.getYhid());
 		log.setCreateUserName(user.getXm());
 		log.setFilePath(filePath);
+		log.setOtherFiles(otherFiles);
 		log.setType(type);
 		log.setId(genId());
 		save(log);

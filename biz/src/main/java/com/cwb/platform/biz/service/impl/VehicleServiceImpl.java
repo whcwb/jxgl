@@ -534,7 +534,7 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
 	}
 
     @Override
-    public ApiResponse<String> uploadBill(String clId, String filePath, String type) {
+    public ApiResponse<String> uploadBill(String clId, String filePath, String type,String otherFiles) {
 	    RuntimeCheck.ifBlank(clId,"请选择车辆");
 	    RuntimeCheck.ifBlank(filePath,"请上传文件");
 	    RuntimeCheck.ifBlank(type,"请选择单据类型");
@@ -546,7 +546,7 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
 	    update(car);
 
 	    // 记录出入库流水
-        transitionLogService.log(car,filePath,type);
+        transitionLogService.log(car,filePath,type, otherFiles);
         return ApiResponse.success();
     }
 

@@ -10,5 +10,5 @@ import com.cwb.platform.util.bean.ApiResponse;
  * create at 2018/7/6
  */
 public interface TransitionLogService extends BaseService<BizTransitionLog,String> {
-    ApiResponse<String> log(BizVehicle vehicle,String filePath,String type);
+    ApiResponse<String> log(BizVehicle vehicle,String filePath,String type,String otherFiles);
 }

@@ -32,7 +32,7 @@ public interface VehicleService extends BaseService<BizVehicle,String>{
      */
     public ApiResponse<List<Map<String, String>>> reportZrr();
 
-    ApiResponse<String> uploadBill(String clId, String filePath, String in);
+    ApiResponse<String> uploadBill(String clId, String filePath, String in,String otherFiles);
 
     /**
      * 产权变更

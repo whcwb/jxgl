@@ -50,6 +50,11 @@ public class BizTransitionLog implements Serializable {
      */
     @Column(name = "file_path")
     private String filePath;
+    /**
+     * 文件路径
+     */
+    @Column(name = "other_files")
+    private String otherFiles;
 
     private static final long serialVersionUID = 1L;
 
@@ -188,6 +193,14 @@ public class BizTransitionLog implements Serializable {
         return filePath;
     }
 
+    public String getOtherFiles() {
+        return otherFiles;
+    }
+
+    public void setOtherFiles(String otherFiles) {
+        this.otherFiles = otherFiles;
+    }
+
     /**
      * 设置文件路径
      *
@@ -205,6 +218,7 @@ public class BizTransitionLog implements Serializable {
         createUserId("create_user_id"),
         createUserName("create_user_name"),
         type("type"),
+        otherFiles("other_files"),
         filePath("file_path");
 
         private final String column;
