@@ -9,15 +9,22 @@
             <Row style="padding-bottom: 15px">
                 <Col span="12">
                     <label>入库单</label>
-                    <Row style="height:400px;">
-                        <img v-if="showRkd" :src="'/image/'+rkdPath" style="width: 100%"></img>
+                    <Row>
+                        <div v-if="showRkd" class="demo-upload-list" style="height:400px;">
+                            <template >
+                                <img :src="'/image/'+rkdPath" style="height: 100%;width:100%"></img>
+                                <div class="demo-upload-list-cover">
+                                    <Icon type="ios-eye-outline" size="20" @click.native="handleView('/image/'+rkdPath)"></Icon>
+                                </div>
+                            </template>
+                        </div>
                     </Row>
                     <Row>
                         <div v-if="showRkdOtherFile" class="demo-upload-list" v-for="item in rkdFilesList">
                             <template >
-                                <img :src="apis.STATIC_PATH + item.url">
+                                <img :src="'/image/'+ item.url">
                                 <div class="demo-upload-list-cover">
-                                    <Icon type="ios-eye-outline" size="20" @click.native="handleView(apis.STATIC_PATH + item.url)"></Icon>
+                                    <Icon type="ios-eye-outline" size="20" @click.native="handleView('/image/'+ item.url)"></Icon>
                                 </div>
                             </template>
                         </div>
@@ -25,15 +32,22 @@
                 </Col>
                 <Col span="12">
                     <label>出库单</label>
-                    <Row style="height:400px;">
-                        <img v-if="showCkd" :src="'/image/'+ckdPath" style="height: 100%;width:100%"></img>
+                    <Row>
+                        <div v-if="showCkd" class="demo-upload-list" style="height:400px;">
+                            <template >
+                                <img :src="'/image/'+rkdPath" style="height: 100%;width:100%"></img>
+                                <div class="demo-upload-list-cover">
+                                    <Icon type="ios-eye-outline" size="20" @click.native="handleView('/image/'+ckdPath)"></Icon>
+                                </div>
+                            </template>
+                        </div>
                     </Row>
                     <Row>
                         <div v-if="showCkdOtherFile" class="demo-upload-list" v-for="item in ckdFilesList">
                             <template >
-                                <img :src="apis.STATIC_PATH + item.url">
+                                <img :src="'/image/'+ item.url">
                                 <div class="demo-upload-list-cover">
-                                    <Icon type="ios-eye-outline" size="20" @click.native="handleView(apis.STATIC_PATH + item.url)"></Icon>
+                                    <Icon type="ios-eye-outline" size="20" @click.native="handleView('/image/'+ item.url)"></Icon>
                                 </div>
                             </template>
                         </div>
