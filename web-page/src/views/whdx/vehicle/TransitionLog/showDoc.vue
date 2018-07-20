@@ -9,7 +9,7 @@
             <Row style="padding-bottom: 15px">
                 <Col span="12">
                     <label>入库单</label>
-                    <Row>
+                    <Row style="height:400px;">
                         <img v-if="showRkd" :src="'/image/'+rkdPath" style="width: 100%"></img>
                     </Row>
                     <Row>
@@ -25,8 +25,8 @@
                 </Col>
                 <Col span="12">
                     <label>出库单</label>
-                    <Row>
-                        <img v-if="showCkd" :src="'/image/'+ckdPath" style="width: 100%"></img>
+                    <Row style="height:400px;">
+                        <img v-if="showCkd" :src="'/image/'+ckdPath" style="height: 100%;width:100%"></img>
                     </Row>
                     <Row>
                         <div v-if="showCkdOtherFile" class="demo-upload-list" v-for="item in ckdFilesList">

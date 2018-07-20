@@ -19,7 +19,7 @@
 						<Col v-for="i in formInputs" :span="i.span ? i.span : 12">
 							<FormItem :prop='i.prop' :label='i.label'>
 								<Input v-if="!i.type || i.type ==='text'" type="text" v-model="formItem[i.prop]" :placeholder="'请填写'+i.label+'...'"></Input>
-								<DatePicker v-else-if="i.type == 'date'"  :value="formItem[i.prop]" type="date" disabled placeholder="请选择日期" @on-change="(date)=>{formItem[i.prop] = date}"></DatePicker>
+								<DatePicker v-else-if="i.type == 'date'"  :value="formItem[i.prop]" type="date" placeholder="请选择日期" @on-change="(date)=>{formItem[i.prop] = date}"></DatePicker>
 								<Select v-else-if="i.type === 'dict'" filterable clearable :disabled="i.disabled"  v-model="formItem[i.prop]" :placeholder="'请选择'+i.label+'...'">
 									<Option v-for = '(item,index) in v.dictUtil.getByCode(v,i.dict)' :value="item.key">{{item.val}}</Option>
 								</Select>

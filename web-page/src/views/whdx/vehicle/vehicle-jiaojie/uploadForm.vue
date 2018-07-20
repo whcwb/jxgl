@@ -57,8 +57,8 @@
                                 <Upload
                                         ref="upload"
                                         :headers="{'userid':curUser.userId, 'token':curUser.token}"
-                                        :show-upload-list="false"
-                                        :default-file-list="defaultList"
+                                        :show-upload-list="true"
+                                        :default-file-list="uploadList"
                                         :on-success="handleSuccess"
                                         :format="['jpg','jpeg','png']"
                                         :max-size="8196"

@@ -117,6 +117,9 @@
 					<Tab-pane label="保养记录" icon="ios-download-outline">
 						<byjl-page :vehcile="formItem"></byjl-page>
 					</Tab-pane>
+					<Tab-pane label="出车记录" icon="ios-download-outline">
+						<ccjl-page :vehcile="formItem"></ccjl-page>
+					</Tab-pane>
 				</Tabs>
 			</div>
 			<div slot='footer'>
@@ -141,9 +144,11 @@
     import byjlPage from './byjlPage.vue'
     //责任人信息
     import clxqZrrPage from './clxqZrrPage.vue'
+	// 出车记录
+	import ccjlPage from './ccjlPage'
 	export default {
 		name: 'usecarForm',
-		components:{clxqNsxxPage, clxqWfxxPage,clxqZrrPage,notifyList,bxjlPage,wxjlPage,byjlPage},
+		components:{ccjlPage,clxqNsxxPage, clxqWfxxPage,clxqZrrPage,notifyList,bxjlPage,wxjlPage,byjlPage},
 		data() {
 			return {
 			    v:this,
