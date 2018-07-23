@@ -68,6 +68,7 @@
                 formInputs:[
                     {label:'车牌号码',prop:'vHphm',readonly:true},
                     {label:'维修项目',prop:'project'},
+                    {label: '维修时间',prop:'createTime',type:'datetime'},
                 ],
                 ruleInline:{
 				}

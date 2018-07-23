@@ -170,6 +170,7 @@ module.exports = {
         ADD:'/api/userCar/save',
         CHANGE:'/api/userCar/update',
         DELE:'/api/userCar/removeIds',
+        returnCar:'/api/userCar/return',
         getLastReturnMileage:'/api/userCar/getLastReturnMileage',
     },
     repair:{

@@ -29,4 +29,9 @@ public class UserCarCtrl extends BaseController<BizUsecar,String> {
     public ApiResponse<Integer> getLastReturnMileage(String carId){
         return service.getLastReturnMileage(carId);
     }
+
+    @RequestMapping("return")
+    public ApiResponse<String> returnCar(BizUsecar entity){
+        return service.returnCar(entity);
+    }
 }

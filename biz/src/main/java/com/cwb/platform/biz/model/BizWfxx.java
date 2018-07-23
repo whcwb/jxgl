@@ -45,6 +45,11 @@ public class BizWfxx implements Serializable {
      */
     @Column(name = "v_hphm")
     private String vHphm;
+    /**
+     * 车架号
+     */
+    @Column(name = "v_cjh")
+    private String vCjh;
 
     /**
      * 违法记分
@@ -95,6 +100,14 @@ public class BizWfxx implements Serializable {
     private String fzr;
     @Transient
     private String fzrlxfs;
+
+    public String getvCjh() {
+        return vCjh;
+    }
+
+    public void setvCjh(String vCjh) {
+        this.vCjh = vCjh;
+    }
 
     public String getFzr() {
         return fzr;
@@ -366,6 +379,7 @@ public class BizWfxx implements Serializable {
         wfWfjf("wf_wfjf"),
         wfWfje("wf_wfje"),
         wfWfzt("wf_wfzt"),
+        vCjh("v_cjh"),
         createUser("create_user"),
         createTime("create_time"),
         updateUser("update_user"),

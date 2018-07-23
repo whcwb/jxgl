@@ -81,6 +81,7 @@ public class WfxxServiceImpl extends BaseServiceImpl<BizWfxx,String> implements 
 
     	entity.setvId(vehicle.getvId());
     	entity.setvHphm(vehicle.getvHphm());
+		entity.setvCjh(vehicle.getvCjh());
     	//
     	RuntimeCheck.ifTrue((entity.getWfWfjf() != null && entity.getWfWfjf() > 12), "违法记分不能大于12分");
     	//查看是否上传了图片

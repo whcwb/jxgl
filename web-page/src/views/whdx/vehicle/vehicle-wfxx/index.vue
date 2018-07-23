@@ -61,6 +61,7 @@
                 tableColumns: [
                     {title: "序号", width: 60, type: 'index'},
                     {title:'车牌号码',key:'vHphm'},
+                    {title:'车架号',key:'vCjh'},
                     {title:'违法时间',key:'wfWfsj'},
                     {title:'违法地点',key:'wfWfdz'},
                     {title:'违法行为',key:'wfWfxw'},
@@ -114,6 +115,7 @@
                 ],
                 pageData: [],
                 form: {
+                    orderBy:'wfWfsj desc,vHphm asc',
                     total: 0,
                     pageNum: 1,
                     pageSize: 8,

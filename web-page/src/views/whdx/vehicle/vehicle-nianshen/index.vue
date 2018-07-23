@@ -74,6 +74,8 @@
                     {title: "序号", width: 70, type: 'index'},
                     {title:'车牌号码',key:'vHphm',searchKey:'vHphmLike'},
                     {title:'所有人',key:'vSyl',searchKey:'vSylLike'},
+                    {title:'负责人',key:'vZrr',searchKey:'vZrrLike'},
+                    {title:'负责人联系电话',key:'vZrrlxdh',searchKey:'vZrrlxdhLike'},
                     {title: '初登日期',key:'vCcdjrq'},
                     {title: '年审日期',key:'vNsrq',render:(h, params)=>{
                             let today = new Date().format("yyyy-MM-dd");

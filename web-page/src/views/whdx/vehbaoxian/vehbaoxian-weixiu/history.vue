@@ -53,6 +53,15 @@
                     {title: '维修应付金额',key:'money',unit:'元'},
                     {title: '保险报销金额',key:'insuranceMoney',unit:'元'},
                     {title: '维修实付金额',key:'realMoney',unit:'元'},
+                    {
+                        title: '操作',
+                        key: 'action',
+                        render: (h, params) => {
+                            return h('div', [
+                                this.util.buildDeleteButton(this,h,params.row.wxxId),
+                            ]);
+                        }
+                    }
                 ],
                 pageData: [],
                 form: {

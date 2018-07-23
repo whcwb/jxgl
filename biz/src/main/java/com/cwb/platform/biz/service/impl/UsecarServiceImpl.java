@@ -90,6 +90,7 @@ public class UsecarServiceImpl extends BaseServiceImpl<BizUsecar,String> impleme
         entity.setUcId(genId());
         entity.setCreateTime(DateUtils.getNowTime());
         entity.setCreateUser(getOperateUser());
+        entity.setUcZt("00"); // 未还车
         save(entity);
         return ApiResponse.saveSuccess();
     }
@@ -124,5 +125,23 @@ public class UsecarServiceImpl extends BaseServiceImpl<BizUsecar,String> impleme
         condition.and().andIsNull(BizUsecar.InnerColumn.unHclcs.name());
         List<BizUsecar> usecars = findByConditionParam(condition);
         return usecars;
+    }
+
+    /**
+     * 还车
+     * @param entity
+     * @return
+     */
+    @Override
+    public ApiResponse<String> returnCar(BizUsecar entity) {
+        BizUsecar exist = this.findById(entity.getUcId());
+        RuntimeCheck.ifNull(exist,"出车单信息不存在");
+        entity = validEntity(entity);
+
+        entity.setUpdateTime(DateTime.now().toString("yyyy-MM-dd HH:mm:ss"));
+        entity.setUpdateUser(getOperateUser());
+        entity.setUcZt("10"); // 已还
+        update(entity);
+        return super.validAndUpdate(entity);
     }
 }

@@ -58,30 +58,31 @@
                     {title:'出车事由',key:'ucCcsy'},
                     {title:'备注',key:'ucBz'},
                     {title:'状态',render:(h,p)=>{
-                        if (p.row.unHclcs != ''){
+                        if (p.row.ucZt == '10'){
                             return h('Tag', {
                                 props: {
                                     type: 'dot',
                                     color: 'blue'
                                 }
                             }, '已还车');
-                        }
-
-                        let f = this.today >= p.row.ucYjhcsj;
-                        if (!f){
-                            return h('Tag', {
-                                props: {
-                                    type: 'dot',
-                                    color: 'red'
-                                }
-                            }, '未还车');
-                        }
-                        return h('Tag', {
-                            props: {
-                                type: 'dot',
-                                color: 'red'
-                            }
-                        }, '超出预计时间');
+						}else{
+                            let f = this.today >= p.row.ucYjhcsj;
+                            if (f){
+                                return h('Tag', {
+                                    props: {
+                                        type: 'dot',
+                                        color: 'red'
+                                    }
+                                }, '超出预计时间');
+							}else{
+                                return h('Tag', {
+                                    props: {
+                                        type: 'dot',
+                                        color: 'red'
+                                    }
+                                }, '未还车');
+							}
+						}
                     }},
                     {
                         title: '操作',

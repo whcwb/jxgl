@@ -47,6 +47,7 @@
 			    v:this,
                 operate:'新建',
 				showModal: true,
+				saveUrl:this.apis.userCar.returnCar,
 				readonly: false,
 				formItem: {
 				},

@@ -9,4 +9,6 @@ import java.util.List;
 public interface UsecarService extends BaseService<BizUsecar,String>{
     ApiResponse<Integer> getLastReturnMileage(String carId);
     List<BizUsecar> getNotReturnList();
+
+    ApiResponse<String> returnCar(BizUsecar entity);
 }

@@ -15,6 +15,26 @@
 					<Input v-model="form.inBdh" placeholder="请输入商业险保单编号" ></Input>
 				</FormItem>
 			</Col>
+			<Col span="5">
+				<FormItem label="商业险起保时间">
+					<DatePicker v-model="dateRange1" @on-change="form.inQbrqInRange = v.util.dateRangeChange(dateRange1)" confirm format="yyyy-MM-dd" type="daterange" placeholder="请输时间" style="width: 200px"></DatePicker>
+				</FormItem>
+			</Col>
+			<Col span="5">
+				<FormItem label="商业险终保时间">
+					<DatePicker v-model="dateRange2" @on-change="form.inZbrqInRange = v.util.dateRangeChange(dateRange2)" confirm format="yyyy-MM-dd" type="daterange" placeholder="请输时间" style="width: 200px"></DatePicker>
+				</FormItem>
+			</Col>
+			<Col span="5">
+				<FormItem label="交强险起保时间">
+					<DatePicker v-model="dateRange3" @on-change="form.inJqqbrqInRange = v.util.dateRangeChange(dateRange3)" confirm format="yyyy-MM-dd" type="daterange" placeholder="请输时间" style="width: 200px"></DatePicker>
+				</FormItem>
+			</Col>
+			<Col span="5">
+				<FormItem label="交强险终保时间">
+					<DatePicker v-model="dateRange4" @on-change="form.inJqzbrqInRange = v.util.dateRangeChange(dateRange4)" confirm format="yyyy-MM-dd" type="daterange" placeholder="请输时间" style="width: 200px"></DatePicker>
+				</FormItem>
+			</Col>
 			<Col span="4" offset="1">
 				<Button type="primary" @click="v.util.getPageData(v)">
 					<Icon type="search"></Icon>
@@ -52,6 +72,10 @@
                 apiRoot:this.apis.insurance,
                 tableHeight: 220,
                 componentName: '',
+                dateRange1:'',
+                dateRange2:'',
+                dateRange3:'',
+                dateRange4:'',
                 choosedItem: null,
                 tableColumns: [
                     {title: "序号", width: 60, type: 'index'},
