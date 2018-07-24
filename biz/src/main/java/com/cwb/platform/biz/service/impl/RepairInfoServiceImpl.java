@@ -48,7 +48,7 @@ public class RepairInfoServiceImpl extends BaseServiceImpl<BizRepairInfo,String>
             info.setLastRepairMoney(record.getMoney());
             info.setLastRepairProject(record.getProject());
             info.setLastRepairRealMoney(record.getRealMoney());
-            info.setLastRepairTime(DateUtils.getNowTime());
+            info.setLastRepairTime(record.getRepairTime());
             entityMapper.insertSelective(info);
         }else{
             info.setWxId(repairInfoList.get(0).getWxId());
@@ -57,7 +57,7 @@ public class RepairInfoServiceImpl extends BaseServiceImpl<BizRepairInfo,String>
             info.setLastRepairMoney(record.getMoney());
             info.setLastRepairProject(record.getProject());
             info.setLastRepairRealMoney(record.getRealMoney());
-            info.setLastRepairTime(DateUtils.getNowTime());
+            info.setLastRepairTime(record.getRepairTime());
             entityMapper.updateByPrimaryKeySelective(info);
         }
     }

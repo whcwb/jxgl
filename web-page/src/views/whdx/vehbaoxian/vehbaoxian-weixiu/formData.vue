@@ -68,7 +68,7 @@
                 formInputs:[
                     {label:'车牌号码',prop:'vHphm',readonly:true},
                     {label:'维修项目',prop:'project'},
-                    {label: '维修时间',prop:'createTime',type:'datetime'},
+                    {label: '维修时间',prop:'repairTime',type:'datetime'},
                 ],
                 ruleInline:{
 				}
@@ -84,7 +84,6 @@
                 this.formItem.realMoney = this.formItem.money - this.formItem.insuranceMoney;
 			},
 			beforeSave(){
-
 			}
 		}
 	}

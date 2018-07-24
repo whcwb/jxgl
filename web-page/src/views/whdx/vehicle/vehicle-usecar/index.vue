@@ -20,12 +20,13 @@
 
 <script>
     import formData from './formData.vue'
+    import show from './show.vue'
     import returnForm from './return.vue'
 	import searchItems from '../../components/searchItems'
 
     export default {
         name: 'usecar',
-        components: {formData,returnForm,searchItems},
+        components: {formData,returnForm,searchItems,show},
         data() {
             return {
                 v:this,
@@ -91,8 +92,12 @@
                         render: (h, params) => {
                             let buttons = [];
                             buttons.push(this.util.buildEditButton(this,h,params));
+                            buttons.push(this.util.buildButton(this,h,'info','eye','查看',()=>{
+                                this.choosedItem = params.row;
+                                this.componentName = 'show';
+                            }));
                             if (params.row.unHclcs === ''){
-                                buttons.push(this.util.buildButton(this, h, 'info', 'ios-download-outline', '还车', ()=> {
+                                buttons.push(this.util.buildButton(this,h, 'info', 'ios-download-outline', '还车', ()=> {
                                     this.choosedItem = params.row;
                                     this.componentName = 'returnForm';
                                 }))

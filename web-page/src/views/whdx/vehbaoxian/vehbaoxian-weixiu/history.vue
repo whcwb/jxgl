@@ -27,7 +27,6 @@
 			</div>
 			<div slot='footer'>
 				<Button type="ghost" @click="v.util.closeDialog(v)">取消</Button>
-				<Button type="primary" @click="v.util.save(v)">确定</Button>
 			</div>
 		</Modal>
 	</div>
