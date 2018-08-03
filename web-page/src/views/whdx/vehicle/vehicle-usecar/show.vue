@@ -48,6 +48,7 @@
                     {label:'出车事由',prop:'ucCcsy',disabled:true, span:24},
                     {label:'驾驶员',prop:'ucJyrid',type:'foreignKey',disabled:true},
                     {label:'出车前里程数',prop:'ucCclcs',disabled:true},
+                    {label:'备注',prop:'ucBz',disabled:true},
                 ],
                 foreignList:{
                     vId:{url:this.apis.CAR.notUseCarList,key:'vId',val:'vHphm',items:[]},

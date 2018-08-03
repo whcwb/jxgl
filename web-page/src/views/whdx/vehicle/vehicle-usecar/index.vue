@@ -50,6 +50,9 @@
                             if (!f){
                                 return h('div',p.row.ucYjhcsj);
 							}
+                            if (p.row.ucZt == '10'){
+                                return h('div',p.row.ucYjhcsj);
+                            }
                         	return h('div',{style:{color:'red'}},p.row.ucYjhcsj)
 						}
 					},
