@@ -35,11 +35,12 @@
 			:usermesType="userMesType"
 			@listF='listF'></component>
 		<!-- 资质审验单打印 -->
-		<div id="printDiv" ref="printDiv" style="position: absolute;left:0;top:0;z-index: -10">
+		<!--<div id="printDiv" ref="printDiv" style="position: absolute;left:0;top:0;z-index: -10">-->
+		<div id="printDiv" ref="printDiv" style="position: absolute;">
 			<ul>
 				<li>
-					<img v-for="img in printImgs" v-if="img.vfDamc == 'sfzzmFile'" :src="apis.STATIC_PATH + img.vfNetPath + '?d='+new Date().getTime()" width="340">
-					<img v-for="img in printImgs" v-if="img.vfDamc == 'sfzfmFile'" :src="apis.STATIC_PATH + img.vfNetPath + '?d='+new Date().getTime()" width="340">
+					<img v-for="img in printImgs" v-if="img.vfDamc == 'sfzzmFile'" :src="apis.STATIC_PATH + img.vfNetPath + '?d='+new Date().getTime()" width="336">
+					<img v-for="img in printImgs" v-if="img.vfDamc == 'sfzfmFile'" :src="apis.STATIC_PATH + img.vfNetPath + '?d='+new Date().getTime()" width="336">
 				</li>
 				<li>
 					<img v-for="img in printImgs" v-if="img.vfDamc == 'jszzmFile'" :src="apis.STATIC_PATH + img.vfNetPath + '?d='+new Date().getTime()" width="680">
