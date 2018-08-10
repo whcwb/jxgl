@@ -282,6 +282,7 @@
                         this.$data[item.vfDamc] = {
                             name:item.vfDamc,
 							status:'finished',
+                            vfId:item.vfId,
 							url:this.apis.STATIC_PATH + item.vfNetPath + '?d='+new Date().getTime()
                         };
 					}
@@ -289,6 +290,15 @@
             })
         },
         methods: {
+    	    removeFile(id){
+    	      	this.$http.post(this.apis.FILE.REMOVE+id).then((res)=>{
+    	      	    if (res.code == 200){
+
+					}else{
+    	      	        this.$Message.error(res.message);
+					}
+				})
+			},
             //更新
             updateFiles(){
 
@@ -330,6 +340,7 @@
             },
             handleRemove (file) {
                 this.$data[file.name] = null;
+                this.removeFile(file.vfId);
             },
             handleFormatError (file) {
                 this.$Notice.warning({

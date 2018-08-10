@@ -2,43 +2,47 @@
     @import '../../../../styles/common.less';
 </style>
 <template>
-    <Modal v-model="showModal" width='900' :closable='false'
-           :mask-closable="false" title="联系记录">
-        <div style="overflow: auto;height: 500px;">
-            <div class="boxbackborder">
-                <Row style="padding-bottom: 16px;">
-                    <search-items :parent="v" :showCreateButton="true"></search-items>
-                    <div style="display: inline-block">
-                        <Button type="primary" @click="v.util.getPageData(v)">
-                            <Icon type="search"></Icon>
-                        </Button>
-                        <Button type="primary" @click="v.util.add(v)">
-                            <Icon type="plus-round"></Icon>
-                        </Button>
-                    </div>
-                </Row>
-                <Row style="position: relative;">
-                    <Table :height="tableHeight" :columns="tableColumns" :data="pageData"></Table>
-                </Row>
-                <Row class="margin-top-10 pageSty">
-                    <Page :total=form.total :current=form.pageNum :page-size=form.pageSize show-total show-elevator @on-change='pageChange'></Page>
-                </Row>
-                <component :is="componentName"></component>
+    <div>
+        <Modal v-model="showModal" width='900' :closable='false'
+               :mask-closable="false" title="联系记录">
+            <div style="overflow: auto;height: 500px;">
+                <div class="boxbackborder">
+                    <Row style="padding-bottom: 16px;">
+                        <search-items :parent="v" :showCreateButton="true"></search-items>
+                        <div style="display: inline-block">
+                            <Button type="primary" @click="v.util.getPageData(v)">
+                                <Icon type="search"></Icon>
+                            </Button>
+                            <Button type="primary" @click="add">
+                                <Icon type="plus-round"></Icon>
+                            </Button>
+                        </div>
+                    </Row>
+                    <Row style="position: relative;">
+                        <Table :height="tableHeight" :columns="tableColumns" :data="pageData"></Table>
+                    </Row>
+                    <Row class="margin-top-10 pageSty">
+                        <Page :total=form.total :current=form.pageNum :page-size=form.pageSize show-total show-elevator @on-change='pageChange'></Page>
+                    </Row>
+                </div>
             </div>
-        </div>
-        <div slot='footer'>
-            <Button type="ghost" @click="v.util.closeDialog(v)">取消</Button>
-        </div>
-    </Modal>
+            <div slot='footer'>
+                <Button type="ghost" @click="v.util.closeDialog(v)">取消</Button>
+            </div>
+        </Modal>
+        <component :is="componentName"></component>
+    </div>
+
 
 </template>
 
 <script>
     import searchItems from '../../components/searchItems'
+    import addNotify from './addNotify'
 
     export default {
         name: 'notify',
-        components: {searchItems},
+        components: {searchItems,addNotify},
         data() {
             return {
                 v:this,
@@ -65,9 +69,13 @@
         },
         created() {
             this.form.vId = this.$parent.choosedItem.vId;
+            this.form.clId = this.$parent.choosedItem.vId;
             this.util.initTable(this)
         },
         methods: {
+            add(){
+                this.componentName = 'addNotify'
+            },
             pageChange(event) {
                 var v = this
                 v.util.getPageData(v);

@@ -16,6 +16,9 @@
 							<Button type="primary" @click="v.util.getPageData(v)">
 								<Icon type="search"></Icon>
 							</Button>
+							<Button type="primary" @click="add">
+								<Icon type="plus-round"></Icon>
+							</Button>
 						</div>
 					</Row>
 					<Row style="position: relative;">
@@ -30,14 +33,16 @@
 				<Button type="ghost" @click="v.util.closeDialog(v)">取消</Button>
 			</div>
 		</Modal>
+		<component :is="componentName"></component>
 	</div>
 </template>
 
 <script>
+    import addNotify from './addNotify'
     import searchItems from '../../components/searchItems'
 	export default {
         name: 'notify',
-        components: {searchItems},
+        components: {searchItems,addNotify},
 		data() {
 			return {
 			    v:this,
@@ -45,6 +50,7 @@
 				showModal: true,
 				readonly: false,
                 tableHeight: 320,
+                componentName:'',
                 apiRoot:this.apis.notify,
                 tableColumns: [
                     {title: "#", width: 60, type: 'index'},
@@ -66,6 +72,9 @@
             this.util.initTable(this)
 		},
         methods: {
+            add(){
+                this.componentName = 'addNotify'
+            },
             pageChange(event) {
                 var v = this
                 v.util.getPageData(v);
