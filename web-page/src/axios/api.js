@@ -13,6 +13,7 @@ module.exports = {
     FILE:{
         FINDBYPID:BASE_URL+'/api/files/findByPId',//根据主ID查询文件信息
         UPLOAD:BASE_URL+ '/api/files/upload',//根据主ID查询文件信息
+        REMOVE:'/api/files/remove/',
     },
     USERROOT:{
         GET_MENU_LIST:'/api/gn/getUserFunctions',
