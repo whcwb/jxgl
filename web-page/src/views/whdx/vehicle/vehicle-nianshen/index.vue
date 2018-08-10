@@ -5,14 +5,19 @@
 	<div class="boxbackborder">
 		<Form :label-width="100">
 			<Row  justify="space-between">
-				<Col span="5">
+				<Col span="4">
 					<FormItem label="车牌号">
 						<Input v-model="form.vHphmLike" placeholder="请输入车牌号" ></Input>
 					</FormItem>
 				</Col>
-				<Col span="5">
+				<Col span="4">
 					<FormItem label="所有人">
 						<Input v-model="form.vSylLike" placeholder="请输入所有人" ></Input>
+					</FormItem>
+				</Col>
+				<Col span="4">
+					<FormItem label="使用人">
+						<Input v-model="form.vLxrLike" placeholder="请输入使用人" ></Input>
 					</FormItem>
 				</Col>
 				<Col span="5">
@@ -36,12 +41,12 @@
 		<div id="printDiv" ref="printDiv" style="position: absolute;left:0;top:0;z-index: -10">
 			<ul>
 				<li>
-					<img v-for="img in jszPrintImgs" v-if="img.vfDamc == 'jszzmFile'" :src="apis.STATIC_PATH + img.vfNetPath + '?d='+new Date().getTime()" width="680">
-					<!--<img v-for="img in jszPrintImgs" v-if="img.vfDamc == 'jszfmFile'" :src="apis.STATIC_PATH + img.vfNetPath + '?d='+new Date().getTime()" width="340">-->
-				</li>
-				<li>
 					<img v-for="img in xszPrintImgs" v-if="img.vfDamc == 'xszzmFile'" :src="apis.STATIC_PATH + img.vfNetPath + '?d='+new Date().getTime()" width="680">
 					<!--<img v-for="img in xszPrintImgs" v-if="img.vfDamc == 'xszzmFile'" :src="apis.STATIC_PATH + img.vfNetPath + '?d='+new Date().getTime()" width="240">-->
+				</li>
+				<li>
+					<img v-for="img in jszPrintImgs" v-if="img.vfDamc == 'jszzmFile'" :src="apis.STATIC_PATH + img.vfNetPath + '?d='+new Date().getTime()" width="680">
+					<!--<img v-for="img in jszPrintImgs" v-if="img.vfDamc == 'jszfmFile'" :src="apis.STATIC_PATH + img.vfNetPath + '?d='+new Date().getTime()" width="340">-->
 				</li>
 			</ul>
 		</div>
@@ -122,7 +127,7 @@
                     {
                         title: '操作',
                         key: 'action',
-                        width: 120,
+                        width: 160,
                         render: (h, params) => {
                             let buttons = [
                                 this.util.buildButton(this,h,'success','eye','联系记录',()=>{
