@@ -14,7 +14,7 @@
 				<Select filterable clearable  v-model="findMess.lx" style="width: 200px">
 					<Option value="10">管理员</Option>
 					<Option value="20">工作人员</Option>
-					<Option value="30">教练员</Option>
+					<!--<Option value="30">教练员</Option>-->
 					<Option value="40">车主</Option>
 				</Select>
 			</Col>
@@ -272,6 +272,7 @@
 				//收索
 //				cjsjInRange:[],
 				findMess: {
+                    lxIn:'10,20,40',
 					sjhLike:'',
 					xmLike: '',
 					pageNum: 1,

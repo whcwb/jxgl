@@ -38,8 +38,8 @@
                     type:'1'
 				},
                 formInputs:[
-                    {label:'车牌号',prop:'clId',type:'foreignKey'},
-                    {label:'类型',prop:'type',type:'dict',dict:'tzlx'},
+                    // {label:'车牌号',prop:'clId',type:'foreignKey'},
+                    // {label:'类型',prop:'type',type:'dict',dict:'tzlx'},
                     {label:'通知时间',prop:'time',type:'datetime'},
                     {label:'内容',prop:'content'},
                 ],
