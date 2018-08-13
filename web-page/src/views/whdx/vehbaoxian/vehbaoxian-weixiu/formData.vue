@@ -35,6 +35,9 @@
 									   readonly></Input>
 							</FormItem>
 						</Col>
+						<Col span="12">
+							<Button type="ghost" @click="chooseStock">库存商品</Button>
+						</Col>
 					</Row>
 				</Form>
 			</div>
@@ -43,19 +46,22 @@
 				<Button type="primary" @click="v.util.save(v)">确定</Button>
 			</div>
 		</Modal>
+		<component :is="componentName"></component>
 	</div>
 </template>
 
 <script>
 	import formItems from '../../components/formItems'
+	import chooseStock from './chooseStock'
 	export default {
 		name: 'wxjlForm',
-		components:{formItems},
+		components:{formItems,chooseStock},
 		data() {
 			return {
 			    v:this,
                 operate:'维修',
 				saveUrl:this.apis.repair.ADD,
+                componentName:'',
 				showModal: true,
 				readonly: false,
 				formItem: {
@@ -84,6 +90,9 @@
                 this.formItem.realMoney = this.formItem.money - this.formItem.insuranceMoney;
 			},
 			beforeSave(){
+			},
+            chooseStock(){
+		        this.componentName = 'chooseStock';
 			}
 		}
 	}

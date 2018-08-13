@@ -277,6 +277,13 @@ export let appRouter = [
                 name: 'vehbaoxian-baoyang',
                 meta: { title: '保养管理' },
                 component: () => import('@/views/whdx/vehbaoxian/vehbaoxian-baoyang')
+            },
+            {
+                path: 'stock',
+                icon: 'android-clipboard',
+                name: 'stock',
+                meta: { title: '库存管理' },
+                component: () => import('@/views/whdx/vehbaoxian/stock')
             }
         ]
     },

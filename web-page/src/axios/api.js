@@ -57,6 +57,13 @@ module.exports = {
         CHANGE:'/api/zd/update',// 编辑字典
         DELE:'/api/zd/removeIds' // 删除字典
     },
+    stock:{
+        QUERY:'/api/stock/pager',// 查询库存
+        ADD:'/api/stock/save',
+        CHANGE:'/api/stock/update',
+        DELE:'/api/stock/removeIds',
+        outStock:'/api/stock/outStock',
+    },
     notify:{
         QUERY:'/api/notify/pager',// 通知管理
         ADD:'/api/notify/save',// 新增字典
