@@ -36,7 +36,9 @@
 							</FormItem>
 						</Col>
 						<Col span="12">
-							<Button type="ghost" @click="chooseStock">库存商品</Button>
+							<FormItem prop='realMoney' label='库存商品'>
+								<Button type="primary" @click="chooseStock">添加</Button>
+							</FormItem>
 						</Col>
 					</Row>
 				</Form>
