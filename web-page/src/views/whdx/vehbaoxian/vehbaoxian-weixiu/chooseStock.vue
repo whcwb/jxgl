@@ -25,8 +25,8 @@
                         <label>剩余：{{r.rest}} 个</label>
                     </Col>
                     <Col span="4">
-                        <Button v-if="!r.confirm" type="primary" @click="submit(r)">确定</Button>
-                        <Button v-else type="default" @click="revert(r)">撤回</Button>
+                        <!--<Button v-if="!r.confirm" type="primary" @click="submit(r)">确定</Button>-->
+                        <Button type="default" @click="del(i)">删除</Button>
                     </Col>
                 </Row>
                 <Row>
@@ -64,6 +64,8 @@
             }
         },
         created(){
+        },
+        mounted(){
             this.showModal = true;
             this.getProducts();
         },
@@ -90,6 +92,9 @@
             add(){
                 this.choosedList.push({productName:'',number:1,confirm:false,rest:0});
             },
+            del(i){
+                this.choosedList.splice(i,1);
+            },
             submit(r){
                 this.$http.post(this.apis.stock.outStock,r).then((res)=>{
                     if(res.code === 200){
@@ -115,6 +120,7 @@
             close(){
                 let v = this;
                 v.showModal = false;
+                this.$parent.productData = this.choosedList;
                 setTimeout((t) => {
                     v.$parent.componentName = "";
                 }, 200)

@@ -63,6 +63,7 @@ module.exports = {
         CHANGE:'/api/stock/update',
         DELE:'/api/stock/removeIds',
         outStock:'/api/stock/outStock',
+        outStocks:'/api/stock/outStocks',
         revert:'/api/stock/revert',
     },
     notify:{

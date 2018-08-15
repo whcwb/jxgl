@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.common.Mapper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -80,12 +81,7 @@ public class BizStockServiceImpl extends BaseServiceImpl<BizStock, String> imple
 	 */
 	@Override
 	public ApiResponse<String> outStock(BizStock stockDto) {
-		RuntimeCheck.ifBlank(stockDto.getProductName(),"请选择商品");
-		RuntimeCheck.ifNull(stockDto.getNumber(),"请输入出库数量");
-		BizStock stock = findByProductName(stockDto.getProductName());
-		RuntimeCheck.ifNull(stock,"商品库存不存在");
-		RuntimeCheck.ifFalse(stock.getNumber() >= stockDto.getNumber(),"商品库存不足！");
-
+		BizStock stock = valid(stockDto);
 		int beforeUpdate = stock.getNumber();
 		stock.setNumber(stock.getNumber() - stockDto.getNumber());
 		stock.setUpdateTime(DateUtils.getNowTime());
@@ -93,6 +89,16 @@ public class BizStockServiceImpl extends BaseServiceImpl<BizStock, String> imple
 		update(stock);
 		stockLogService.log(stock,beforeUpdate,stockDto.getRemark(),"出库");
 		return ApiResponse.success();
+	}
+
+	private BizStock valid(BizStock stockDto){
+		RuntimeCheck.ifBlank(stockDto.getProductName(),"请选择商品");
+		RuntimeCheck.ifNull(stockDto.getNumber(),"请输入出库数量");
+		BizStock stock = findByProductName(stockDto.getProductName());
+		RuntimeCheck.ifNull(stock,"商品库存不存在");
+		RuntimeCheck.ifFalse(stock.getNumber() >= stockDto.getNumber(),"商品库存不足！");
+
+		return stock;
 	}
 
 	@Override
@@ -108,6 +114,24 @@ public class BizStockServiceImpl extends BaseServiceImpl<BizStock, String> imple
 		stock.setUpdateUser(getOperateUser());
 		update(stock);
 		stockLogService.log(stock,beforeUpdate,stockDto.getRemark(),"撤回");
+		return ApiResponse.success();
+	}
+
+	@Override
+	public ApiResponse<String> outStocks(List<BizStock> stocks) {
+		for (BizStock s : stocks) {
+			valid(s);
+		}
+
+		for (BizStock stockDto : stocks) {
+			BizStock stock = findByProductName(stockDto.getProductName());
+			int beforeUpdate = stock.getNumber();
+			stock.setNumber(stock.getNumber() - stockDto.getNumber());
+			stock.setUpdateTime(DateUtils.getNowTime());
+			stock.setUpdateUser(getOperateUser());
+			update(stock);
+			stockLogService.log(stock,beforeUpdate,stockDto.getRemark(),"出库");
+		}
 		return ApiResponse.success();
 	}
 }

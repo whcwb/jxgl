@@ -41,11 +41,14 @@
 							</FormItem>
 						</Col>
 					</Row>
+					<Row>
+						<Table :height="200" :columns="tableColumns" :data="productData"></Table>
+					</Row>
 				</Form>
 			</div>
 			<div slot='footer'>
 				<Button type="ghost" @click="v.util.closeDialog(v)">取消</Button>
-				<Button type="primary" @click="v.util.save(v)">确定</Button>
+				<Button type="primary" @click="saveStock">确定</Button>
 			</div>
 		</Modal>
 		<component :is="componentName"></component>
@@ -55,6 +58,7 @@
 <script>
 	import formItems from '../../components/formItems'
 	import chooseStock from './chooseStock'
+    import swal from 'sweetalert2'
 	export default {
 		name: 'wxjlForm',
 		components:{formItems,chooseStock},
@@ -66,6 +70,7 @@
                 componentName:'',
 				showModal: true,
 				readonly: false,
+                productData:[],
 				formItem: {
 			        vId:'',
                     vHphm:'',
@@ -79,7 +84,28 @@
                     {label: '维修时间',prop:'repairTime',type:'datetime'},
                 ],
                 ruleInline:{
-				}
+				},
+                tableColumns:[
+                    {title: "序号", width: 70, type: 'index'},
+                    {title: "商品名称", key: 'productName'},
+                    {title: "数量", key: 'number'},
+					{title: '操作',
+						render:(h,p)=>{
+                            return h('Tooltip',
+                                {props: {placement: 'top',content: '删除',}},
+                                [
+                                    h('Button', {
+                                        props: {type: 'error',icon: 'close',shape: 'circle',size: 'small'},
+                                        style: {margin: '0 8px 0 0'},
+                                        on: {click: ()=>{
+                                                this.del(p.index)
+											}}
+                                    }),
+                                ]
+                            )
+						}
+					}
+				]
 			}
 		},
 		created(){
@@ -92,9 +118,30 @@
                 this.formItem.realMoney = this.formItem.money - this.formItem.insuranceMoney;
 			},
 			beforeSave(){
+		        this.saveStock();
 			},
+            del(i){
+                swal({
+                    text: "是否删除数据?",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: '确认',
+                    cancelButtonText: '取消'
+                }).then((isConfirm) => {
+                    if (isConfirm.value) {
+                        this.productData.splice(i,1);
+                    }
+                });
+            },
             chooseStock(){
                 this.componentName = 'chooseStock';
+			},
+			saveStock(){
+		        this.$http.post(this.apis.stock.outStocks,{stocks:JSON.stringify(this.productData)}).then((res)=>{
+		            if (res.code == 200){
+                        this.util.save(this)
+                    }
+				})
 			}
 		}
 	}

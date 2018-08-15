@@ -36,10 +36,8 @@
                     {title:'商品名称',key:'productName',searchKey:'productNameLike'},
                     {title:'剩余数量',key:'number'},
                     {title:'存放位置',key:'position'},
-                    {title:'创建时间',key:'createTime'},
-                    {title:'创建人',key:'createUser'},
-                    {title:'修改时间',key:'updateTime'},
-                    {title:'修改人',key:'updateUser'},
+                    {title:'更新时间',key:'updateTime'},
+                    {title:'更新人',key:'updateUser'},
                     {
                         title: '操作',
                         key: 'action',
