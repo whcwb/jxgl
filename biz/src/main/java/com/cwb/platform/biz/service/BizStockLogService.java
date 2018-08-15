@@ -9,5 +9,5 @@ import com.cwb.platform.sys.base.BaseService;
  * create at 2018/8/13
  */
 public interface BizStockLogService  extends BaseService<BizStockLog,String> {
-    void log(BizStock nowRecord,int beforeUpdate,String remark);
+    void log(BizStock nowRecord,int beforeUpdate,String remark,String type);
 }

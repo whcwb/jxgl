@@ -63,6 +63,12 @@ public class BizStockLog implements Serializable {
     @Column(name = "product_code")
     private String productCode;
 
+    /**
+     * 操作类型
+     */
+    @Column(name = "type")
+    private String type;
+
     private static final long serialVersionUID = 1L;
 
 
@@ -73,6 +79,7 @@ public class BizStockLog implements Serializable {
         afterUpdate("after_update"),
         createTime("create_time"),
         createUser("create_user"),
+        type("type"),
         remark("remark"),
         productName("product_name"),
         productCode("product_code");

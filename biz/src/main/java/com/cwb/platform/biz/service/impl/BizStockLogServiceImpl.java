@@ -23,7 +23,7 @@ public class BizStockLogServiceImpl extends BaseServiceImpl<BizStockLog, String>
 	}
 
 	@Override
-	public void log(BizStock nowRecord, int beforeUpdate, String remark) {
+	public void log(BizStock nowRecord, int beforeUpdate, String remark,String type) {
 		BizStockLog log = new BizStockLog();
 		log.setId(genId());
 		log.setAfterUpdate(nowRecord.getNumber());
@@ -34,6 +34,7 @@ public class BizStockLogServiceImpl extends BaseServiceImpl<BizStockLog, String>
 		log.setProductName(nowRecord.getProductName());
 		log.setRemark(remark);
 		log.setStockId(nowRecord.getId());
+		log.setType(type);
 		save(log);
 	}
 }

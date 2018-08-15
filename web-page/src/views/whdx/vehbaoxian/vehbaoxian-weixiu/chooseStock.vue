@@ -1,6 +1,6 @@
 <template>
     <Modal v-model="showModal" width='900' :closable='false'
-           :mask-closable="false" title="选择商品">
+           :mask-closable="false" title="选择商品" style="z-index: 10000000000">
         <div style="overflow: auto;height: 500px;">
             <Form
                     ref="form"
@@ -26,6 +26,7 @@
                     </Col>
                     <Col span="4">
                         <Button v-if="!r.confirm" type="primary" @click="submit(r)">确定</Button>
+                        <Button v-else type="primary" @click="revert(r)">撤回</Button>
                     </Col>
                 </Row>
                 <Row>
@@ -38,7 +39,7 @@
             </Form>
         </div>
         <div slot='footer'>
-            <Button type="primary" @click="v.util.closeDialog(v)">完成</Button>
+            <Button type="primary" @click="close">完成</Button>
         </div>
     </Modal>
 </template>
@@ -74,7 +75,7 @@
                         this.productList = res.page.list;
                         if (this.productList.length > 0){
                             let c = this.productList[0];
-                            this.choosedList.push({productName:'',number:1,confirm:false});
+                            this.choosedList.push({productName:'',number:1,confirm:false,rest:0});
                         }
                     }
                 })
@@ -87,7 +88,7 @@
                 }
             },
             add(){
-                this.choosedList.push({productName:'',number:1,confirm:false});
+                this.choosedList.push({productName:'',number:1,confirm:false,rest:0});
             },
             submit(r){
                 this.$http.post(this.apis.stock.outStock,r).then((res)=>{
@@ -95,11 +96,28 @@
                         this.$Message.success(res.message);
                         r.confirm = true;
                         r.rest -= r.number;
-                        this.getProducts();
                     }else{
                         this.$Message.error(res.message);
                     }
                 })
+            },
+            revert(r){
+                this.$http.post(this.apis.stock.revert,r).then((res)=>{
+                    if(res.code === 200){
+                        this.$Message.success(res.message);
+                        r.confirm = false;
+                        r.rest += r.number;
+                    }else{
+                        this.$Message.error(res.message);
+                    }
+                })
+            },
+            close(){
+                let v = this;
+                v.showModal = false;
+                setTimeout((t) => {
+                    v.$parent.componentName = "";
+                }, 200)
             }
         }
     }

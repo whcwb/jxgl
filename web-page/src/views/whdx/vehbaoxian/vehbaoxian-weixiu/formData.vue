@@ -94,7 +94,7 @@
 			beforeSave(){
 			},
             chooseStock(){
-		        this.componentName = 'chooseStock';
+                this.componentName = 'chooseStock';
 			}
 		}
 	}

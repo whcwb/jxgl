@@ -63,6 +63,7 @@ module.exports = {
         CHANGE:'/api/stock/update',
         DELE:'/api/stock/removeIds',
         outStock:'/api/stock/outStock',
+        revert:'/api/stock/revert',
     },
     notify:{
         QUERY:'/api/notify/pager',// 通知管理

@@ -11,4 +11,6 @@ import com.cwb.platform.util.bean.ApiResponse;
 public interface BizStockService extends BaseService<BizStock,String> {
     BizStock findByProductName(String productName);
     ApiResponse<String> outStock(BizStock stockDto);
+
+    ApiResponse<String> revert(BizStock stock);
 }

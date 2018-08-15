@@ -41,15 +41,28 @@ public class BizStockServiceImpl extends BaseServiceImpl<BizStock, String> imple
 			stockDto.setCreateTime(now);
 			stockDto.setCreateUser(getOperateUser());
 			save(stockDto);
-			stockLogService.log(stockDto,stockDto.getNumber(),stockDto.getRemark());
+			stockLogService.log(stockDto,stockDto.getNumber(),stockDto.getRemark(),"新增库存");
 		}else{
 			int beforeUpdate = stock.getNumber();
 			stock.setNumber(stock.getNumber() + stockDto.getNumber());
 			stock.setUpdateTime(now);
 			stock.setUpdateUser(getOperateUser());
 			update(stock);
-			stockLogService.log(stock,beforeUpdate,stockDto.getRemark());
+			stockLogService.log(stock,beforeUpdate,stockDto.getRemark(),"入库");
 		}
+		return ApiResponse.success();
+	}
+
+	@Override
+	public ApiResponse<String> validAndUpdate(BizStock stockDto){
+		RuntimeCheck.ifBlank(stockDto.getProductName(),"请选择商品");
+		RuntimeCheck.ifNull(stockDto.getNumber(),"请输入出库数量");
+		BizStock stock = findById(stockDto.getId());
+		RuntimeCheck.ifNull(stock,"商品库存不存在");
+
+		int beforeUpdate = stock.getNumber();
+		baseMapper.updateByPrimaryKeySelective(stockDto);
+		stockLogService.log(stock,beforeUpdate,stockDto.getRemark(),"编辑");
 		return ApiResponse.success();
 	}
 
@@ -78,7 +91,23 @@ public class BizStockServiceImpl extends BaseServiceImpl<BizStock, String> imple
 		stock.setUpdateTime(DateUtils.getNowTime());
 		stock.setUpdateUser(getOperateUser());
 		update(stock);
-		stockLogService.log(stock,beforeUpdate,stockDto.getRemark());
+		stockLogService.log(stock,beforeUpdate,stockDto.getRemark(),"出库");
+		return ApiResponse.success();
+	}
+
+	@Override
+	public ApiResponse<String> revert(BizStock stockDto) {
+		RuntimeCheck.ifBlank(stockDto.getProductName(),"请选择商品");
+		RuntimeCheck.ifNull(stockDto.getNumber(),"请输入撤回数量");
+		BizStock stock = findByProductName(stockDto.getProductName());
+		RuntimeCheck.ifNull(stock,"商品库存不存在");
+
+		int beforeUpdate = stock.getNumber();
+		stock.setNumber(stock.getNumber() + stockDto.getNumber());
+		stock.setUpdateTime(DateUtils.getNowTime());
+		stock.setUpdateUser(getOperateUser());
+		update(stock);
+		stockLogService.log(stock,beforeUpdate,stockDto.getRemark(),"撤回");
 		return ApiResponse.success();
 	}
 }

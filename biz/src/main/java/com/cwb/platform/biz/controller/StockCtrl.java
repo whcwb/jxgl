@@ -28,4 +28,8 @@ public class StockCtrl extends BaseController<BizStock,String> {
     public ApiResponse<String> outStock(BizStock stock){
         return stockService.outStock(stock);
     }
+    @RequestMapping("revert")
+    public ApiResponse<String> revert(BizStock stock){
+        return stockService.revert(stock);
+    }
 }
