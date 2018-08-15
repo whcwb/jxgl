@@ -26,7 +26,7 @@
                     </Col>
                     <Col span="4">
                         <Button v-if="!r.confirm" type="primary" @click="submit(r)">确定</Button>
-                        <Button v-else type="primary" @click="revert(r)">撤回</Button>
+                        <Button v-else type="default" @click="revert(r)">撤回</Button>
                     </Col>
                 </Row>
                 <Row>
