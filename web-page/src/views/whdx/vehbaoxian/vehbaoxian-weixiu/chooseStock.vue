@@ -1,47 +1,49 @@
 <template>
-    <Modal v-model="showModal1" width='900' :closable='false' class-name="chooseStockModal"
-           :mask-closable="false" title="选择商品" style="z-index: 10000000000">
-        <div style="overflow: auto;height: 500px;">
-            <Form
-                    ref="form"
-                    :model="formItem"
-                    :rules="ruleInline"
-                    :label-width="100"
-                    :styles="{top: '20px'}">
-                <Row v-for="(r,i) in this.choosedList">
-                    <Col span="8">
-                        <FormItem prop='productName' label='商品名称'>
-                            <Select v-model="r.productName" @on-change="(e)=>change(e,r)">
-                                <Option v-for="(item,index) in productList" :key="index" :value="item.productName">{{item.productName}}</Option>
-                            </Select>
-                        </FormItem>
-                    </Col>
-                    <Col span="6">
-                        <FormItem prop='number' label='商品数量'>
-                            <InputNumber v-model="r.number"></InputNumber>
-                        </FormItem>
-                    </Col>
-                    <Col span="4">
-                        <label>剩余：{{r.rest}} 个</label>
-                    </Col>
-                    <Col span="4">
-                        <!--<Button v-if="!r.confirm" type="primary" @click="submit(r)">确定</Button>-->
-                        <Button type="default" @click="del(i)">删除</Button>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col span="12">
-                        <FormItem prop='number' label=''>
-                            <Button type="primary" @click="add">添加</Button>
-                        </FormItem>
-                    </Col>
-                </Row>
-            </Form>
-        </div>
-        <div slot='footer'>
-            <Button type="primary" @click="close">完成</Button>
-        </div>
-    </Modal>
+    <div>
+        <Modal v-model="showModal1" width='900' :closable='false'
+               :mask-closable="false" title="选择商品" >
+            <div style="overflow: auto;height: 500px;">
+                <Form
+                        ref="form"
+                        :model="formItem"
+                        :rules="ruleInline"
+                        :label-width="100"
+                        :styles="{top: '20px'}">
+                    <Row v-for="(r,i) in this.choosedList">
+                        <Col span="8">
+                            <FormItem prop='productName' label='商品名称'>
+                                <Select v-model="r.productName" @on-change="(e)=>change(e,r)">
+                                    <Option v-for="(item,index) in productList" :key="index" :value="item.productName">{{item.productName}}</Option>
+                                </Select>
+                            </FormItem>
+                        </Col>
+                        <Col span="6">
+                            <FormItem prop='number' label='商品数量'>
+                                <InputNumber v-model="r.number"></InputNumber>
+                            </FormItem>
+                        </Col>
+                        <Col span="4">
+                            <label>剩余：{{r.rest}} 个</label>
+                        </Col>
+                        <Col span="4">
+                            <!--<Button v-if="!r.confirm" type="primary" @click="submit(r)">确定</Button>-->
+                            <Button type="default" @click="del(i)">删除</Button>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col span="12">
+                            <FormItem prop='number' label=''>
+                                <Button type="primary" @click="add">添加</Button>
+                            </FormItem>
+                        </Col>
+                    </Row>
+                </Form>
+            </div>
+            <div slot='footer'>
+                <Button type="primary" @click="close">完成</Button>
+            </div>
+        </Modal>
+    </div>
 </template>
 
 <script>
@@ -77,7 +79,13 @@
                         this.productList = res.page.list;
                         if (this.productList.length > 0){
                             let c = this.productList[0];
-                            this.choosedList.push({productName:'',number:1,confirm:false,rest:0});
+                            if (this.$parent.productData.length != 0){
+                                for (let r of this.$parent.productData){
+                                    this.choosedList.push({productName:r.productName,number:r.number,confirm:false,rest:r.rest});
+                                }
+                            }else{
+                                this.choosedList.push({productName:'',number:1,confirm:false,rest:0});
+                            }
                         }
                     }
                 })
