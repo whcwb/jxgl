@@ -51,7 +51,7 @@
 				<Button type="primary" @click="saveStock">确定</Button>
 			</div>
 		</Modal>
-		<component :is="componentName"></component>
+		<component :is="compName"></component>
 	</div>
 </template>
 
@@ -67,7 +67,7 @@
 			    v:this,
                 operate:'维修',
 				saveUrl:this.apis.repair.ADD,
-                componentName:'',
+                compName:'',
 				showModal: true,
 				readonly: false,
                 productData:[],
@@ -108,6 +108,13 @@
 				]
 			}
 		},
+		watch:{
+            compName:function(n,o){
+                console.log('n',n);
+                console.log('o',o);
+            }
+
+		},
 		created(){
 		    this.formItem.vId = this.$parent.choosedItem.vId;
 		    this.formItem.vHphm = this.$parent.choosedItem.vHphm;
@@ -134,7 +141,9 @@
                 });
             },
             chooseStock(){
-                this.componentName = 'chooseStock';
+                console.log('chooseStock');
+                this.compName = '';
+                this.compName = 'chooseStock';
 			},
 			saveStock(){
 		        this.$http.post(this.apis.stock.outStocks,{stocks:JSON.stringify(this.productData)}).then((res)=>{

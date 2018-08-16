@@ -1,5 +1,5 @@
 <template>
-    <Modal v-model="showModal" width='900' :closable='false'
+    <Modal v-model="showModal1" width='900' :closable='false' class-name="chooseStockModal"
            :mask-closable="false" title="选择商品" style="z-index: 10000000000">
         <div style="overflow: auto;height: 500px;">
             <Form
@@ -50,7 +50,7 @@
         data(){
             return{
                 v:this,
-                showModal:true,
+                showModal1:true,
                 saveUrl:this.apis.stock.outStock,
                 formItem:{
                     number:1,
@@ -66,7 +66,7 @@
         created(){
         },
         mounted(){
-            this.showModal = true;
+            this.showModal1 = true;
             this.getProducts();
         },
         methods:{
@@ -119,10 +119,16 @@
             },
             close(){
                 let v = this;
-                v.showModal = false;
-                this.$parent.productData = this.choosedList;
-                setTimeout((t) => {
-                    v.$parent.componentName = "";
+                v.showModal1 = false;
+                let list = [];
+                for (let r of this.choosedList){
+                    if (r.productName !== ''){
+                        list.push(r);
+                    }
+                }
+                this.$parent.productData = list;
+                setTimeout(() => {
+                    this.$parent.compName = "";
                 }, 200)
             }
         }
@@ -130,5 +136,7 @@
 </script>
 
 <style scoped>
-
+.chooseStockModal{
+    z-index: 1000000;
+}
 </style>
