@@ -35,8 +35,8 @@
 						<Col span="8">
 							<FormItem  label='安装卡机'>
 								<RadioGroup  v-model="formItem.vAzkj">
-									<Radio label="1">已安装</Radio>
-									<Radio label="0">未安装</Radio>
+									<Radio :label="1">已安装</Radio>
+									<Radio :label="0">未安装</Radio>
 								</RadioGroup>
 							</FormItem>
 						</Col>
