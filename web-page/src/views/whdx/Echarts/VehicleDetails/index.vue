@@ -52,8 +52,8 @@
                 tableHeight: 220,
                 tableColumns: [
                     {title: "序号",  align: 'center', type: 'index'},
-                    {title: '司机姓名', align: 'center',  key: 'sjxm'},
                     {title: '车牌号', align: 'center', key: 'cph'},
+                    {title: '司机姓名', align: 'center',  key: 'sjxm'},
                     {title: '年审时间', align: 'center',  key: 'nssj'},
                 ],
                 pageData: [],

@@ -44,10 +44,10 @@
                 choosedItem: null,
                 tableColumns: [
                     {title: "序号", width: 70, type: 'index'},
+                    {title: '车牌号',key:'vHphm'},
                     {title: '油料类型',key:'ylYllx',dict:'yllx'},
                     {title: '油料容量',key:'ylYlrs',unit:'L'},
                     {title: '金额',key:'ylJe',unit:'元'},
-                    {title: '车牌号',key:'vHphm'},
                     {title: '操作时间',key:'createTime'},
                 ],
 				dateRange:'',

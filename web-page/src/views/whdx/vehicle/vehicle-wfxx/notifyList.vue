@@ -12,14 +12,6 @@
 				<div class="boxbackborder">
 					<Row style="padding-bottom: 16px;">
 						<search-items :parent="v" :showCreateButton="true"></search-items>
-						<div style="display: inline-block">
-							<Button type="primary" @click="v.util.getPageData(v)">
-								<Icon type="search"></Icon>
-							</Button>
-							<Button type="primary" @click="add">
-								<Icon type="plus-round"></Icon>
-							</Button>
-						</div>
 					</Row>
 					<Row style="position: relative;">
 						<Table :height="tableHeight" :columns="tableColumns" :data="pageData"></Table>
@@ -54,9 +46,9 @@
                 apiRoot:this.apis.notify,
                 tableColumns: [
                     {title: "#", width: 60, type: 'index'},
+                    {title:'车牌号',key:'cph',searchKey:'cphLike'},
                     {title:'通知时间',key:'time',searchType:'daterange'},
                     {title:'内容',key:'content'},
-                    {title:'车牌号',key:'cph',searchKey:'cphLike'},
                 ],
                 pageData: [],
                 form: {

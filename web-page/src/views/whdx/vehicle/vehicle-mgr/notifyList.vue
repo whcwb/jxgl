@@ -5,11 +5,6 @@
     <div class="boxbackborder">
         <Row style="padding-bottom: 16px;">
             <search-items :parent="v" ></search-items>
-            <div style="display: inline-block">
-                <Button type="primary" @click="v.util.getPageData(v)">
-                    <Icon type="search"></Icon>
-                </Button>
-            </div>
         </Row>
         <Row style="position: relative;">
             <Table :height="tableHeight" :columns="tableColumns" :data="pageData"></Table>
@@ -44,10 +39,10 @@
                 choosedItem: null,
                 tableColumns: [
                     {title: "#", width: 60, type: 'index'},
+                    {title:'车牌号',key:'cph',searchKey:'cphLike'},
                     {title:'类型',key:'type',dict:'tzlx',searchType:'dict'},
                     {title:'通知时间',key:'time',searchType:'daterange'},
                     {title:'内容',key:'content'},
-                    {title:'车牌号',key:'cph',searchKey:'cphLike'},
                 ],
                 pageData: [],
                 form: {

@@ -47,8 +47,8 @@
                 tableHeight: 220,
                 tableColumns: [
                     {title: "序号",  align: 'center', type: 'index'},
-                    {title: '驾驶人', align: 'center',  key: 'sjxm'},
                     {title: '车牌号', align: 'center', key: 'cph'},
+                    {title: '驾驶人', align: 'center',  key: 'sjxm'},
                     {title: '急加速', align: 'center', key: 'speedupCount'},
                     {title: '急刹车', align: 'center',  key: 'speedownCount'},
                     {title: '超速行驶', align: 'center',  key: 'overspeedCount'},

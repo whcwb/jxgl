@@ -57,14 +57,14 @@
 						type: 'index'
 					},
                     {
-                        title: '终端编号',
-                        align: 'center',
-                        key: 'zdbh'
-                    },
-                    {
                         title: '车牌号',
                         align: 'center',
                         key: 'cph'
+                    },
+                    {
+                        title: '终端编号',
+                        align: 'center',
+                        key: 'zdbh'
                     },
                     {
                         title: '最后线日期',

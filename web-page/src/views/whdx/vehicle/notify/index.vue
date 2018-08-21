@@ -41,10 +41,10 @@
                 choosedItem: null,
                 tableColumns: [
                     {title: "#", width: 60, type: 'index'},
+                    {title:'车牌号',key:'cph',searchKey:'cphLike'},
                     {title:'类型',key:'type',dict:'tzlx',searchType:'dict'},
                     {title:'通知时间',key:'time',searchType:'daterange'},
                     {title:'内容',key:'content'},
-                    {title:'车牌号',key:'cph',searchKey:'cphLike'},
                     {
                         title: '操作',
                         key: 'action',
