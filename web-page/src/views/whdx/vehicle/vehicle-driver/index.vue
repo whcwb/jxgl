@@ -35,8 +35,7 @@
 			:usermesType="userMesType"
 			@listF='listF'></component>
 		<!-- 资质审验单打印 -->
-		<!--<div id="printDiv" ref="printDiv" style="position: absolute;left:0;top:0;z-index: -10">-->
-		<div id="printDiv" ref="printDiv" style="position: absolute;">
+		<div id="printDiv" ref="printDiv" style="position: absolute;left:0;top:0;z-index: -10">
 			<ul>
 				<li>
 					<img v-for="img in printImgs" v-if="img.vfDamc == 'sfzzmFile'" :src="apis.STATIC_PATH + img.vfNetPath + '?d='+new Date().getTime()" width="336">
@@ -59,6 +58,7 @@
 	import newmess from './comp/newmes.vue'
 	import changemes from './comp/changmes.vue'
     import addlistfileImg from './comp/addlistfileImg.vue'
+    import printImg from './comp/printImg.vue'
     import swal from 'sweetalert2'
     import Print from 'print-js'
 	export default {
@@ -66,6 +66,7 @@
 		components: {
 			newmess,
 			changemes,
+            printImg,
             addlistfileImg
 		},
 		mixins: [mixins],
@@ -306,7 +307,10 @@
 			},
             //审验单打印
             showPrintPage(row){
-                let v = this;
+                var v = this
+                v.compName = 'printImg';
+                v.usermes = row;
+                /*let v = this;
                 swal.showLoading();
                 v.$http.get(v.apis.FILE.FINDBYPID + '/' + row.yhid).then((res) =>{
                     swal.close();
@@ -318,7 +322,7 @@
                                 printable: 'printDiv',
                                 type: 'html'
                             });
-						}, 500);
+						}, 1000);
                     }else{
                         swal({
                             text: "请先上传证件！",
@@ -332,7 +336,7 @@
                         text: '网络异常',
                         type: 'error'
                     })
-                })
+                })*/
             },
 		}
 	}
