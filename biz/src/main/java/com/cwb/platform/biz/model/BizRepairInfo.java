@@ -73,7 +73,29 @@ public class BizRepairInfo implements Serializable {
     @Column(name = "update_time")
     private String updateTime;
 
+    @Transient
+    private String ccdjrq;// 初次登记日期
+
+    @Transient
+    private String syr; // 使用人
+
     private static final long serialVersionUID = 1L;
+
+    public String getCcdjrq() {
+        return ccdjrq;
+    }
+
+    public void setCcdjrq(String ccdjrq) {
+        this.ccdjrq = ccdjrq;
+    }
+
+    public String getSyr() {
+        return syr;
+    }
+
+    public void setSyr(String syr) {
+        this.syr = syr;
+    }
 
     /**
      * 获取主键id

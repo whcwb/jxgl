@@ -42,6 +42,8 @@
                     {title:'车牌号',key:'cph',searchKey:'cphLike'},
                     {title:'类型',key:'type',dict:'tzlx',searchType:'dict'},
                     {title:'通知时间',key:'time',searchType:'daterange'},
+                    {title:'通知人姓名',key:'toUserName'},
+                    {title:'通知人电话',key:'toUserPhone'},
                     {title:'内容',key:'content'},
                 ],
                 pageData: [],

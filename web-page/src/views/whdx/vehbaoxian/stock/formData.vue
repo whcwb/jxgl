@@ -41,6 +41,10 @@
                     {label:'商品名称',prop:'productName'},
                     {label:'库存数量',prop:'number'},
                     {label:'存放位置',prop:'position'},
+                    {label:'采购人',prop:'cgr'},
+                    {label:'采购时间',prop:'cgsj',type:'date'},
+                    {label:'规格',prop:'gg'},
+                    {label:'单价',prop:'price'},
                 ],
                 foreignList:{
                     productName:{url:this.apis.stock.QUERY,key:'productName',val:'productName',items:[]},

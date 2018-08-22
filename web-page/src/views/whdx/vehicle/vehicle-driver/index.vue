@@ -16,10 +16,13 @@
 				<Button type="primary" @click="AddDataList">
 					<Icon type="plus-round"></Icon>
 				</Button>
+				<Button type="primary" @click="v.util.export(v)">
+					导出
+				</Button>
 			</Col>
 		</Row>
 			<Row style="position: relative;">
-				<Table
+				<Table  ref="table"
 						size='large'
 						:height="tableHeight"
 						:row-class-name="rowClassName"
@@ -75,6 +78,10 @@
                 searchItems:[
                     {label:'用户姓名',formKey:'xmLike'},
                 ],
+                exportParam:{
+                    start:false,
+                    filename:'驾驶员统计'
+                },
 				//tab高度
 				tableHeight: 220,
 				//动态组建

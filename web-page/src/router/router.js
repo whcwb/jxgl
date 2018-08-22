@@ -137,6 +137,13 @@ export let appRouter = [
                 component: () => import('@/views/whdx/vehicle/notify')
             },
             {
+                path: 'dbrw',
+                icon: 'android-clipboard',
+                name: 'dbrw',
+                meta: { title: '待办任务' },
+                component: () => import('@/views/whdx/vehicle/wait-notify')
+            },
+            {
                 path: 'vehicle-cq',
                 icon: 'android-clipboard',
                 name: 'vehicle-cq',

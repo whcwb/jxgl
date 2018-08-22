@@ -57,10 +57,13 @@
 				<Button type="primary" @click="v.util.add(v)">
 					<Icon type="plus-round"></Icon>
 				</Button>
+				<Button type="primary" @click="v.util.export(v)">
+					导出
+				</Button>
 			</Col>
 		</Row>
 		<Row style="position: relative;">
-			<Table :height="tableHeight" :columns="tableColumns" :data="pageData"></Table>
+			<Table ref="table" :height="tableHeight" :columns="tableColumns" :data="pageData"></Table>
 		</Row>
 		<Row class="margin-top-10 pageSty">
 			<Page :total=form.total :current=form.pageNum :page-size=form.pageSize show-total show-elevator
@@ -109,6 +112,10 @@
                 tableHeight: 160,
                 componentName: '',
                 choosedItem: null,
+				exportParam:{
+                    start:false,
+					filename:'车辆统计'
+				},
                 tableColumns: [
                     {title: "序号", width: 60, type: 'index'},
                     {title: '车牌号',width: 120,key:'vHphm',searchKey:'vHphm'},

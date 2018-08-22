@@ -34,6 +34,8 @@
                     {title: "#", width: 60, type: 'index'},
                     {title:'商品编码',key:'productCode'},
                     {title:'商品名称',key:'productName',searchKey:'productNameLike'},
+                    {title:'规格',key:'gg'},
+                    {title:'单价',key:'price'},
                     {title:'剩余数量',key:'number'},
                     {title:'存放位置',key:'position'},
                     {title:'更新时间',key:'updateTime'},

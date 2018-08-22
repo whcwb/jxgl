@@ -30,11 +30,11 @@
 </template>
 
 <script>
-	import addNotify from './addNotify'
+	import formData from './addNotify'
     import searchItems from '../../components/searchItems'
 	export default {
         name: 'notify',
-        components: {searchItems,addNotify},
+        components: {searchItems,formData},
 		data() {
 			return {
 			    v:this,
@@ -48,6 +48,8 @@
                     {title: "#", width: 60, type: 'index'},
                     {title:'车牌号',key:'cph',searchKey:'cphLike'},
                     {title:'通知时间',key:'time',searchType:'daterange'},
+                    {label:'通知人姓名',prop:'toUserName'},
+                    {label:'通知人电话',prop:'toUserPhone'},
                     {title:'内容',key:'content'},
                 ],
                 pageData: [],

@@ -5,9 +5,6 @@
 	<div class="boxbackborder">
 		<Row style="padding-bottom: 16px;">
 			<search-items :parent="v"></search-items>
-			<Button type="primary" @click="v.util.getPageData(v)">
-				<Icon type="search"></Icon>
-			</Button>
 		</Row>
 		<Row style="position: relative;">
 			<Table :height="tableHeight" :columns="tableColumns" :data="pageData"></Table>
@@ -39,6 +36,8 @@
                 tableColumns: [
                     {title: "序号", width: 70, type: 'index'},
                     {title: '车牌号码',key:'vHphm',searchKey:'vHphmLike'},
+                    {title: '初次登记日期',key:'ccdjrq'},
+                    {title: '使用人',key:'syr',searchKey:'syrLike'},
                     {title: '最后一次维修时间',key:'lastRepairTime',searchKey:'lastRepairTimeInRange',searchType:'daterange'},
                     {title: '最后一次维修项目',key:'lastRepairProject'},
                     {title: '最后一次应付维护费用',key:'lastRepairMoney'},

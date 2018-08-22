@@ -62,6 +62,29 @@ public class BizStock implements Serializable {
     @Column(name = "update_user")
     private String updateUser;
 
+    /**
+     * 规格
+     */
+    @Column(name = "gg")
+    private String gg;
+
+    /**
+     * 价格
+     */
+    @Column(name = "price")
+    private String price;
+
+    /**
+     * 采购人
+     */
+    @Column(name = "cgr")
+    private String cgr;
+    /**
+     * 采购时间
+     */
+    @Column(name = "cgsj")
+    private String cgsj;
+
     @Transient
     private String remark;
 
@@ -75,6 +98,10 @@ public class BizStock implements Serializable {
         createTime("create_time"),
         createUser("create_user"),
         updateTime("update_time"),
+        gg("gg"),
+        price("price"),
+        cgr("cgr"),
+        cgsj("cgsj"),
         updateUser("update_user");
 
         private final String column;

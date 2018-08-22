@@ -46,8 +46,34 @@ public class BizNotify implements Serializable {
      */
     @Column(name = "create_user")
     private String createUser;
+    /**
+     * 通知人姓名
+     */
+    @Column(name = "to_user_name")
+    private String toUserName;
+    /**
+     * 通知人电话
+     */
+    @Column(name = "to_user_phone")
+    private String toUserPhone;
 
     private static final long serialVersionUID = 1L;
+
+    public String getToUserName() {
+        return toUserName;
+    }
+
+    public void setToUserName(String toUserName) {
+        this.toUserName = toUserName;
+    }
+
+    public String getToUserPhone() {
+        return toUserPhone;
+    }
+
+    public void setToUserPhone(String toUserPhone) {
+        this.toUserPhone = toUserPhone;
+    }
 
     /**
      * @return id

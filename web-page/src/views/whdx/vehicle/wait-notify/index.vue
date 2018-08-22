@@ -4,7 +4,7 @@
 <template>
 	<div class="boxbackborder">
 		<Row style="padding-bottom: 16px;">
-            <search-items :parent="v" :showCreateButton="true"></search-items>
+            <search-items :parent="v" :showCreateButton="false"></search-items>
         </Row>
         <Row style="position: relative;">
         	<Table :height="tableHeight" :columns="tableColumns" :data="pageData"></Table>
@@ -17,12 +17,11 @@
 </template>
 
 <script>
-    import formData from './formData.vue'
     import searchItems from '../../components/searchItems'
 
     export default {
         name: 'notify',
-        components: {formData,searchItems},
+        components: {searchItems},
         data() {
             return {
                 v:this,
@@ -59,6 +58,8 @@
             }
         },
         created() {
+            let now = new Date().format("yyyy-MM-dd hh:mm:ss");
+            this.form.timeGte = now;
             this.util.initTable(this)
         },
         methods: {
