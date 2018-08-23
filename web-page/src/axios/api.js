@@ -78,6 +78,12 @@ module.exports = {
         CHANGE:'/api/notify/update',// 编辑字典
         DELE:'/api/notify/removeIds' // 删除字典
     },
+    waitNotify:{
+        QUERY:'/api/waitNotify/pager',// 通知管理
+        ADD:'/api/waitNotify/save',// 新增字典
+        CHANGE:'/api/waitNotify/update',// 编辑字典
+        DELE:'/api/waitNotify/removeIds' // 删除字典
+    },
     DICTIONARY_LIST:{
         QUERY:'/api/zdxm/pager',//查询字典项
         ADD:'/api/zdxm/save',// 新增字典项

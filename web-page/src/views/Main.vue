@@ -27,9 +27,16 @@
                     </Button>
                 </div>
                 <div class="header-middle-con">
-                    <div class="main-breadcrumb">
+                    <div class="main-breadcrumb" style="width: 300px;display: inline-block">
                         <breadcrumb-nav :currentPath="currentPath"></breadcrumb-nav>
                     </div>
+                    <marquee  behavior="scroll" direction="left" align="middle"
+                              scrolldelay="120"
+                              style="font-size: 18px;width: 400px;;display: inline-block">
+                        待办任务：
+                        <span v-if="waitNotify === 0">暂无待办任务</span>
+                        <span v-else>{{waitNotify}}</span>
+                    </marquee>
                 </div>
                 <div class="header-avator-con">
                     <div class="user-dropdown-menu-con">
@@ -85,7 +92,7 @@
     // 'sockjs-client' 必须与package.json文件当中dependencies 当中的一模一样
     import Stomp from '@stomp/stompjs';
 
-	
+
 	import pass from './passworld'
     export default {
         components: {
@@ -101,7 +108,7 @@
             	compName:'',
 				scoketMess:[],
 				scoketAllCar:[],
-				
+                waitNotify:0,
 				shrink: false,
                 userName: '',
                 isFullScreen: false,
@@ -162,8 +169,20 @@
         created () {
             // 显示打开的页面的列表
             this.$store.commit('setOpenedList');
+            this.getTip();
         },
         methods: {
+            getTip(){
+                let now = new Date().format("yyyy-MM-dd hh:mm:ss");
+              this.$http.get(this.apis.waitNotify.QUERY,{params:{nextNotifyTimeGte:now}}).then((res)=>{
+                  if (res.code === 200 && res.page.list){
+                      this.waitNotify = res.page.total;
+                      setTimeout(function(){
+                          this.getTip()
+                      },1000*60);
+                  }
+              })
+            },
         	person(){
         		this.compName = 'pass'
         	},

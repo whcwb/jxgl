@@ -29,7 +29,7 @@
             return {
                 v:this,
                 SpinShow: true,
-                apiRoot:this.apis.notify,
+                apiRoot:this.apis.waitNotify,
                 tableHeight: 220,
                 componentName: '',
                 choosedItem: null,
@@ -66,7 +66,7 @@
         },
         created() {
             let now = new Date().format("yyyy-MM-dd hh:mm:ss");
-            this.form.timeGte = now;
+            this.form.nextNotifyTimeGte = now;
             this.util.initTable(this)
         },
         methods: {
