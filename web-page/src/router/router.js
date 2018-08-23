@@ -291,6 +291,13 @@ export let appRouter = [
                 name: 'stock',
                 meta: { title: '库存管理' },
                 component: () => import('@/views/whdx/vehbaoxian/stock')
+            },
+            {
+                path: 'stockLog',
+                icon: 'android-clipboard',
+                name: 'stockLog',
+                meta: { title: '库存历史' },
+                component: () => import('@/views/whdx/vehbaoxian/stockLog')
             }
         ]
     },

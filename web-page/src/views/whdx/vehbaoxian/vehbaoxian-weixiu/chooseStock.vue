@@ -10,22 +10,35 @@
                         :label-width="100"
                         :styles="{top: '20px'}">
                     <Row v-for="(r,i) in this.choosedList">
-                        <Col span="8">
+                        <Col span="6">
                             <FormItem prop='productName' label='商品名称'>
                                 <Select v-model="r.productName" @on-change="(e)=>change(e,r)">
                                     <Option v-for="(item,index) in productList" :key="index" :value="item.productName">{{item.productName}}</Option>
                                 </Select>
                             </FormItem>
                         </Col>
-                        <Col span="6">
+                        <Col span="5">
                             <FormItem prop='number' label='商品数量'>
                                 <InputNumber v-model="r.number"></InputNumber>
                             </FormItem>
                         </Col>
-                        <Col span="4">
+                        <Col span="3">
+                            <label>单价：{{r.price}} 元</label>
+                        </Col>
+                        <Col span="3">
                             <label>剩余：{{r.rest}} 个</label>
                         </Col>
                         <Col span="4">
+                            <RadioGroup v-model="r.source">
+                                <Radio label="库存">
+                                    <span>库存</span>
+                                </Radio>
+                                <Radio label="采购">
+                                    <span>采购</span>
+                                </Radio>
+                            </RadioGroup>
+                        </Col>
+                        <Col span="2">
                             <!--<Button v-if="!r.confirm" type="primary" @click="submit(r)">确定</Button>-->
                             <Button type="default" @click="del(i)">删除</Button>
                         </Col>
@@ -81,10 +94,10 @@
                             let c = this.productList[0];
                             if (this.$parent.productData.length != 0){
                                 for (let r of this.$parent.productData){
-                                    this.choosedList.push({productName:r.productName,number:r.number,confirm:false,rest:r.rest});
+                                    this.choosedList.push({productName:r.productName,number:r.number,confirm:false,rest:r.rest,price:r.price,source:'库存'});
                                 }
                             }else{
-                                this.choosedList.push({productName:'',number:1,confirm:false,rest:0});
+                                this.choosedList.push({productName:'',number:1,confirm:false,rest:0,price:0,source:'库存'});
                             }
                         }
                     }
@@ -94,11 +107,12 @@
                 for (let r of this.productList){
                     if (r.productName === e){
                         row.rest = r.number;
+                        row.price = r.price;
                     }
                 }
             },
             add(){
-                this.choosedList.push({productName:'',number:1,confirm:false,rest:0});
+                this.choosedList.push({productName:'',number:1,confirm:false,rest:0,price:0,source:'库存'});
             },
             del(i){
                 this.choosedList.splice(i,1);

@@ -397,6 +397,7 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
 		if (StringUtils.isNotBlank(entity.getvLxr())){
 			//查看用户信息是否存在
 			String[] lxrxx = entity.getvLxr().split("-");
+
 			SysYh user = this.userService.findById(lxrxx[0]);
 			RuntimeCheck.ifNull(user, "使用人信息不存在");
 

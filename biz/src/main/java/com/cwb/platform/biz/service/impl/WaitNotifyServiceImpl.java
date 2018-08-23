@@ -1,9 +1,9 @@
 package com.cwb.platform.biz.service.impl;
 
-import com.cwb.platform.biz.mapper.BizNotifyMapper;
+import com.cwb.platform.biz.mapper.BizWaitNotifyMapper;
 import com.cwb.platform.biz.model.BizNotify;
 import com.cwb.platform.biz.model.BizVehicle;
-import com.cwb.platform.biz.service.NotifyService;
+import com.cwb.platform.biz.model.BizWaitNotify;
 import com.cwb.platform.biz.service.VehicleService;
 import com.cwb.platform.biz.service.WaitNotifyService;
 import com.cwb.platform.sys.base.BaseServiceImpl;
@@ -11,28 +11,26 @@ import com.cwb.platform.sys.model.SysYh;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.commonUtil.DateUtils;
 import com.cwb.platform.util.exception.RuntimeCheck;
-import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.common.Mapper;
 
 @Service
-public class NotifyServiceImpl extends BaseServiceImpl<BizNotify, String> implements NotifyService {
+public class WaitNotifyServiceImpl extends BaseServiceImpl<BizWaitNotify, String> implements WaitNotifyService {
 
 	@Autowired
-	private BizNotifyMapper baseMapper;
+	private BizWaitNotifyMapper baseMapper;
 	@Autowired
 	private VehicleService vehicleService;
-	@Autowired
-	private WaitNotifyService waitNotifyService;
 
 	@Override
-	protected Mapper<BizNotify> getBaseMapper() {
+	protected Mapper<BizWaitNotify> getBaseMapper() {
 		return baseMapper;
 	}
 
 	@Override
-	public ApiResponse<String> validAndSave(BizNotify notify){
+	public ApiResponse<String> validAndSave(BizWaitNotify notify){
 		RuntimeCheck.ifBlank(notify.getClId(),"请选择车辆");
 		BizVehicle car = vehicleService.findById(notify.getClId());
 		RuntimeCheck.ifNull(car,"未找到车辆");
@@ -43,10 +41,15 @@ public class NotifyServiceImpl extends BaseServiceImpl<BizNotify, String> implem
 		notify.setId(genId());
 		notify.setCph(car.getvHphm());
 		save(notify);
+		return ApiResponse.success();
+	}
 
-		if (StringUtils.isNotEmpty(notify.getNextNotifyTime())){
-			waitNotifyService.nextNotify(notify);
-		}
+	@Override
+	public ApiResponse<String> nextNotify(BizNotify notify) {
+		BizWaitNotify waitNotify = new BizWaitNotify();
+		BeanUtils.copyProperties(notify,waitNotify,"id");
+		waitNotify.setId(genId());
+		save(waitNotify);
 		return ApiResponse.success();
 	}
 }

@@ -66,6 +66,12 @@ module.exports = {
         outStocks:'/api/stock/outStocks',
         revert:'/api/stock/revert',
     },
+    stockLog:{
+        QUERY:'/api/stockLog/pager',// 查询库存历史
+        ADD:'/api/stockLog/save',
+        CHANGE:'/api/stockLog/update',
+        DELE:'/api/stockLog/removeIds',
+    },
     notify:{
         QUERY:'/api/notify/pager',// 通知管理
         ADD:'/api/notify/save',// 新增字典
@@ -109,6 +115,9 @@ module.exports = {
         CHANGE:'/api/oilCard/update',
         CHARGE:'/api/oilCard/charge',
         DELE:'/api/oilCard/removeIds',
+    },
+    DRIVER:{
+        QUERY:'api/driver/pager',//驾驶员管理
     },
     CAR:{
         QUERY:'api/car/pager',//车辆管理

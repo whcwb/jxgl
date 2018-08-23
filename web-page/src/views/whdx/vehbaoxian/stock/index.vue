@@ -17,11 +17,12 @@
     import searchItems from '../../components/searchItems'
     import pager from '../../components/pager'
     import formData from './formData.vue'
+    import showLog from '../stockLog/productLog'
 
 
     export default {
         name: 'stock',
-        components: {formData,searchItems,pager},
+        components: {formData,searchItems,pager,showLog},
         data() {
             return {
                 v:this,
@@ -47,6 +48,10 @@
                         fixed: 'right',
                         render: (h, params) => {
                             return h('div', [
+                                this.util.buildButton(this,h,'success','eye','历史记录',()=>{
+                                    this.choosedItem = params.row;
+                                    this.componentName = 'showLog'
+                                }),
                                 this.util.buildEditButton(this,h,params),
                                 this.util.buildDeleteButton(this,h,params.row.id),
                             ]);

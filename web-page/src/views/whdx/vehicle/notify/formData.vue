@@ -40,6 +40,7 @@
                     {label:'车牌号',prop:'clId',type:'foreignKey'},
                     {label:'类型',prop:'type',type:'dict',dict:'tzlx'},
                     {label:'通知时间',prop:'time',type:'datetime'},
+                    {label:'下次通知时间',prop:'nextNotifyTime',type:'datetime'},
                     {label:'通知人姓名',prop:'toUserName'},
                     {label:'通知人电话',prop:'toUserPhone'},
                     {label:'内容',prop:'content'},

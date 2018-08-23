@@ -1,10 +1,13 @@
 package com.cwb.platform.biz.model;
 
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
-import javax.persistence.*;
 
-@Table(name = "biz_notify")
-public class BizNotify implements Serializable {
+@Table(name = "biz_wait_notify")
+public class BizWaitNotify implements Serializable {
     @Id
     @GeneratedValue(generator = "JDBC")
     private String id;
@@ -56,21 +59,8 @@ public class BizNotify implements Serializable {
      */
     @Column(name = "to_user_phone")
     private String toUserPhone;
-    /**
-     * 下次通知时间
-     */
-    @Column(name = "next_notify_time")
-    private String nextNotifyTime;
 
     private static final long serialVersionUID = 1L;
-
-    public String getNextNotifyTime() {
-        return nextNotifyTime;
-    }
-
-    public void setNextNotifyTime(String nextNotifyTime) {
-        this.nextNotifyTime = nextNotifyTime;
-    }
 
     public String getToUserName() {
         return toUserName;

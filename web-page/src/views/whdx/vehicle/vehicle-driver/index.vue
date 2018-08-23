@@ -5,12 +5,17 @@
 <template>
 	<div class="boxbackborder">
 		<Row style="padding-bottom: 16px;">
-			<Col span="5">
+			<Col span="14">
 				<label class="searchLabel">用户姓名:</label>
 				<Input v-model="findMess.xmLike" placeholder="请输入用户姓名" style="width: 200px"></Input>
+				<label class="searchLabel">是否绑定:</label>
+				<Select v-model="findMess.bind" clearable style="width: 200px">
+					<Option value="true">已绑定</Option>
+					<Option value="false">未绑定</Option>
+				</Select>
 			</Col>
 			<Col span="8">
-				<Button type="primary" @click="findMessList">
+				<Button type="primary" @click="getmess">
 					<Icon type="search"></Icon>
 				</Button>
 				<Button type="primary" @click="AddDataList">
@@ -263,7 +268,7 @@
 			},
 			getmess(){
 				var v = this
-				this.$http.get(this.apis.USER.QUERY,{params:v.findMess}).then((res) =>{
+				this.$http.get(this.apis.DRIVER.QUERY,{params:v.findMess}).then((res) =>{
 //					log(res)
 					v.tableData = res.page.list
 					v.pageTotal = res.page.total
@@ -281,14 +286,6 @@
                 v.compName = 'addlistfileImg';
                 this.usermes = val;
             },
-			//收索事件
-			findMessList() {
-				var v = this
-				this.$http.get(this.apis.USER.QUERY,{params:v.findMess}).then((res) =>{
-//					log(res)
-					v.tableData = res.page.list
-				})
-			},
 			//添加新用户信息
 			AddDataList() {
 				var v = this

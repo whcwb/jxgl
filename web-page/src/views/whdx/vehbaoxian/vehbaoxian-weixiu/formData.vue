@@ -89,6 +89,8 @@
                     {title: "序号", width: 70, type: 'index'},
                     {title: "商品名称", key: 'productName'},
                     {title: "数量", key: 'number'},
+                    {title: "单价", key: 'price'},
+                    {title: "来源", key: 'source'},
 					{title: '操作',
 						render:(h,p)=>{
                             return h('Tooltip',
