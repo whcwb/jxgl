@@ -5,9 +5,12 @@
 	<div class="boxbackborder">
 		<Row style="padding-bottom: 16px;">
             <search-items :parent="v" :showCreateButton="false"></search-items>
+            <Button type="primary" @click="v.util.export(v)">
+                导出
+            </Button>
         </Row>
         <Row style="position: relative;">
-        	<Table :height="tableHeight" :columns="tableColumns" :data="pageData"></Table>
+        	<Table  ref="table" :height="tableHeight" :columns="tableColumns" :data="pageData"></Table>
         </Row>
         <Row class="margin-top-10 pageSty">
             <Page :total=form.total :current=form.pageNum :page-size=form.pageSize show-total show-elevator @on-change='pageChange'></Page>
@@ -30,6 +33,10 @@
                 tableHeight: 220,
                 componentName: '',
                 choosedItem: null,
+                exportParam:{
+                    start:false,
+                    filename:'待办任务'
+                },
                 tableColumns: [
                     {title: "#", width: 60, type: 'index'},
                     {title:'车牌号',key:'cph',searchKey:'cphLike'},
