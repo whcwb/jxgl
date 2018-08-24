@@ -61,6 +61,30 @@ public class BizNotify implements Serializable {
      */
     @Column(name = "next_notify_time")
     private String nextNotifyTime;
+    /**
+     * 通知方式
+     */
+    @Column(name = "method")
+    private String method;
+
+    @Transient
+    private String nextNotifyContent;
+
+    public String getMethod() {
+        return method;
+    }
+
+    public void setMethod(String method) {
+        this.method = method;
+    }
+
+    public String getNextNotifyContent() {
+        return nextNotifyContent;
+    }
+
+    public void setNextNotifyContent(String nextNotifyContent) {
+        this.nextNotifyContent = nextNotifyContent;
+    }
 
     private static final long serialVersionUID = 1L;
 
@@ -235,6 +259,7 @@ public class BizNotify implements Serializable {
         content("content"),
         clId("cl_id"),
         cph("cph"),
+        method("method"),
         createTime("create_time"),
         createUser("create_user");
 

@@ -4,7 +4,7 @@
 <template>
     <div class="boxbackborder">
         <Row style="padding-bottom: 16px;">
-            <search-items :parent="v" ></search-items>
+            <search-items :parent="v" :showCreateButton="false"></search-items>
         </Row>
         <Row style="position: relative;">
             <Table :height="tableHeight" :columns="tableColumns" :data="pageData"></Table>
@@ -18,10 +18,11 @@
 
 <script>
     import searchItems from '../../components/searchItems'
+    import formData from './addNotify'
 
     export default {
         name: 'notify',
-        components: {searchItems},
+        components: {searchItems,formData},
         props:{
             vehcile:{
                 type:Object,
@@ -43,8 +44,8 @@
                     {title:'类型',key:'type',dict:'tzlx',searchType:'dict'},
                     {title:'通知时间',key:'time',searchType:'daterange'},
                     {title:'通知人姓名',key:'toUserName'},
-                    {title:'通知人电话',key:'toUserPhone'},
-                    {title:'内容',key:'content'},
+                    {title:'通知方式',key:'method',dict:'tzfs'},
+                    {title:'内容',width: 560,key:'content'},
                 ],
                 pageData: [],
                 form: {

@@ -43,8 +43,8 @@
                     {title:'类型',key:'type',dict:'tzlx',searchType:'dict'},
                     {title:'通知时间',key:'time',searchType:'daterange'},
                     {title:'通知人姓名',key:'toUserName'},
-                    {title:'通知人电话',key:'toUserPhone'},
-                    {title:'内容',key:'content'},
+                    {title:'通知方式',key:'method',dict:'tzfs'},
+                    {title:'内容',width: 560,key:'content'},
                     {
                         title: '操作',
                         key: 'action',

@@ -47,8 +47,10 @@ public class WaitNotifyServiceImpl extends BaseServiceImpl<BizWaitNotify, String
 	@Override
 	public ApiResponse<String> nextNotify(BizNotify notify) {
 		BizWaitNotify waitNotify = new BizWaitNotify();
-		BeanUtils.copyProperties(notify,waitNotify,"id");
+		BeanUtils.copyProperties(notify,waitNotify,"id","content");
 		waitNotify.setId(genId());
+		waitNotify.setContent(notify.getNextNotifyContent());
+		waitNotify.setTime(notify.getNextNotifyTime());
 		save(waitNotify);
 		return ApiResponse.success();
 	}

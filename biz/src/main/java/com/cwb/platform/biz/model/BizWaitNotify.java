@@ -60,6 +60,19 @@ public class BizWaitNotify implements Serializable {
     @Column(name = "to_user_phone")
     private String toUserPhone;
 
+    /**
+     * 通知方式
+     */
+    @Column(name = "method")
+    private String method;
+    public String getMethod() {
+        return method;
+    }
+
+    public void setMethod(String method) {
+        this.method = method;
+    }
+
     private static final long serialVersionUID = 1L;
 
     public String getToUserName() {
@@ -224,6 +237,7 @@ public class BizWaitNotify implements Serializable {
         time("time"),
         content("content"),
         clId("cl_id"),
+        method("method"),
         cph("cph"),
         createTime("create_time"),
         createUser("create_user");

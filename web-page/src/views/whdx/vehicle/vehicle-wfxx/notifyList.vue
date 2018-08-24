@@ -6,7 +6,7 @@
 </style>
 <template>
 	<div>
-		<Modal v-model="showModal" width='900' :closable='false'
+		<Modal v-model="showModal" width='1200' :closable='false'
 			:mask-closable="false" :title="operate+''">
 			<div style="overflow: auto;height: 500px;">
 				<div class="boxbackborder">
@@ -49,8 +49,8 @@
                     {title:'车牌号',key:'cph',searchKey:'cphLike'},
                     {title:'通知时间',key:'time',searchType:'daterange'},
                     {title:'通知人姓名',key:'toUserName'},
-                    {title:'通知人电话',key:'toUserPhone'},
-                    {title:'内容',key:'content'},
+                    {title:'通知方式',key:'method',dict:'tzfs'},
+                    {title:'内容',width: 560, key:'content'},
                 ],
                 pageData: [],
                 form: {

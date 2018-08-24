@@ -42,7 +42,9 @@
                     // {label:'类型',prop:'type',type:'dict',dict:'tzlx'},
                     {label:'通知时间',prop:'time',type:'datetime'},
                     {label:'通知人姓名',prop:'toUserName'},
-                    {label:'通知人电话',prop:'toUserPhone'},
+                    {label:'通知方式',prop:'method',dict:'tzfs',type:'dict'},
+                    {label:'下次通知时间',prop:'nextNotifyTime',type:'datetime'},
+                    {label:'下次通知内容',prop:'nextNotifyContent'},
                     {label:'内容',prop:'content'},
                 ],
                 ruleInline:{
@@ -61,6 +63,8 @@
             this.formItem.time = new Date().format("yyyy-MM-dd hh:mm:ss");
             this.formItem.clId = this.$parent.form.clId;
             this.formItem.type = this.$parent.form.type;
+            let userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
+            this.formItem.toUserName = userInfo.xm;
 		},
 		methods: {
 		}
