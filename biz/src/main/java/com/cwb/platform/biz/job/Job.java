@@ -37,7 +37,7 @@ public class Job {
         List<BizVehicle> carList = vehicleService.findByCondition(condition);
         if (carList.size() != 0){
             for (BizVehicle vehicle : carList) {
-                vehicle.setvZt("I");
+                vehicle.setvZt("F");
                 vehicleService.update(vehicle);
             }
         }

@@ -81,6 +81,9 @@ public class WfxxServiceImpl extends BaseServiceImpl<BizWfxx,String> implements 
     	if ("01".equals(entity.getWfWfzt())){
 			vehicle.setvZt("G"); // 车辆状态设置为违法未处理
 			vehicleService.update(vehicle);
+		}else if ("02".equals(entity.getWfWfzt())){
+			vehicle.setvZt("A"); // 车辆状态设置为违法未处理
+			vehicleService.update(vehicle);
 		}
 
     	entity.setvId(vehicle.getvId());
