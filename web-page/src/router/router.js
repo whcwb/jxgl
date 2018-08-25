@@ -301,22 +301,29 @@ export let appRouter = [
             }
         ]
     },
-    // {
-    //     path: '/report',
-    //     icon: 'connection-bars',
-    //     name: 'report',
-    //     meta: { title: '统计报表' },
-    //     component: Main,
-    //     children: [
-    //         {
-    //             path: 'report-zrr',
-    //             icon: 'ios-people',
-    //             name: 'report-zrr',
-    //             meta: { title: '责任人统计' },
-    //             component: () => import('@/views/whdx/report/zrr')
-    //         }
-    //     ]
-    // },
+    {
+        path: '/report',
+        icon: 'connection-bars',
+        name: 'report',
+        meta: { title: '统计报表' },
+        component: Main,
+        children: [
+            {
+                path: 'report-zrr',
+                icon: 'ios-people',
+                name: 'report-zrr',
+                meta: { title: '责任人统计' },
+                component: () => import('@/views/whdx/report/zrr')
+            },
+            {
+                path: 'report-wx',
+                icon: 'ios-people',
+                name: 'report-wx',
+                meta: { title: '维修统计' },
+                component: () => import('@/views/whdx/report/wx')
+            }
+        ]
+    },
     {
     	path: '/',
     	meta: {

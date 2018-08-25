@@ -80,8 +80,9 @@
 				},
                 formInputs:[
                     {label:'车牌号码',prop:'vHphm',readonly:true},
+                    {label:'维修基地',prop:'jd'},
                     {label:'维修项目',prop:'project'},
-                    {label: '维修时间',prop:'repairTime',type:'datetime'},
+                    {label:'维修时间',prop:'repairTime',type:'datetime'},
                 ],
                 ruleInline:{
 				},
@@ -112,8 +113,6 @@
 		},
 		watch:{
             compName:function(n,o){
-                console.log('n',n);
-                console.log('o',o);
             }
 
 		},
@@ -127,7 +126,9 @@
                 this.formItem.realMoney = this.formItem.money - this.formItem.insuranceMoney;
 			},
 			beforeSave(){
-		        this.saveStock();
+		        if (this.productData.length !== 0){
+                    this.saveStock();
+				}
 			},
             del(i){
                 swal({
@@ -143,14 +144,13 @@
                 });
             },
             chooseStock(){
-                console.log('chooseStock');
                 this.compName = '';
                 this.compName = 'chooseStock';
 			},
 			saveStock(){
 		        this.$http.post(this.apis.stock.outStocks,{stocks:JSON.stringify(this.productData)}).then((res)=>{
 		            if (res.code == 200){
-                        this.util.save(this)
+                        this.util.save(this,(res)=>{})
                     }
 				})
 			}

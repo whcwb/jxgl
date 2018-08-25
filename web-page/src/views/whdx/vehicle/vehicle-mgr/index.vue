@@ -127,6 +127,14 @@
                         });
                         return val;
                     }},
+                    {title: '状态', width: 60, key:'vZt',render:(h, params)=>{
+                            let val = $.map(this.dicts.clzt.items, item => {
+                                if(item.key == params.row.vZt) {
+                                    return item.val;
+                                }
+                            });
+                            return val;
+                        }},
                     {title: '初登日期',width: 120,key:'vCcdjrq'},
                     {title: '年审日期',width:180,key:'vNsrq',render:(h, params)=>{
 							let today = new Date().format("yyyy-MM-dd");
@@ -231,7 +239,8 @@
                 },
                 dicts:{
                 	hpzl:{code:'HPZL',items:[]},
-                    syxz:{code:'SYXZ',items:[]}
+                    syxz:{code:'SYXZ',items:[]},
+                    clzt:{code:'clzt',items:[]}
             	},
                 jszPrintImgs:[],
                 xszPrintImgs:[]

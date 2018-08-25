@@ -329,6 +329,7 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
         entity.setvId(genId());
         entity.setvNsrq(getNsrq(entity, 0));
         entity.setYyzFlag(0);
+        entity.setvZt("A");
         entity.setvRkzt("in"); // 新增车辆时默认是入库状态
         save(entity);
 

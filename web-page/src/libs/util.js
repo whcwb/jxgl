@@ -222,7 +222,7 @@ util.add = (v) => {
  * 如果执行保存操作之前需要处理数据，则先处理数据（beforeSave方法）
  * 保存或修改成功之后，提示成功，并且调用父组件刷新table数据方法，并关闭modal窗口，如果保存或修改失败，则提示错误信息
  */
-util.save = function (v) {
+util.save = function (v,onSuccess) {
     // 根据状态自动判断调用新增接口还是修改接口
     let url = v.saveUrl ? v.saveUrl : (v.$parent.choosedItem ? v.apiRoot['CHANGE'] : v.apiRoot['ADD']);
     let rules = v.$refs.form.rules;
@@ -234,9 +234,13 @@ util.save = function (v) {
         }
         v.$http.post(url, v.formItem).then((res) => {
             if (res.code === 200) {
-                v.$Message.success(res.message);
-                util.getPageData(v.$parent)
-                v.$parent.componentName = ''
+                if (typeof onSuccess === 'function'){
+                    onSuccess(res);
+                }else{
+                    v.$Message.success(res.message);
+                    util.getPageData(v.$parent)
+                    v.$parent.componentName = ''
+                }
             } else {
                 v.$Message.error(res.message);
             }

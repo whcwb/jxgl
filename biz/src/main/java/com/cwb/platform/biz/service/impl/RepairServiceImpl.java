@@ -16,11 +16,16 @@ import com.cwb.platform.util.exception.RuntimeCheck;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import tk.mybatis.mapper.common.Mapper;
 
+import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class RepairServiceImpl extends BaseServiceImpl<BizRepair,String> implements RepairService {
@@ -30,6 +35,8 @@ public class RepairServiceImpl extends BaseServiceImpl<BizRepair,String> impleme
     private BizVehicleMapper vehicleMapper;
     @Autowired
     private RepairInfoService repairInfoService;
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
     @Override
     protected Mapper<BizRepair> getBaseMapper() {
         return entityMapper;
@@ -95,11 +102,44 @@ public class RepairServiceImpl extends BaseServiceImpl<BizRepair,String> impleme
         RuntimeCheck.ifNull(car,"车辆不存在");
         entity.setvHphm(car.getvHphm());
         entity.setWxxId(genId());
+        entity.setSyr(car.getvSyl());
         if (StringUtils.isEmpty(entity.getCreateTime())){
             entity.setCreateTime(DateUtils.getNowTime());
         }
         save(entity);
         repairInfoService.repair(entity);
         return ApiResponse.saveSuccess();
+    }
+
+    @Override
+    public ApiResponse<List<Map<String, Object>>> statistics() {
+        String sql = "select wxx_jd jd,syr,count(*) c,sum(wxx_sfje) s from biz_wxjlxq where 1=1 ";
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        Map<String,String[]> paramMap = request.getParameterMap();
+        if (paramMap.containsKey("syrLike")){
+            String syrLike = paramMap.get("syrLike")[0];
+            if (StringUtils.isNotEmpty(syrLike)){
+                sql += " and syr like '%"+syrLike+"%' ";
+            }
+        }
+        if (paramMap.containsKey("jdLike")){
+            String jdLike = paramMap.get("jdLike")[0];
+            if (StringUtils.isNotEmpty(jdLike)){
+                sql += " and wxx_jd like '%"+jdLike+"%' ";
+            }
+        }
+        if (paramMap.containsKey("repairTimeInRange")){
+            String[] repairTimeInRange = paramMap.get("repairTimeInRange")[0].split(",");
+            if (repairTimeInRange.length > 1){
+                String startTime = repairTimeInRange[0];
+                String endTime = repairTimeInRange[1];
+                if (StringUtils.isNotEmpty(startTime) && StringUtils.isNotEmpty(endTime)){
+                    sql += " and wxx_wxsj >= '"+startTime+"' and wxx_wxsj <='"+endTime+"' ";
+                }
+            }
+        }
+        sql += " group by wxx_jd,syr";
+        List<Map<String,Object>> list = jdbcTemplate.queryForList(sql);
+        return ApiResponse.success(list);
     }
 }

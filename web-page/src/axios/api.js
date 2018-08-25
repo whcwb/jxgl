@@ -222,5 +222,6 @@ module.exports = {
     },
     report:{
         zrr:'/api/report/zrr',//保险管理
+        wx:'/api/repair/statistics',//维修统计
     },
 }

@@ -80,6 +80,18 @@ public class BizRepair implements Serializable {
     private String status;
 
     /**
+     * 基地
+     */
+    @Column(name = "wxx_jd")
+    private String jd;
+
+    /**
+     * 使用人
+     */
+    @Column(name = "syr")
+    private String syr;
+
+    /**
      * 创建人
      */
     @Column(name = "create_user")
@@ -91,7 +103,23 @@ public class BizRepair implements Serializable {
     @Column(name = "create_time")
     private String createTime;
 
+    public String getSyr() {
+        return syr;
+    }
+
+    public void setSyr(String syr) {
+        this.syr = syr;
+    }
+
     private static final long serialVersionUID = 1L;
+
+    public String getJd() {
+        return jd;
+    }
+
+    public void setJd(String jd) {
+        this.jd = jd;
+    }
 
     /**
      * 获取主键id

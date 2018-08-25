@@ -78,6 +78,10 @@ public class WfxxServiceImpl extends BaseServiceImpl<BizWfxx,String> implements 
     	//查看车辆信息是否存在
     	BizVehicle vehicle = this.vehicleService.findById(entity.getvId());
     	RuntimeCheck.ifNull(vehicle, "选择的车辆信息不存在");
+    	if ("01".equals(entity.getWfWfzt())){
+			vehicle.setvZt("G"); // 车辆状态设置为违法未处理
+			vehicleService.update(vehicle);
+		}
 
     	entity.setvId(vehicle.getvId());
     	entity.setvHphm(vehicle.getvHphm());
