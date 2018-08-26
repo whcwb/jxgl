@@ -173,8 +173,7 @@
         },
         methods: {
             getTip(){
-                let now = new Date().format("yyyy-MM-dd hh:mm:ss");
-              this.$http.get(this.apis.waitNotify.QUERY,{params:{nextNotifyTimeGte:now}}).then((res)=>{
+              this.$http.get(this.apis.waitNotify.QUERY,{params:{zt:0}}).then((res)=>{
                   if (res.code === 200 && res.page.list){
                       this.waitNotify = res.page.total;
                       setTimeout(function(){
