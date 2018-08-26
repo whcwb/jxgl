@@ -127,7 +127,7 @@
                         });
                         return val;
                     }},
-                    {title: '状态', width: 60, key:'vZt',render:(h, params)=>{
+                    {title: '状态', width: 120, key:'vZt',render:(h, params)=>{
                             let val = $.map(this.dicts.clzt.items, item => {
                                 if(item.key == params.row.vZt) {
                                     return item.val;

@@ -42,10 +42,11 @@
                     {title: "#", width: 60, type: 'index'},
                     {title:'车牌号',key:'cph',searchKey:'cphLike'},
                     {title:'类型',key:'type',dict:'tzlx',searchType:'dict'},
-                    {title:'通知时间',key:'time',searchType:'daterange'},
-                    {title:'通知人姓名',key:'toUserName'},
-                    {title:'通知方式',key:'method',dict:'tzfs'},
+                    {title:'时间',key:'time',searchType:'daterange'},
+                    // {title:'通知人姓名',key:'toUserName'},
+                    // {title:'通知方式',key:'method',dict:'tzfs'},
                     {title:'内容',width: 560,key:'content'},
+                    {title:'状态',key:'zt',type:'dict',dict:'rwzt'},
                     {
                         title: '操作',
                         key: 'action',
@@ -72,7 +73,7 @@
                 ],
                 pageData: [],
                 form: {
-                    zt:'0',
+                    orderBy:'zt asc',
                     total: 0,
                     pageNum: 1,
                     pageSize: 8,
