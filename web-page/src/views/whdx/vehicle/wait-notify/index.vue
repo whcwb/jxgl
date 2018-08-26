@@ -52,8 +52,9 @@
                         key: 'action',
                         fixed: 'right',
                         render: (h, params) => {
-                            return h('div', [
-                                this.util.buildButton(this,h,'success','ios-checkmark','完成',()=>{
+                            let buttons = [this.util.buildDeleteButton(this,h,params.row.id)];
+                            if (params.row.zt === '0'){
+                                buttons.push(this.util.buildButton(this,h,'success','ios-checkmark','完成',()=>{
                                     swal({
                                         text: "是否确认已完成通知?",
                                         type: "warning",
@@ -65,9 +66,9 @@
                                             this.finish(params.row.id);
                                         }
                                     });
-                                }),
-                                this.util.buildDeleteButton(this,h,params.row.id),
-                            ]);
+                                }))
+                            }
+                            return h('div', buttons);
                         }
                     }
                 ],
