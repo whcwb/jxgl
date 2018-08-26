@@ -21,4 +21,5 @@ public class WaitNotifyCtrl extends BaseController<BizWaitNotify,String> {
     protected BaseService<BizWaitNotify, String> getBaseService() {
         return service;
     }
+
 }

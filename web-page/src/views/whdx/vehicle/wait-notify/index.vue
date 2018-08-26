@@ -22,6 +22,7 @@
 <script>
     import searchItems from '../../components/searchItems'
 
+    import swal from 'sweetalert2'
     export default {
         name: 'notify',
         components: {searchItems},
@@ -51,6 +52,19 @@
                         fixed: 'right',
                         render: (h, params) => {
                             return h('div', [
+                                this.util.buildButton(this,h,'success','ios-checkmark','完成',()=>{
+                                    swal({
+                                        text: "是否确认已完成通知?",
+                                        type: "warning",
+                                        showCancelButton: true,
+                                        confirmButtonText: '确认',
+                                        cancelButtonText: '取消'
+                                    }).then((isConfirm) => {
+                                        if (isConfirm.value) {
+                                            this.finish(params.row.id);
+                                        }
+                                    });
+                                }),
                                 this.util.buildDeleteButton(this,h,params.row.id),
                             ]);
                         }
@@ -58,6 +72,7 @@
                 ],
                 pageData: [],
                 form: {
+                    zt:'0',
                     total: 0,
                     pageNum: 1,
                     pageSize: 8,
@@ -70,6 +85,18 @@
             this.util.initTable(this)
         },
         methods: {
+            finish(id){
+                let param = {
+                    id:id,
+                    zt:"1"
+                }
+              this.$http.post(this.apis.waitNotify.CHANGE,param).then((res)=>{
+                  if (res.code === 200){
+                      this.$Message.success(res.message);
+                      this.util.getPageData(this)
+                  }
+              })
+            },
             pageChange(event) {
                 var v = this
                 v.util.getPageData(v);

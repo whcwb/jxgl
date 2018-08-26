@@ -51,6 +51,7 @@ public class WaitNotifyServiceImpl extends BaseServiceImpl<BizWaitNotify, String
 		waitNotify.setId(genId());
 		waitNotify.setContent(notify.getNextNotifyContent());
 		waitNotify.setTime(notify.getNextNotifyTime());
+		waitNotify.setZt("0");
 		save(waitNotify);
 		return ApiResponse.success();
 	}

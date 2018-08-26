@@ -9,7 +9,6 @@ import java.io.Serializable;
 @Table(name = "biz_wait_notify")
 public class BizWaitNotify implements Serializable {
     @Id
-    @GeneratedValue(generator = "JDBC")
     private String id;
 
     /**
@@ -65,6 +64,21 @@ public class BizWaitNotify implements Serializable {
      */
     @Column(name = "method")
     private String method;
+
+    /**
+     * 状态
+     */
+    @Column(name = "zt")
+    private String zt;
+
+    public String getZt() {
+        return zt;
+    }
+
+    public void setZt(String zt) {
+        this.zt = zt;
+    }
+
     public String getMethod() {
         return method;
     }
