@@ -39,4 +39,8 @@ public interface VehicleService extends BaseService<BizVehicle,String>{
      * @param change
      */
     ApiResponse<String> cqChange(BizVehicleChange change);
+
+    ApiResponse<String> vehInfo(Map jsonMap);
+
+    ApiResponse<String> vehViolation(Map jsonMap);
 }

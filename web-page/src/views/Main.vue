@@ -176,8 +176,9 @@
               this.$http.get(this.apis.waitNotify.QUERY,{params:{zt:0}}).then((res)=>{
                   if (res.code === 200 && res.page.list){
                       this.waitNotify = res.page.total;
+                      let v = this
                       setTimeout(function(){
-                          this.getTip()
+                          v.getTip()
                       },1000*60);
                   }
               })

@@ -4,10 +4,7 @@ import com.cwb.platform.biz.mapper.BizMaintainInfoMapper;
 import com.cwb.platform.biz.mapper.BizRepairInfoMapper;
 import com.cwb.platform.biz.mapper.BizVehicleMapper;
 import com.cwb.platform.biz.model.*;
-import com.cwb.platform.biz.service.TransitionLogService;
-import com.cwb.platform.biz.service.UsecarService;
-import com.cwb.platform.biz.service.VehLogService;
-import com.cwb.platform.biz.service.VehicleService;
+import com.cwb.platform.biz.service.*;
 import com.cwb.platform.sys.base.BaseServiceImpl;
 import com.cwb.platform.sys.base.LimitedCondition;
 import com.cwb.platform.sys.model.SysYh;
@@ -37,7 +34,6 @@ import java.math.BigDecimal;
 import java.util.*;
 
 import com.cwb.platform.biz.model.BizVehicleChange;
-import com.cwb.platform.biz.service.VehicleChangeService;
 
 @Service
 public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> implements VehicleService{
@@ -49,6 +45,8 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
     private BizRepairInfoMapper repairInfoMapper;
     @Autowired
     private UsecarService usecarService;
+    @Autowired
+    private WfxxService wfxxService;
     @Autowired
     private YhService userService;
     @Autowired
@@ -568,6 +566,84 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
         car.setUpdateTime(DateUtils.getNowTime());
         car.setUpdateUser(getOperateUser());
         update(car);
+        return ApiResponse.success();
+    }
+
+    private BizVehicle findByHphm(String hphm){
+        SimpleCondition condition = new SimpleCondition(BizVehicle.class);
+        condition.eq(BizVehicle.InnerColumn.vHphm,hphm);
+        List<BizVehicle> carList = entityMapper.selectByExample(condition);
+        if (carList.size() == 0)return null;
+        return carList.get(0);
+    }
+
+    @Override
+    public ApiResponse<String> vehInfo(Map jsonMap) {
+        String hphm = (String) jsonMap.get("hphm");
+        String hpzl = (String) jsonMap.get("hpzl");
+        if ("16".equals(hpzl)){
+            hphm += "学";
+        }
+        String zt = (String)jsonMap.get("zt");
+        BizVehicle car = findByHphm(hphm);
+        if (car == null){
+            car = new BizVehicle();
+            car.setvId(genId());
+            car.setvHphm(hphm.toUpperCase());
+            car.setCreateTime(DateUtils.getNowTime());
+            car.setCreateUser("系统");
+            car.setvId(genId());
+            car.setvNsrq(getNsrq(car, 0));
+            car.setYyzFlag(0);
+            car.setvZt(zt);
+            car.setvRkzt("in"); // 新增车辆时默认是入库状态
+            save(car);
+
+            // 初始化保养信息
+            BizMaintainInfo maintainInfo = new BizMaintainInfo();
+            maintainInfo.setById(genId());
+            maintainInfo.setvId(car.getvId());
+            maintainInfo.setvHphm(car.getvHphm());
+            maintainInfoMapper.insertSelective(maintainInfo);
+
+            // 初始化维修信息
+            BizRepairInfo repairInfo = new BizRepairInfo();
+            repairInfo.setvHphm(car.getvHphm());
+            repairInfo.setvId(car.getvId());
+            repairInfo.setWxId(genId());
+            repairInfo.setTotalMoney(new BigDecimal(0));
+            repairInfoMapper.insertSelective(repairInfo);
+        }else{
+            car.setvZt(zt);
+            update(car);
+        }
+        return ApiResponse.success();
+    }
+
+    @Override
+    public ApiResponse<String> vehViolation(Map jsonMap) {
+        String hphm = (String) jsonMap.get("hphm");
+        String hpzl = (String) jsonMap.get("hpzl");
+        if ("16".equals(hpzl)){
+            hphm += "学";
+        }
+        BizVehicle car = findByHphm(hphm);
+        RuntimeCheck.ifNull(car,"车辆不存在");
+
+        car.setvZt("G"); // 车辆状态设置为违法未处理
+        update(car);
+
+        BizWfxx wfxx = new BizWfxx();
+        wfxx.setWfWfdz(jsonMap.get("wfdz").toString());
+        wfxx.setWfWfsj(jsonMap.get("wfsj").toString());
+        wfxx.setWfWfxw(jsonMap.get("wfxw").toString());
+        wfxx.setCreateTime(DateUtils.getNowTime());
+        wfxx.setCreateUser("系统");
+        wfxx.setvId(car.getvId());
+        wfxx.setvHphm(car.getvHphm());
+        wfxx.setvCjh(car.getvCjh());
+        wfxx.setWfId(genId());
+        wfxxService.save(wfxx);
         return ApiResponse.success();
     }
 }
