@@ -15,8 +15,8 @@ public class TestMain {
 	static ObjectMapper mapper = new ObjectMapper()
 			.setSerializationInclusion(Include.NON_NULL).configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-//	static String baseUrl = "http://119.97.172.181:8180/pub/";
-	static String baseUrl = "http://127.0.0.1:8088/pub/";
+	static String baseUrl = "http://119.97.172.181:8180/pub/";
+//	static String baseUrl = "http://127.0.0.1:8088/pub/";
 
 	public static void main(String[] args) throws Exception{
 		//vehInfo();
@@ -32,7 +32,7 @@ public class TestMain {
 		Map<String, String> info = new HashMap<String, String>();
 		info.put("hphm", "鄂AQ953");
 		info.put("hpzl", "16");
-		info.put("zt", "AG");
+		info.put("zt", "A");
 
 		String json = mapper.writeValueAsString(info);
 		System.out.println(json);
