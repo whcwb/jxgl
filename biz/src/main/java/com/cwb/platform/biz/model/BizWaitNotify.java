@@ -71,6 +71,20 @@ public class BizWaitNotify implements Serializable {
     @Column(name = "zt")
     private String zt;
 
+    /**
+     * 车架号
+     */
+    @Column(name = "cjh")
+    private String cjh;
+
+    public String getCjh() {
+        return cjh;
+    }
+
+    public void setCjh(String cjh) {
+        this.cjh = cjh;
+    }
+
     public String getZt() {
         return zt;
     }

@@ -61,10 +61,10 @@
                 tableColumns: [
                     {title: "序号", width: 60, type: 'index'},
                     {title:'车牌号码',key:'vHphm'},
-                    {title:'车架号',key:'vCjh'},
+                    {title:'车架号', width: 160, key:'vCjh'},
                     {title:'违法时间',key:'wfWfsj'},
                     {title:'违法地点',key:'wfWfdz'},
-                    {title:'违法行为',key:'wfWfxw'},
+                    {title:'违法行为',width: 360,key:'wfWfxw',dict:'wfxw'},
                     {title:'违法记分',key:'wfWfjf'},
                     {title:'违法金额',key:'wfWfje'},
                     {title:'负责人',key:'fzr'},

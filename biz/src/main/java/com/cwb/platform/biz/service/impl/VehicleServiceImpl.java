@@ -57,6 +57,8 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
     private TransitionLogService transitionLogService;
     @Autowired
     private VehicleChangeService vehChangeService;
+    @Autowired
+    private NotifyService notifyService;
 
 
     private static final String QZBF = "强制报废"; // 强制报废
@@ -511,15 +513,17 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
 		//发送短信是通知到车辆负责人，不是使用人
 		Map<String, String> params = Maps.newConcurrentMap();
 		DateTime nsDate = DateTime.now().parse(exist.getvNsrq());
+		String content = exist.getvHphm()+"车主，您好！您的爱车于"+nsDate.toString("yyyy年MM月")+"需年审，请在收到短信后5天内前往总校办公室找车管专员领取车辆年审资料及时办理年审业务，如有疑问请拨打"+nstels.get(0).getZdmc();
 		params.put("SpCode", "239118");
 		params.put("LoginName", "wh_tmjx");
 		params.put("Password", "tmjx2017");
-		params.put("MessageContent", exist.getvHphm()+"车主，您好！您的爱车于"+nsDate.toString("yyyy年MM月")+"需年审，请在收到短信后5天内前往总校办公室找车管专员领取车辆年审资料及时办理年审业务，如有疑问请拨打"+nstels.get(0).getZdmc());
+		params.put("MessageContent", content);
 		params.put("UserNumber", exist.getvZrrlxdh());
 		params.put("SerialNumber", String.valueOf(DateTime.now().getMillis()));
 		params.put("ScheduleTime", "");
 		params.put("f", "1");
 
+		notifyService.nianshenNotify(exist,content);
 		String smsResult = HttpUtil.post("https://api.ums86.com:9600/sms/Api/Send.do", params, "gbk");
 		if (smsResult.indexOf("result=0") != -1){
 			return ApiResponse.success("短信发送成功");
@@ -586,37 +590,38 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
         }
         String zt = (String)jsonMap.get("zt");
         BizVehicle car = findByHphm(hphm);
-        if (car == null){
-            car = new BizVehicle();
-            car.setvId(genId());
-            car.setvHphm(hphm.toUpperCase());
-            car.setCreateTime(DateUtils.getNowTime());
-            car.setCreateUser("系统");
-            car.setvId(genId());
-            car.setvNsrq(getNsrq(car, 0));
-            car.setYyzFlag(0);
-            car.setvZt(zt);
-            car.setvRkzt("in"); // 新增车辆时默认是入库状态
-            save(car);
-
-            // 初始化保养信息
-            BizMaintainInfo maintainInfo = new BizMaintainInfo();
-            maintainInfo.setById(genId());
-            maintainInfo.setvId(car.getvId());
-            maintainInfo.setvHphm(car.getvHphm());
-            maintainInfoMapper.insertSelective(maintainInfo);
-
-            // 初始化维修信息
-            BizRepairInfo repairInfo = new BizRepairInfo();
-            repairInfo.setvHphm(car.getvHphm());
-            repairInfo.setvId(car.getvId());
-            repairInfo.setWxId(genId());
-            repairInfo.setTotalMoney(new BigDecimal(0));
-            repairInfoMapper.insertSelective(repairInfo);
-        }else{
-            car.setvZt(zt);
-            update(car);
-        }
+        RuntimeCheck.ifNull(car,"未找到车辆");
+//        if (car == null){
+//            car = new BizVehicle();
+//            car.setvId(genId());
+//            car.setvHphm(hphm.toUpperCase());
+//            car.setCreateTime(DateUtils.getNowTime());
+//            car.setCreateUser("系统");
+//            car.setvId(genId());
+//            car.setvNsrq(getNsrq(car, 0));
+//            car.setYyzFlag(0);
+//            car.setvZt(zt);
+//            car.setvRkzt("in"); // 新增车辆时默认是入库状态
+//            save(car);
+//
+//            // 初始化保养信息
+//            BizMaintainInfo maintainInfo = new BizMaintainInfo();
+//            maintainInfo.setById(genId());
+//            maintainInfo.setvId(car.getvId());
+//            maintainInfo.setvHphm(car.getvHphm());
+//            maintainInfoMapper.insertSelective(maintainInfo);
+//
+//            // 初始化维修信息
+//            BizRepairInfo repairInfo = new BizRepairInfo();
+//            repairInfo.setvHphm(car.getvHphm());
+//            repairInfo.setvId(car.getvId());
+//            repairInfo.setWxId(genId());
+//            repairInfo.setTotalMoney(new BigDecimal(0));
+//            repairInfoMapper.insertSelective(repairInfo);
+//        }else{
+//        }
+        car.setvZt(zt);
+        update(car);
         return ApiResponse.success();
     }
 
@@ -633,6 +638,7 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
         car.setvZt("G"); // 车辆状态设置为违法未处理
         update(car);
 
+
         BizWfxx wfxx = new BizWfxx();
         wfxx.setWfWfdz(jsonMap.get("wfdz").toString());
         wfxx.setWfWfsj(jsonMap.get("wfsj").toString());
@@ -643,6 +649,16 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
         wfxx.setvHphm(car.getvHphm());
         wfxx.setvCjh(car.getvCjh());
         wfxx.setWfId(genId());
+
+        SimpleCondition condition = new SimpleCondition(SysZdxm.class);
+        condition.eq(SysZdxm.InnerColumn.zdlmdm,"wfxw");
+        condition.eq(SysZdxm.InnerColumn.zddm,jsonMap.get("wfxw").toString());
+        List<SysZdxm> zdxms = zdxmService.findByCondition(condition);
+        if (zdxms.size() != 0){
+            SysZdxm zdxm = zdxms.get(0);
+            wfxx.setWfWfjf(Integer.parseInt(zdxm.getBy1()));
+            wfxx.setWfWfje(Integer.parseInt(zdxm.getBy2()));
+        }
         wfxxService.save(wfxx);
         return ApiResponse.success();
     }

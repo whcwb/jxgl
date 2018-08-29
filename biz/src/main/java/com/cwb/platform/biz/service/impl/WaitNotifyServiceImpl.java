@@ -40,6 +40,7 @@ public class WaitNotifyServiceImpl extends BaseServiceImpl<BizWaitNotify, String
 		notify.setCreateUser(user.getYhid()+'-'+user.getXm());
 		notify.setId(genId());
 		notify.setCph(car.getvHphm());
+		notify.setCjh(car.getvCjh());
 		save(notify);
 		return ApiResponse.success();
 	}

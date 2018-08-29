@@ -5,37 +5,44 @@
     <div class="boxbackborder">
         <Form :label-width="100">
             <Row justify="space-between">
-                <Col span="5">
+                <Col span="4">
                     <FormItem label="车牌号">
                         <Input v-model="form.vHphmLike" placeholder="请输入车牌号"></Input>
                     </FormItem>
                 </Col>
-                <Col span="5">
+                <Col span="4">
                     <FormItem label="车辆类型">
                         <Select filterable clearable v-model="form.vHpzl" placeholder="请选择车辆类型...">
                             <Option v-for='(item,index) in dicts.hpzl.items' :value="item.key">{{item.val}}</Option>
                         </Select>
                     </FormItem>
                 </Col>
-                <Col span="5">
+                <Col span="4">
+                    <FormItem label="车辆状态">
+                        <Select filterable clearable v-model="form.vZtLike" placeholder="请选择车辆状态...">
+                            <Option v-for='(item,index) in dicts.clzt.items' :value="item.key">{{item.val}}</Option>
+                        </Select>
+                    </FormItem>
+                </Col>
+                <Col span="4">
                     <FormItem label="所有人">
                         <Input v-model="form.vSylLike" placeholder="请输入所有人"></Input>
                     </FormItem>
                 </Col>
-                <Col span="5">
+                <Col span="4">
                     <FormItem label="责任人">
                         <Input v-model="form.vZrrLike" placeholder="请输入责任人"></Input>
                     </FormItem>
                 </Col>
             </Row>
             <Row justify="space-between">
-                <Col span="5">
+                <Col span="4">
                     <FormItem label="年审日期">
                         <DatePicker :value="form.vNsrqLike" type="month" placement="top-start" placeholder="请选择日期"
                                     @on-change="(date)=>{form.vNsrqLike = date}"></DatePicker>
                     </FormItem>
                 </Col>
-                <Col span="5">
+                <Col span="4">
                     <FormItem label="运营证">
                         <Select clearable v-model="form.yyzFlag" placeholder="请选择...">
                             <Option value="0">未上传</Option>
@@ -43,7 +50,7 @@
                         </Select>
                     </FormItem>
                 </Col>
-                <Col span="5">
+                <Col span="4">
                     <FormItem label="卡机">
                         <Select clearable v-model="form.vAzkj" placeholder="请选择...">
                             <Option value="0">未安装</Option>

@@ -2,6 +2,7 @@ package com.cwb.platform.biz.service.impl;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.cwb.platform.biz.service.NotifyService;
 import com.cwb.platform.util.commonUtil.HttpUtil;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Maps;
@@ -37,6 +38,8 @@ public class WfxxServiceImpl extends BaseServiceImpl<BizWfxx,String> implements 
     private VehicleService vehicleService;
     @Autowired
     private FilesService filesService;
+    @Autowired
+	private NotifyService notifyService;
 
     @Override
     protected Mapper<BizWfxx> getBaseMapper() {
@@ -116,6 +119,7 @@ public class WfxxServiceImpl extends BaseServiceImpl<BizWfxx,String> implements 
 
         entity.setCreateTime(DateUtils.getNowTime());
         entity.setCreateUser(getOperateUser());
+		entity.setWfWfzt("01");
         save(entity);
         if ("true".equals(entity.getSendSms())){
         	sendSms(entity);
@@ -161,6 +165,7 @@ public class WfxxServiceImpl extends BaseServiceImpl<BizWfxx,String> implements 
 		params.put("ScheduleTime", "");
 		params.put("f", "1");
 
+		notifyService.wfNotify(vehicle,wfxx);
 		String smsResult = HttpUtil.post("https://api.ums86.com:9600/sms/Api/Send.do", params, "gbk");
 		if (smsResult.contains("result=0")){
 			return ApiResponse.success("短信发送成功");

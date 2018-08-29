@@ -22,10 +22,11 @@
 <script>
     import searchItems from '../../components/searchItems'
 
+    import notifyList from './notifyList'
     import swal from 'sweetalert2'
     export default {
         name: 'notify',
-        components: {searchItems},
+        components: {searchItems,notifyList},
         data() {
             return {
                 v:this,
@@ -41,6 +42,7 @@
                 tableColumns: [
                     {title: "#", width: 60, type: 'index'},
                     {title:'车牌号',key:'cph',searchKey:'cphLike'},
+                    {title:'车架号',width: 160, key:'cjh',searchKey:'cphLike'},
                     {title:'类型',key:'type',dict:'tzlx',searchType:'dict'},
                     {title:'时间',key:'time',searchType:'daterange'},
                     // {title:'通知人姓名',key:'toUserName'},
@@ -50,6 +52,7 @@
                     {
                         title: '操作',
                         key: 'action',
+                        width:120,
                         fixed: 'right',
                         render: (h, params) => {
                             let buttons = [this.util.buildDeleteButton(this,h,params.row.id)];
@@ -68,6 +71,11 @@
                                     });
                                 }))
                             }
+                            buttons.push(
+                                this.util.buildButton(this,h,'success','eye','联系记录',()=>{
+                                    this.choosedItem = params.row;
+                                    this.componentName = 'notifyList';
+                                }),)
                             return h('div', buttons);
                         }
                     }

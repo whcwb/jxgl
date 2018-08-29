@@ -66,6 +66,19 @@ public class BizNotify implements Serializable {
      */
     @Column(name = "method")
     private String method;
+    /**
+     * 任务id
+     */
+    @Column(name = "task_id")
+    private String taskId;
+
+    public String getTaskId() {
+        return taskId;
+    }
+
+    public void setTaskId(String taskId) {
+        this.taskId = taskId;
+    }
 
     @Transient
     private String nextNotifyContent;
