@@ -23,10 +23,11 @@
     import searchItems from '../../components/searchItems'
 
     import notifyList from './notifyList'
+    import addNotify fron './addNotify'
     import swal from 'sweetalert2'
     export default {
         name: 'notify',
-        components: {searchItems,notifyList},
+        components: {searchItems,notifyList,addNotify},
         data() {
             return {
                 v:this,
@@ -95,6 +96,9 @@
             this.util.initTable(this)
         },
         methods: {
+        addNotify(){
+
+        },
             finish(id){
                 let param = {
                     id:id,

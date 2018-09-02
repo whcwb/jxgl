@@ -659,6 +659,7 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
             wfxx.setWfWfjf(Integer.parseInt(zdxm.getBy1()));
             wfxx.setWfWfje(Integer.parseInt(zdxm.getBy2()));
         }
+        wfxx.setWfWfzt("01");
         wfxxService.save(wfxx);
         return ApiResponse.success();
     }
