@@ -59,17 +59,8 @@
                             let buttons = [this.util.buildDeleteButton(this,h,params.row.id)];
                             if (params.row.zt === '0'){
                                 buttons.push(this.util.buildButton(this,h,'success','ios-checkmark','完成',()=>{
-                                    swal({
-                                        text: "是否确认已完成通知?",
-                                        type: "warning",
-                                        showCancelButton: true,
-                                        confirmButtonText: '确认',
-                                        cancelButtonText: '取消'
-                                    }).then((isConfirm) => {
-                                        if (isConfirm.value) {
-                                            this.finish(params.row.id);
-                                        }
-                                    });
+                                    this.choosedItem = params.row;
+                                    this.componentName = 'addNotify';
                                 }))
                             }
                             buttons.push(
@@ -113,6 +104,7 @@
             },
             pageChange(event) {
                 var v = this
+                v.form.pageNum = event
                 v.util.getPageData(v);
             },
         }
