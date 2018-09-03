@@ -629,11 +629,21 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
     public ApiResponse<String> vehViolation(Map jsonMap) {
         String hphm = (String) jsonMap.get("hphm");
         String hpzl = (String) jsonMap.get("hpzl");
+        String wfsj = (String) jsonMap.get("wfsj");
         if ("16".equals(hpzl)){
             hphm += "学";
         }
         BizVehicle car = findByHphm(hphm);
         RuntimeCheck.ifNull(car,"车辆不存在");
+
+        // 如果存在违法时间相同的记录，则不重复记录
+        SimpleCondition cond = new SimpleCondition(BizWfxx.class);
+        cond.eq(BizWfxx.InnerColumn.wfWfsj,wfsj);
+        int count = wfxxService.countByCondition(cond);
+        if (count > 0){
+            return ApiResponse.fail("记录已存在");
+        }
+
 
         car.setvZt("G"); // 车辆状态设置为违法未处理
         update(car);
@@ -641,8 +651,8 @@ public class VehicleServiceImpl extends BaseServiceImpl<BizVehicle,String> imple
 
         BizWfxx wfxx = new BizWfxx();
         wfxx.setWfWfdz(jsonMap.get("wfdz").toString());
-        wfxx.setWfWfsj(jsonMap.get("wfsj").toString());
         wfxx.setWfWfxw(jsonMap.get("wfxw").toString());
+        wfxx.setWfWfsj(wfsj);
         wfxx.setCreateTime(DateUtils.getNowTime());
         wfxx.setCreateUser("系统");
         wfxx.setvId(car.getvId());
