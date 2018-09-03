@@ -23,7 +23,7 @@
     import searchItems from '../../components/searchItems'
 
     import notifyList from './notifyList'
-    import addNotify fron './addNotify'
+    import addNotify from './addNotify'
     import swal from 'sweetalert2'
     export default {
         name: 'notify',
