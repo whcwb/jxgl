@@ -111,7 +111,7 @@
             },
             printImg () {
                 setTimeout(()=>{
-                    Print({
+                    printJS({
                         printable: 'printImgDiv',
                         type: 'html'
                     });

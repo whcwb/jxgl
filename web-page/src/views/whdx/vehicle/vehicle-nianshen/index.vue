@@ -179,7 +179,7 @@
 
                             this.jszPrintImgs = res.result;
                             setTimeout(()=>{
-                                Print({
+                                printJS({
                                     printable: 'printDiv',
                                     type: 'html'
                                 });
