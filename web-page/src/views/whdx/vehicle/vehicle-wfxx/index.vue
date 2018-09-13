@@ -60,16 +60,16 @@
                 choosedItem: null,
                 tableColumns: [
                     {title: "序号", width: 60, type: 'index'},
-                    {title:'车牌号码',key:'vHphm'},
+                    {title:'车牌号码', width: 160,key:'vHphm'},
                     {title:'车架号', width: 160, key:'vCjh'},
-                    {title:'违法时间',key:'wfWfsj'},
-                    {title:'违法地点',key:'wfWfdz'},
+                    {title:'违法时间', width: 160,key:'wfWfsj'},
+                    {title:'违法地点', width: 160,key:'wfWfdz'},
                     {title:'违法行为',width: 360,key:'wfWfxw',dict:'wfxw'},
-                    {title:'违法记分',key:'wfWfjf'},
-                    {title:'违法金额',key:'wfWfje'},
-                    {title:'负责人',key:'fzr'},
-                    {title:'负责人联系方式',key:'fzrlxfs'},
-                    {title:'违法状态',key:'wfWfzt',render:(h, params)=>{
+                    {title:'违法记分', width: 160,key:'wfWfjf'},
+                    {title:'违法金额', width: 160,key:'wfWfje'},
+                    {title:'负责人', width: 160,key:'fzr'},
+                    {title:'负责人联系方式', width: 160,key:'fzrlxfs'},
+                    {title:'违法状态', width: 160,key:'wfWfzt',render:(h, params)=>{
                         let val = $.map(this.dicts.wfzt.items, item => {
                             if(item.key == params.row.wfWfzt) {
                                 return item.val;

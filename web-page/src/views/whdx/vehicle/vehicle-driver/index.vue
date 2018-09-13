@@ -111,6 +111,11 @@
 						type: 'index'
 					},
 					{
+						title: '车牌号',
+						align: 'center',
+						key: 'cph'
+					},
+					{
 						title: '帐号',
 						align: 'center',
 						key: 'zh'

@@ -8,6 +8,7 @@ import com.cwb.platform.sys.base.LimitedCondition;
 import com.cwb.platform.sys.mapper.SysClkPtyhMapper;
 import com.cwb.platform.sys.model.SysYh;
 import com.cwb.platform.util.bean.SimpleCondition;
+import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ import tk.mybatis.mapper.common.Mapper;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -34,6 +36,18 @@ public class DriverServiceImpl extends BaseServiceImpl<SysYh,String> implements 
     @Override
     protected Mapper<SysYh> getBaseMapper() {
         return ptyhMapper;
+    }
+
+    @Override
+    public void afterPager(PageInfo<SysYh> pageInfo){
+        List<String> userIds = pageInfo.getList().stream().map(p->(p.getYhid()+"-"+p.getXm())).collect(Collectors.toList());
+        List<BizVehicle> cars = vehicleService.findIn(BizVehicle.InnerColumn.vLxr,userIds);
+        Map<String,BizVehicle> carMap = cars.stream().collect(Collectors.toMap(p->(p.getvLxr().substring(0,p.getvLxr().indexOf("-"))),p->p));
+        for (SysYh sysYh : pageInfo.getList()) {
+            BizVehicle car = carMap.get(sysYh.getYhid());
+            if (car == null)continue;
+            sysYh.setCph(car.getvHphm());
+        }
     }
 
 

@@ -37,6 +37,19 @@ util.fillTableColumns = (v) => {
                     s = dictUtil.getValByCode(v, r.dict, p.row[r.key]);
                 }
                 if (r.unit && val) s += r.unit;
+                if (r.type === 'foerignKey'){
+                    if (!v.foreignkeyList || !v.fpreignkeyList[r.key]){
+                        return h('div','-')
+                    }else{
+                        let a = v.foreignkeyList[r.key];
+                        for (let ak of a){
+                            if (ak[r.key] === val){
+                                return h('div',ak[r.val]);
+                            }
+                        }
+                        return h('div','-')
+                    }
+                }
                 return h('div', s);
             }
         }
@@ -150,6 +163,32 @@ util.initForeignKeys = (v) => {
         })
     }
 }
+util.initTableForeignKeys = (v,callback) => {
+    if (!v.foreignList) return;
+    for (let k in v.foreignList) {
+        let r = v.foreignList[k];
+        if (r.url.indexOf("/pager") > 0) r.url += "?pageSize=10000"
+        v.$http.get(r.url).then((res) => {
+            if (res.code === 200) {
+                let list = [];
+                r.items = [];
+                if (res.page) {
+                    list = res.page.list;
+                } else if (res.result) {
+                    list = res.result;
+                }
+                for (let i of list) {
+                    r.items.push({key: i[r.key], val: i[r.val]})
+                }
+            } else {
+                v.$Message.error(res.message);
+            }
+            callback && callback();
+        }).catch((error) => {
+            log(error)
+        })
+    }
+}
 /**
  * 初始化列表页面
  * 自动调整table高度，页面加载完成后获取列表数据
@@ -157,8 +196,12 @@ util.initForeignKeys = (v) => {
 util.initTable = (v) => {
     util.initPageSize(v);
     util.initTableHeight(v);
-    util.fillTableColumns(v)
-    util.getPageData(v)
+    if (v.foreignList){
+        util.initTableForeignKeys(v,()=>{
+            util.fillTableColumns(v)
+            util.getPageData(v)
+        });
+    }
 }
 util.initSimpleTable = (v) => {
     v.tableHeight = window.innerHeight - 780

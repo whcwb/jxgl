@@ -131,24 +131,35 @@ public class SysYh implements Serializable {
      */
     @Column(name = "jszjzrq")
     private String jszjzrq;
-    
+
     /**
      * 身份证地址
      */
     @Column(name = "sfzdz")
     private String sfzdz;
-    
+
     /**
      * 驾驶证地址
      */
     @Column(name = "jszdz")
     private String jszdz;
-    
+
     /**
      * 档案编号
      */
     @Column(name = "dabh")
     private String dabh;
+
+    @Transient
+    private String cph;
+
+    public String getCph() {
+        return cph;
+    }
+
+    public void setCph(String cph) {
+        this.cph = cph;
+    }
 
     private static final long serialVersionUID = 1L;
 

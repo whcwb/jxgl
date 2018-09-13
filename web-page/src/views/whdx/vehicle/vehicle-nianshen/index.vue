@@ -86,6 +86,7 @@
                     {title: "序号", width: 70, type: 'index'},
                     {title:'车牌号码',key:'vHphm',searchKey:'vHphmLike'},
                     {title:'所有人',key:'vSyl',searchKey:'vSylLike'},
+                    {title:'使用人',key:'vLxr',type:''},
                     {title:'负责人',key:'vZrr',searchKey:'vZrrLike'},
                     {title:'负责人联系电话',key:'vZrrlxdh',searchKey:'vZrrlxdhLike'},
                     {title: '初登日期',key:'vCcdjrq'},
@@ -149,6 +150,9 @@
                         }
                     }
                 ],
+                foreignList:{
+                    vLxr:{url:this.apis.USER.QUERY,key:'yhid',val:'xm',items:[]},
+                },
                 pageData: [],
                 form: {
                     vSylLike:'',

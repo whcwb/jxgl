@@ -182,7 +182,7 @@ public class BizVehicle implements Serializable {
      */
     @Column(name = "v_rkzt")
     private String vRkzt;
-    
+
     /**
      * 是否安装卡机。0未安装；1已安装
      */
