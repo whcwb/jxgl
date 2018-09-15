@@ -18,6 +18,7 @@ import tk.mybatis.mapper.common.Mapper;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -42,7 +43,14 @@ public class DriverServiceImpl extends BaseServiceImpl<SysYh,String> implements 
     public void afterPager(PageInfo<SysYh> pageInfo){
         List<String> userIds = pageInfo.getList().stream().map(p->(p.getYhid()+"-"+p.getXm())).collect(Collectors.toList());
         List<BizVehicle> cars = vehicleService.findIn(BizVehicle.InnerColumn.vLxr,userIds);
-        Map<String,BizVehicle> carMap = cars.stream().collect(Collectors.toMap(p->(p.getvLxr().substring(0,p.getvLxr().indexOf("-"))),p->p));
+        Map<String,BizVehicle> carMap = new HashMap<>();
+        for (BizVehicle car : cars) {
+            String lxr = car.getvLxr();
+            if (StringUtils.isEmpty(lxr))continue;
+            if (!lxr.contains("-"))continue;
+            String userId = lxr.substring(0,lxr.indexOf("-"));
+            carMap.put(userId,car);
+        }
         for (SysYh sysYh : pageInfo.getList()) {
             BizVehicle car = carMap.get(sysYh.getYhid());
             if (car == null)continue;

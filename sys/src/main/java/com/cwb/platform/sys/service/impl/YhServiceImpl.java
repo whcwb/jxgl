@@ -57,7 +57,7 @@ public class YhServiceImpl extends BaseServiceImpl<SysYh, String> implements YhS
 	protected Class<SysYh> getEntityCls(){
 		return SysYh.class;
 	}
-	
+
 	@Override
 	protected Mapper<SysYh> getBaseMapper() {
 		return baseMapper;
@@ -99,11 +99,9 @@ public class YhServiceImpl extends BaseServiceImpl<SysYh, String> implements YhS
 		RuntimeCheck.ifFalse(StringUtils.isAlphanumeric(user.getZh()),"登陆名只能是数字和字母组成！");
 		RuntimeCheck.ifBlank(user.getLx(),"请先选择用户类型！");
 		RuntimeCheck.ifBlank(user.getZjhm(),"请先输入证件号码！");
-		
-		
-		if (StringUtils.isNotBlank(user.getZjhm()) && !new IdcardValidator().isValidatedAllIdcard(user.getZjhm())){
-			throw new RuntimeCheckException("请先输入正确的证件号码！");
-		}
+
+		RuntimeCheck.ifTrue(StringUtils.isNotBlank(user.getZjhm()) && !new IdcardValidator().isValidatedAllIdcard(user.getZjhm()),
+				"请先输入正确的证件号码！");
 
 		SimpleCondition condition = new SimpleCondition(SysYh.class);
 		condition.eq(SysYh.InnerColumn.zh.name(), user.getZh());
@@ -201,14 +199,14 @@ public class YhServiceImpl extends BaseServiceImpl<SysYh, String> implements YhS
 		if (exist == null){
 			throw new RuntimeCheckException("用户信息不存在！");
 		}
-		
+
 		RuntimeCheck.ifBlank(user.getZh(),"账号不能为空");
 		RuntimeCheck.ifBlank(user.getXm(),"姓名不能为空");
 		RuntimeCheck.ifFalse(StringUtils.isAlphanumeric(user.getZh()),"登陆名只能是数字和字母组成！");
 		RuntimeCheck.ifBlank(user.getLx(),"请先选择用户类型！");
 		RuntimeCheck.ifBlank(user.getZjhm(),"请先输入证件号码！");
-		
-		
+
+
 		if (StringUtils.isNotBlank(user.getZjhm()) && !new IdcardValidator().isValidatedAllIdcard(user.getZjhm())){
 			throw new RuntimeCheckException("请先输入正确的证件号码！");
 		}
@@ -249,7 +247,7 @@ public class YhServiceImpl extends BaseServiceImpl<SysYh, String> implements YhS
 		baseMapper.updateByPrimaryKeySelective(user);
 		return ApiResponse.success();
 	}
-	
+
 	@Override
 	public ApiResponse<List<SysYh>> pager(Page<SysYh> pager) {
 		ApiResponse<List<SysYh>> result = new ApiResponse<>();
