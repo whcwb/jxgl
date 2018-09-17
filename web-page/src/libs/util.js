@@ -201,6 +201,9 @@ util.initTable = (v) => {
             util.fillTableColumns(v)
             util.getPageData(v)
         });
+    }else{
+        util.fillTableColumns(v)
+        util.getPageData(v)
     }
 }
 util.initSimpleTable = (v) => {
@@ -395,7 +398,7 @@ util.getPageData = function (v) {
                 let page = response.page;
                 v.pageData = page.list;
                 v.form.total = page.total;
-                if (v.exportParam.start) {
+                if (v.exportParam && v.exportParam.start) {
                     setTimeout(function(){
                         v.$refs.table.exportCsv({
                             filename: v.exportParam.filename
