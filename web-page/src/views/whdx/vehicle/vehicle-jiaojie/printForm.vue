@@ -254,7 +254,7 @@
         },
         methods: {
             print() {
-                Print({
+                printJS({
                     printable: 'printDiv',
                     type: 'html',
                     // onLoadingStart: () => {
