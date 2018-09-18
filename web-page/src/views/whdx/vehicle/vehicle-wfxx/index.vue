@@ -64,7 +64,7 @@
                     {title:'车架号', width: 160, key:'vCjh'},
                     {title:'违法时间', width: 160,key:'wfWfsj'},
                     {title:'违法地点', width: 160,key:'wfWfdz'},
-                    {title:'违法行为',width: 360,key:'wfWfxw',dict:'wfxw'},
+                    {title:'违法行为',width: 360,key:'wfWfxw'},
                     {title:'违法记分', width: 160,key:'wfWfjf'},
                     {title:'违法金额', width: 160,key:'wfWfje'},
                     {title:'负责人', width: 160,key:'fzr'},
