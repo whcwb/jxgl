@@ -188,8 +188,22 @@ public class BizVehicle implements Serializable {
      */
     @Column(name = "v_azkj")
     private Integer vAzkj;
+    
+    /**
+     * 训练场
+     */
+    @Column(name = "v_xlc")
+    private String vXlc;
 
-    public String getInId() {
+    public String getvXlc() {
+		return vXlc;
+	}
+
+	public void setvXlc(String vXlc) {
+		this.vXlc = vXlc;
+	}
+
+	public String getInId() {
         return inId;
     }
 

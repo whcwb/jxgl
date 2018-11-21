@@ -58,6 +58,13 @@
 					<Row>
 						<form-items :parent="v"></form-items>
 					</Row>
+					<Row>
+						<Col span="12">
+							<FormItem  label="训练场">
+								<Input type="text" v-model="formItem.vXlc" placeholder="请填写训练场"></Input>
+							</FormItem>
+						</Col>
+					</Row>
 					<Row v-show="newFlag">
 						<Col span="12">
 							<div style="text-align:center">
@@ -132,6 +139,7 @@
                     vCjh:'',
                     vFdjh:'',
                     vSyl:'',
+					vXlc:''
                 },
                 curUser:{},
                 uploadUrl:this.apis.url + '/' + this.apis.CAR.SCANFILE,
