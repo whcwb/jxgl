@@ -7,20 +7,20 @@ import session from '../../libs/session';
 const app = {
     state: {
         title: '车辆管理系统',
-        ech:{
-            time:'',
-            cph:''
+        ech: {
+            time: '',
+            cph: ''
         },
-        userInfo:null,
-        dictMap :new Map(),
-    	socketMess:[],//校巴车辆数据
-    	socketAllCar:[],//监控数据
-        sendhbsp:'',
-    	loadingType:false,
-    	loading:{
-    		size:55,
-    		text:'数据加载中请稍后...'
-    	},
+        userInfo: null,
+        dictMap: new Map(),
+        socketMess: [],//校巴车辆数据
+        socketAllCar: [],//监控数据
+        sendhbsp: '',
+        loadingType: false,
+        loading: {
+            size: 55,
+            text: '数据加载中请稍后...'
+        },
         cachePage: [],
         lang: '',
         isFullScreen: false,
@@ -47,53 +47,62 @@ const app = {
         ],
         tagsList: [...otherRouter.children],
         messageCount: 0,
-        functionList:[],
+        functionList: [],
         dontCache: [], // 在这里定义你不想要缓存的页面的name属性值(参见路由配置router.js)
-        routerMum:[]
+        routerMum: [],
+        moreCarType: -1,     //用于首页车辆的显示更多
+        moreBXType: -1       //用于首页保险的显示更多
     },
     mutations: {
-        echChanged(state,data){
+        moreCarTypeChange(state, data) {
+            state.moreCarType = data;
+            console.log(state.moreCarType)
+        },
+        moreBXTypeChange(state, data) {
+            state.moreBXType = data;
+        },
+        echChanged(state, data) {
             state.ech = data
         },
-        setUserInfo(state,data){
+        setUserInfo(state, data) {
             state.userInfo = data;
         },
-        addSendhbsp(state,data){
+        addSendhbsp(state, data) {
             state.sendhbsp = data;
         },
-    	AdddictMap(state,data){
-    		state.dictMap = data
-    	},
-    	CloadingType(state,data){
-    		state.loadingType = data
-    	},
-    	routerMumAdd(state,data){
-    		state.routerMum = data
-    	},
-    	setFunctions (state,data){
+        AdddictMap(state, data) {
+            state.dictMap = data
+        },
+        CloadingType(state, data) {
+            state.loadingType = data
+        },
+        routerMumAdd(state, data) {
+            state.routerMum = data
+        },
+        setFunctions(state, data) {
             state.functionList = data
             log('setFunctions');
             log(menuList);
         },
-    	socketMessAdd (state,data){
-    		state.socketMess = data
-    	},
-    	socketAllCarAdd(state,data){
-    		state.socketAllCar = data
-    	},
-        setTagsList (state, list) {
+        socketMessAdd(state, data) {
+            state.socketMess = data
+        },
+        socketAllCarAdd(state, data) {
+            state.socketAllCar = data
+        },
+        setTagsList(state, list) {
             state.tagsList.push(...list);
         },
-        updateMenulist (state) {
+        updateMenulist(state) {
             // state.menuList = [];
         },
-        changeMenuTheme (state, theme) {
+        changeMenuTheme(state, theme) {
             state.menuTheme = theme;
         },
-        changeMainTheme (state, mainTheme) {
+        changeMainTheme(state, mainTheme) {
             state.themeColor = mainTheme;
         },
-        addOpenSubmenu (state, name) {
+        addOpenSubmenu(state, name) {
             let hasThisName = false;
             let isEmpty = false;
             if (name.length === 0) {
@@ -106,20 +115,20 @@ const app = {
                 state.openedSubmenuArr.push(name);
             }
         },
-        closePage (state, name) {
+        closePage(state, name) {
             state.cachePage.forEach((item, index) => {
                 if (item === name) {
                     state.cachePage.splice(index, 1);
                 }
             });
         },
-        initCachepage (state) {
+        initCachepage(state) {
             if (localStorage.cachePage) {
                 state.cachePage = JSON.parse(localStorage.cachePage);
             }
         },
         //关闭多页面
-        removeTag (state, name) {
+        removeTag(state, name) {
             state.pageOpenedList.map((item, index) => {
                 if (item.name === name) {
                     state.pageOpenedList.splice(index, 1);
@@ -127,7 +136,7 @@ const app = {
             });
         },
         //多页面数组
-        pageOpenedList (state, get) {
+        pageOpenedList(state, get) {
             let openedPage = state.pageOpenedList[get.index];
             if (get.argu) {
                 openedPage.argu = get.argu;
@@ -139,13 +148,13 @@ const app = {
             localStorage.pageOpenedList = JSON.stringify(state.pageOpenedList);
         },
         //关闭所有
-        clearAllTags (state) {
+        clearAllTags(state) {
             state.pageOpenedList.splice(1);
             state.cachePage.length = 0;
             localStorage.pageOpenedList = JSON.stringify(state.pageOpenedList);
         },
         //关闭其他
-        clearOtherTags (state, vm) {
+        clearOtherTags(state, vm) {
             let currentName = vm.$route.name;
             let currentIndex = 0;
             state.pageOpenedList.forEach((item, index) => {
@@ -165,29 +174,29 @@ const app = {
             state.cachePage = newCachepage;
             localStorage.pageOpenedList = JSON.stringify(state.pageOpenedList);
         },
-        setOpenedList (state) {
+        setOpenedList(state) {
             state.pageOpenedList = localStorage.pageOpenedList ? JSON.parse(localStorage.pageOpenedList) : [otherRouter.children[0]];
         },
-        setCurrentPath (state, pathArr) {
+        setCurrentPath(state, pathArr) {
             state.currentPath = pathArr;
         },
-        setCurrentPageName (state, name) {
+        setCurrentPageName(state, name) {
             state.currentPageName = name;
         },
-        setAvator (state, path) {
+        setAvator(state, path) {
             localStorage.avatorImgPath = path;
         },
-        switchLang (state, lang) {
+        switchLang(state, lang) {
             state.lang = lang;
             Vue.config.lang = lang;
         },
-        clearOpenedSubmenu (state) {
+        clearOpenedSubmenu(state) {
             state.openedSubmenuArr.length = 0;
         },
-        setMessageCount (state, count) {
+        setMessageCount(state, count) {
             state.messageCount = count;
         },
-        increateTag (state, tagObj) {
+        increateTag(state, tagObj) {
             if (!Util.oneOf(tagObj.name, state.dontCache)) {
                 state.cachePage.push(tagObj.name);
                 localStorage.cachePage = JSON.stringify(state.cachePage);

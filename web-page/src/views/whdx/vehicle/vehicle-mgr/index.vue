@@ -26,7 +26,10 @@
                 </Col>
                 <Col span="4">
                     <FormItem label="所有人">
-                        <Input v-model="form.vSylLike" placeholder="请输入所有人"></Input>
+                        <!--<Input v-model="form.vSylLike" placeholder="请输入所有人"></Input>-->
+                        <Select filterable clearable v-model="form.vSylLike" placeholder="请输入所有人">
+                            <Option v-for='(item,index) in dicts.clzt.items' :value="item.key">{{item.val}}</Option>
+                        </Select>
                     </FormItem>
                 </Col>
                 <Col span="4">
@@ -58,6 +61,15 @@
                         </Select>
                     </FormItem>
                 </Col>
+                <Col span="4">
+                    <FormItem label="选项">
+                        <Select clearable v-model="param" placeholder="请选择..." @on-change="v=>{param=(v==undefined?-1:param)}">
+                            <Option value="0">临期年审</Option>
+                            <Option value="1">逾期年审</Option>
+                            <Option value="2">强制报废</Option>
+                        </Select>
+                    </FormItem>
+                </Col>
                 <Col span="4" offset="1">
                     <Button type="primary" @click="v.util.getPageData(v)">
                         <Icon type="search"></Icon>
@@ -76,7 +88,7 @@
             <Row class="margin-top-10 pageSty">
                 <Page :total=form.total :current=form.pageNum :page-size=form.pageSize show-total show-elevator
                       @on-change='pageChange'></Page>
-            </Row>
+            </Row>0f
         </Form>
         <component :is="componentName"></component>
 
@@ -121,6 +133,8 @@
                 v: this,
                 SpinShow: true,
                 apiRoot: this.apis.CAR,
+                param:-1,                       //选项需要传递的url参数
+                paramArr:{0:'?lqnj=lqnj',1:'?lqnj=yqns',2:'?lqnj=qzbf'},
                 tableHeight: 160,
                 componentName: '',
                 choosedItem: null,
@@ -130,7 +144,8 @@
                 },
                 tableColumns: [
                     {title: "序号", width: 60, type: 'index'},
-                    {title: '车牌号', width: 120, key: 'vHphm', searchKey: 'vHphm'},
+                    {title: '车牌号', width: 120, key: 'vHphm', searchKey: 'vHphm',sortable: true},
+                    {title: '驾校名称', width: 120, key: 'vHphm', searchKey: 'vHphm'},
                     {
                         title: '车辆类型', width: 120, key: 'vHpzl', render: (h, params) => {
                             let val = $.map(this.dicts.hpzl.items, item => {
@@ -158,7 +173,7 @@
                             return h('div', ztss);
                         }
                     },
-                    {title: '初登日期', width: 120, key: 'vCcdjrq'},
+                    {title: '初登日期', width: 120, key: 'vCcdjrq',sortable: true},
                     {
                         title: '年审日期', width: 180, key: 'vNsrq', render: (h, params) => {
                             let today = new Date().format("yyyy-MM-dd");
@@ -284,6 +299,7 @@
             this.util.initTable(this);
             this.util.initDict(this);
             this.tableHeight = window.innerHeight - 290;
+            console.log(this.$store.state.moreCarType)
         },
         methods: {
             pageChange(event) {
@@ -384,6 +400,11 @@
                     }
                 }]);
             }
+        },
+        mounted(){
+            console.log(this.$store.state.moreCarType)
+            this.param=this.$store.state.moreCarType==-1?-1:this.$store.state.moreCarType
+            this.util.getPageData(this)
         }
     }
 </script>

@@ -186,6 +186,13 @@ export let appRouter = [
                 component: () => import('@/views/whdx/vehicle/vehicle-usecar')
             },
             {
+                path: 'vehicle-more',
+                icon: 'android-clipboard',
+                name: 'vehicle-more',
+                meta: { title: '更多车辆' },
+                component: () => import('@/views/whdx/vehicle/vehicle-more')
+            },
+            {
                 path: 'vehicle-nianshen',
                 icon: 'android-clipboard',
                 name: 'vehicle-nianshen',
@@ -234,6 +241,7 @@ export let appRouter = [
                 meta: { title: '档案拍照及打印' },
                 component: () => import('@/views/whdx/vehicle/document')
             },
+
             // {
             //     path: 'vehicle-chanquan',
             //     icon: 'android-clipboard',

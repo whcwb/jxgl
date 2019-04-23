@@ -12,6 +12,24 @@
         				<form-items :parent="v"></form-items>
         			</Row>
 				</Form>
+
+				<Row v-if="showFiles" style="padding-bottom: 15px">
+					<Card dis-hover>
+						<Row>
+							<Col v-for="(item,key) in  files" span="6" :key="key">
+								<div style="text-align:center;margin-top: 16px">
+									<div class="demo-upload-list">
+										<!--<img :src='item.item.uploadFile.url'>-->
+
+									</div>
+
+									<h3>{{item.title}}</h3>
+								</div>
+							</Col>
+						</Row>
+					</Card>
+				</Row>
+
 				<Row v-if="showFiles" style="padding-bottom: 15px">
 					<Card dis-hover>
 						<Row>
@@ -117,6 +135,8 @@
                     hkFile: {title: '户口', uploadFile: null},
                     claqxyFile: {title: '车辆安全协议', uploadFile: null},
                     cqxyFile: {title: '产权协议', uploadFile: null},
+                    cnsFile: {title: '承诺书', uploadFile: null},
+                    otherFile: {title: '第三方身份证资料信息', uploadFile: null}
                 },
                 curUser: '',
                 ruleInline:{
