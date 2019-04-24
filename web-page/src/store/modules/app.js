@@ -56,7 +56,6 @@ const app = {
     mutations: {
         moreCarTypeChange(state, data) {
             state.moreCarType = data;
-            console.log(state.moreCarType)
         },
         moreBXTypeChange(state, data) {
             state.moreBXType = data;

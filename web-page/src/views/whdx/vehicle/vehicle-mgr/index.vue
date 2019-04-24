@@ -63,10 +63,9 @@
                 </Col>
                 <Col span="4">
                     <FormItem label="选项">
-                        <Select clearable v-model="param" placeholder="请选择..." @on-change="v=>{param=(v==undefined?-1:param)}">
-                            <Option value="0">临期年审</Option>
-                            <Option value="1">逾期年审</Option>
-                            <Option value="2">强制报废</Option>
+                        <Select clearable v-model="param" placeholder="请选择..."
+                                @on-change="v=>{param=(v==undefined?-1:param)}">
+                            <Option v-for="item in listType" :value="item.value" :key="item.value">{{ item.label }}</Option>
                         </Select>
                     </FormItem>
                 </Col>
@@ -88,7 +87,8 @@
             <Row class="margin-top-10 pageSty">
                 <Page :total=form.total :current=form.pageNum :page-size=form.pageSize show-total show-elevator
                       @on-change='pageChange'></Page>
-            </Row>0f
+            </Row>
+            0f
         </Form>
         <component :is="componentName"></component>
 
@@ -133,8 +133,21 @@
                 v: this,
                 SpinShow: true,
                 apiRoot: this.apis.CAR,
-                param:-1,                       //选项需要传递的url参数
-                paramArr:{0:'?lqnj=lqnj',1:'?lqnj=yqns',2:'?lqnj=qzbf'},
+                listType: [{                                      //选项
+                    value: 0,
+                    label: '临期年审'
+                },
+                    {
+                        value: 1,
+                        label: '逾期年审'
+                    },
+                    {
+                        value: 2,
+                        label: '强制报废'
+                    }
+                ],
+                param: -1,                       //选项需要传递的url参数
+                paramArr: {0: '?lqnj=lqnj', 1: '?lqnj=yqns', 2: '?lqnj=qzbf'},
                 tableHeight: 160,
                 componentName: '',
                 choosedItem: null,
@@ -144,7 +157,7 @@
                 },
                 tableColumns: [
                     {title: "序号", width: 60, type: 'index'},
-                    {title: '车牌号', width: 120, key: 'vHphm', searchKey: 'vHphm',sortable: true},
+                    {title: '车牌号', width: 120, key: 'vHphm', searchKey: 'vHphm', sortable: true},
                     {title: '驾校名称', width: 120, key: 'vHphm', searchKey: 'vHphm'},
                     {
                         title: '车辆类型', width: 120, key: 'vHpzl', render: (h, params) => {
@@ -173,7 +186,7 @@
                             return h('div', ztss);
                         }
                     },
-                    {title: '初登日期', width: 120, key: 'vCcdjrq',sortable: true},
+                    {title: '初登日期', width: 120, key: 'vCcdjrq', sortable: true},
                     {
                         title: '年审日期', width: 180, key: 'vNsrq', render: (h, params) => {
                             let today = new Date().format("yyyy-MM-dd");
@@ -296,10 +309,11 @@
             }
         },
         created() {
+            //如果是点击首页更多车辆进来的，就重新获取数据
+            this.param = this.$store.state.app.moreCarType == -1 ? -1 : this.$store.state.app.moreCarType
             this.util.initTable(this);
             this.util.initDict(this);
             this.tableHeight = window.innerHeight - 290;
-            console.log(this.$store.state.moreCarType)
         },
         methods: {
             pageChange(event) {
@@ -401,10 +415,8 @@
                 }]);
             }
         },
-        mounted(){
-            console.log(this.$store.state.moreCarType)
-            this.param=this.$store.state.moreCarType==-1?-1:this.$store.state.moreCarType
-            this.util.getPageData(this)
+        beforeDestroy(){
+            this.$store.commit('moreCarTypeChange',-1)          //离开页面之前将选项重置
         }
     }
 </script>

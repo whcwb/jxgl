@@ -390,7 +390,6 @@ util.closeDialog = function (v) {
  */
 util.getPageData = function (v) {
     let url = v.pagerUrl ? v.pagerUrl : v.apiRoot['QUERY'];
-    console.log(v.param)
     if(!v.pagerUrl&&v.param!=undefined){                                //新增的通过首页的条件筛选数据
         if(v.param!==-1)
         url+=v.paramArr[v.param];

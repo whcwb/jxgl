@@ -51,7 +51,6 @@
                 this.util.pageChange(this, event);
             },
             showMore(){
-                console.log("yunxingle")
                 this.$store.commit('moreCarTypeChange',0);
                 this.$router.push({name:'vehicle-mgr'})
             }

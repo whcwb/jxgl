@@ -38,8 +38,7 @@
 			<Col span="4">
 				<FormItem label="选项">
 					<Select clearable v-model="param" placeholder="请选择..." @on-change="v=>{param=(v==undefined?-1:param)}">
-						<Option value="0">交强险临期</Option>
-						<Option value="1">商业险临期</Option>
+						<Option v-for="item in listType" :value="item.value" :key="item.value">{{ item.label }}</Option>
 					</Select>
 				</FormItem>
 			</Col>
@@ -85,8 +84,25 @@
                 dateRange3:'',
                 dateRange4:'',
                 choosedItem: null,
+                listType: [{                                      //选项
+                    value: 0,
+                    label: '交强险临期'
+                },
+                    {
+                        value: 1,
+                        label: '商业险临期'
+                    },
+                    {
+                        value: 2,
+                        label: '交强险过保'
+                    },
+                    {
+                        value: 3,
+                        label: '商业险过保'
+                    }
+                ],
 				param:-1,								//选项需要传递的url参数
-                paramArr:{0:'?bxlq=jqx',1:'?bxlq=syx'},
+                paramArr:{0:'?bxlq=jqx',1:'?bxlq=syx',2:'?bxlq=jqxgb',3:'?bxlq=syxgb'},
                 tableColumns: [
                     {title: "序号", width: 60, type: 'index'},
                     {title: '车牌号码',key:'vHphm'},
@@ -152,6 +168,8 @@
             }
         },
         created() {
+            //如果是点击首页更多车辆进来的，就重新获取数据
+            this.param = this.$store.state.app.moreBXType == -1 ? -1 : this.$store.state.app.moreBXType
             this.util.initTable(this);
             this.util.initDict(this);
         },
@@ -169,6 +187,9 @@
                     this.util.showResMessage(this,res);
                 })
             }
+        },
+        beforeDestroy(){
+            this.$store.commit('moreBXTypeChange',-1)          //离开页面之前将选项重置
         }
     }
 </script>
