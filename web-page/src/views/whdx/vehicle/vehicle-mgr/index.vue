@@ -28,7 +28,7 @@
                     <FormItem label="所有人">
                         <!--<Input v-model="form.vSylLike" placeholder="请输入所有人"></Input>-->
                         <Select filterable clearable v-model="form.vSylLike" placeholder="请输入所有人">
-                            <Option v-for='(item,index) in dicts.clzt.items' :value="item.key">{{item.val}}</Option>
+                            <Option v-for='(item,index) in dicts.syr.items' :value="item.val">{{item.val}}</Option>
                         </Select>
                     </FormItem>
                 </Col>
@@ -65,7 +65,8 @@
                     <FormItem label="选项">
                         <Select clearable v-model="param" placeholder="请选择..."
                                 @on-change="v=>{param=(v==undefined?-1:param)}">
-                            <Option v-for="item in listType" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                            <Option v-for="item in listType" :value="item.value" :key="item.value">{{ item.label }}
+                            </Option>
                         </Select>
                     </FormItem>
                 </Col>
@@ -158,7 +159,7 @@
                 tableColumns: [
                     {title: "序号", width: 60, type: 'index'},
                     {title: '车牌号', width: 120, key: 'vHphm', searchKey: 'vHphm', sortable: true},
-                    {title: '驾校名称', width: 120, key: 'vHphm', searchKey: 'vHphm'},
+                    {title: '驾校名称', width: 120, key: 'vSyl', searchKey: 'vSyl', sortable: true},
                     {
                         title: '车辆类型', width: 120, key: 'vHpzl', render: (h, params) => {
                             let val = $.map(this.dicts.hpzl.items, item => {
@@ -302,7 +303,8 @@
                 dicts: {
                     hpzl: {code: 'HPZL', items: []},
                     syxz: {code: 'SYXZ', items: []},
-                    clzt: {code: 'clzt', items: []}
+                    clzt: {code: 'clzt', items: []},
+                    syr:  {code: 'syr', items: []}
                 },
                 jszPrintImgs: [],
                 xszPrintImgs: []
@@ -415,8 +417,8 @@
                 }]);
             }
         },
-        beforeDestroy(){
-            this.$store.commit('moreCarTypeChange',-1)          //离开页面之前将选项重置
+        beforeDestroy() {
+            this.$store.commit('moreCarTypeChange', -1)          //离开页面之前将选项重置
         }
     }
 </script>

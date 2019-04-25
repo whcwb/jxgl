@@ -394,6 +394,7 @@ util.getPageData = function (v) {
         if(v.param!==-1)
         url+=v.paramArr[v.param];
     }
+    console.log(v.form)
     v.$http.post(url, v.form).then((response) => {
             let code = response.code;
             let msg = response.message;
@@ -401,6 +402,7 @@ util.getPageData = function (v) {
             if (code === 200) {
                 let page = response.page;
                 v.pageData = page.list;
+                console.log(v.pageData)
                 v.form.total = page.total;
                 if (v.exportParam && v.exportParam.start) {
                     setTimeout(function(){
