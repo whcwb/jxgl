@@ -49,7 +49,8 @@
             pageChange(event) {
                 this.util.pageChange(this, event);
             },
-            showMore(type){
+            showMore(){
+                this.$store.commit('moreCarTypeChange',1);
                 this.$router.push({name:'vehicle-mgr'})
             }
         }

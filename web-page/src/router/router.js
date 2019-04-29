@@ -234,6 +234,7 @@ export let appRouter = [
                 meta: { title: '档案拍照及打印' },
                 component: () => import('@/views/whdx/vehicle/document')
             },
+
             // {
             //     path: 'vehicle-chanquan',
             //     icon: 'android-clipboard',

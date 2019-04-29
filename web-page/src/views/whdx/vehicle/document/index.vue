@@ -134,6 +134,7 @@
                 uplaodUrl: this.apis.FILE.UPLOAD,
                 files: {
                     xszzmFile: {title: '行车证', uploadFile: null},
+                    xszfbFile: {title: '行车证副本盖章记录', uploadFile: null},
                     cqdjzFile: {title: '登记证书', uploadFile: null},
                     // bdFile: {title: '保单', uploadFile: null},
                     cqdjFile: {title: '内部车辆产权登记', uploadFile: null},

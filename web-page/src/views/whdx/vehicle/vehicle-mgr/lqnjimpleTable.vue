@@ -44,12 +44,14 @@
         },
         created() {
             this.util.initSimpleTable(this)
+
         },
         methods: {
             pageChange(event) {
                 this.util.pageChange(this, event);
             },
-            showMore(type){
+            showMore(){
+                this.$store.commit('moreCarTypeChange',0);
                 this.$router.push({name:'vehicle-mgr'})
             }
         }

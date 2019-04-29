@@ -49,7 +49,8 @@
             pageChange(event) {
                 this.util.pageChange(this, event);
             },
-            showMore(type){
+            showMore(){
+                this.$store.commit('moreBXTypeChange',3)
                 this.$router.push({name:'vehicle-baoxian'})
             }
         }
