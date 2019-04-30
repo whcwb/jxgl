@@ -329,6 +329,7 @@ util.delete = function (v, ids, callback) {//数据删除方法封装
     }).then((isConfirm) => {
         if (isConfirm.value) {
             let url = v.apiRoot['DELE'];
+
             v.$http.post(url, {'ids': ids}).then((res) => {
                 if (res.code === 200) {
                     v.$Message.success(res.message);
