@@ -15,7 +15,7 @@ import tk.mybatis.mapper.common.Mapper;
 @CacheNamespace(implementation=MybatisRedisCache.class)
 public interface BizVehicleMapper extends Mapper<BizVehicle> {
 	
-	@Select("select v_zrr as zrr,count(1) as num from biz_vehicle where v_zrr is not null and v_zrr<>'' group by v_zrr")
+	@Select("select v_zrr as zrr,GROUP_CONCAT(v_hphm) cph ,count(1) as num from biz_vehicle where v_zrr is not null and v_zrr<>'' group by v_zrr")
 	@ResultType(value=Map.class)
 	public List<Map<String, String>> reportZrr();
 }
