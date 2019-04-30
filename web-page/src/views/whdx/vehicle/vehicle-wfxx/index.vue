@@ -10,7 +10,7 @@
 						<Input v-model="form.vHphmLike" placeholder="请输入车牌号" ></Input>
 					</FormItem>
 				</Col>
-				<Col span="5">
+				<Col span="6">
 					<FormItem label="违法时间">
 						<DatePicker :value="form.tWfsj" @on-change="(date)=>{form.wfWfsjInRange = date[0]+','+date[1]}" type="daterange" confirm placement="bottom-end" placeholder="请选择违法时间" style="width: 200px"></DatePicker>
 					</FormItem>
@@ -108,7 +108,7 @@
                                     this.componentName = 'notifyList';
                                 }),
                                 this.util.buildEditButton(this,h,params),
-                                this.util.buildDeleteButton(this,h,params.row.id),
+                                this.util.buildDeleteButton(this,h,params.row.wfId),
                             ]);
                         }
                     }

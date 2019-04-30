@@ -15,12 +15,18 @@
 
 				<Row v-if="showFiles" style="padding-bottom: 15px">
 					<Card dis-hover>
+						变更前数据
 						<Row>
 							<Col v-for="(item,key) in  files" span="6" :key="key">
 								<div style="text-align:center;margin-top: 16px">
-									<div class="demo-upload-list">
-										<!--<img :src='item.item.uploadFile.url'>-->
+									<div class="demo-upload-list" v-if="item.updatedUrl != null">
+										<template>
+											<img :src="item.updatedUrl">
+										</template>
 
+									</div>
+									<div class="demo-upload-list" v-else style="font-size: large;">
+										暂无数据
 									</div>
 
 									<h3>{{item.title}}</h3>
@@ -32,6 +38,7 @@
 
 				<Row v-if="showFiles" style="padding-bottom: 15px">
 					<Card dis-hover>
+						变更后数据
 						<Row>
 							<Col v-for="(item,key) in  files" span="6" :key="key">
 								<div style="text-align:center;margin-top: 16px">
@@ -81,7 +88,7 @@
         	</div>
         	<div slot='footer'>
         		<Button type="ghost" @click="v.util.closeDialog(v)">取消</Button>
-        		<Button type="primary" @click="v.util.save(v)">确定</Button>
+        		<Button type="primary" @click="clickOK">确定</Button>
         	</div>
         </Modal>
 
@@ -103,6 +110,7 @@
 		data() {
 			return {
 			    v:this,
+                updateFinished:false,	//上传完成后才能更新上面的图片
                 operate:'产权变更',
 				showModal: true,
 				readonly: true,
@@ -131,12 +139,12 @@
                 ],
                 uplaodUrl: this.apis.FILE.UPLOAD,
                 files: {
-                    sfzFile: {title: '身份证', uploadFile: null},
-                    hkFile: {title: '户口', uploadFile: null},
-                    claqxyFile: {title: '车辆安全协议', uploadFile: null},
-                    cqxyFile: {title: '产权协议', uploadFile: null},
-                    cnsFile: {title: '承诺书', uploadFile: null},
-                    otherFile: {title: '第三方身份证资料信息', uploadFile: null}
+                    sfzFile: {title: '身份证', uploadFile: null,updatedUrl:null},
+                    hkFile: {title: '户口', uploadFile: null,updatedUrl:null},
+                    claqxyFile: {title: '车辆安全协议', uploadFile: null,updatedUrl:null},
+                    cqxyFile: {title: '产权协议', uploadFile: null,updatedUrl:null},
+                    cnsFile: {title: '承诺书', uploadFile: null,updatedUrl:null},
+                    otherFile: {title: '第三方身份证资料信息', uploadFile: null,updatedUrl:null}
                 },
                 curUser: '',
                 ruleInline:{
@@ -164,8 +172,18 @@
             this.loadFiles();
         },
 		methods: {
+		    clickOK(){
+				// for (let i=0;i<this.files.length;i++){
+				//     this.files[i].updatedUrl=this.files[i].uploadFile.url
+				// }
+                for (let item of this.files){
+                    item.updatedUrl=item.uploadFile.url
+				}
+                this.util.save(this);
+			},
             //加载文件列表
             loadFiles(){
+                var v=this
                 this.curUser = JSON.parse(Cookies.get('result')).accessToken;
                 this.$http.get(this.apis.FILE.FINDBYPID + "/" + this.formItem.vId).then((res) =>{
                     if (res.code == 200){
@@ -176,11 +194,12 @@
                                     status:'finished',
                                     url:this.apis.STATIC_PATH + item.vfNetPath + '?d='+new Date().getTime()
                                 };
+                                this.files[item.vfDamc].updatedUrl=this.files[item.vfDamc].uploadFile.url
 							}catch (e){
 
 							}
-
                         }
+                        console.log(v.files)
                     }
                 })
             },
@@ -206,6 +225,8 @@
                     //将文件对象和data的属性进行绑定
                     this.files[locDataName].uploadFile = file;
                     // this.$data[locDataName] = file;
+					console.log(this.files[locDataName].updatedUrl)
+                    console.log(this.files[locDataName].uploadFile.url)
                 } else {
                     this.$Message.error("文件上传失败：" + res.message);
                 }

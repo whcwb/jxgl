@@ -33,7 +33,7 @@
                     {title: "序号", width: 60, type: 'index'},
                     {title: '责任人',key:'zrr'},
                     {title: '车辆数',key:'num'},
-                    {title: '车牌号',key:'num'}				//新增
+                    {title: '车牌号',key:'cph'}				//新增
                 ],
                 pageData: [],
                 form: {
@@ -53,7 +53,7 @@
                         this.SpinShow = false
                         if (code === 200) {
                             this.pageData = response.result;
-                            console.log(this.pageData)
+                            console.log(response)
                         }else{
                             this.$Message.error(msg);
 						}

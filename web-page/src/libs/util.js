@@ -58,6 +58,7 @@ util.fillTableColumns = (v) => {
     }
 }
 util.buildDeleteButton = (v, h, id) => {
+    console.log(id+"mknk")
     return util.buildButton(v, h, 'error', 'close', '删除', () => {
         util.delete(v, [id])
     })
